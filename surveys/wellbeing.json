@@ -1,0 +1,44 @@
+{
+  "id": "wellbeing",
+  "title": "Bienestar breve (5 ítems)",
+  "description": "Por favor responde según cómo te has sentido en los últimos 7 días.",
+  "items": [
+    {
+      "id": "wb_life_satisfaction",
+      "type": "likert",
+      "prompt": "Estoy satisfecho/a con mi vida",
+      "required": true,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "wb_energy",
+      "type": "likert",
+      "prompt": "He tenido suficiente energía para hacer lo que necesito",
+      "required": true,
+      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
+    },
+    {
+      "id": "wb_stress",
+      "type": "likert",
+      "prompt": "Me he sentido estresado/a",
+      "required": true,
+      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
+    },
+    {
+      "id": "wb_sleep",
+      "type": "likert",
+      "prompt": "He dormido bien",
+      "required": true,
+      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
+    },
+    {
+      "id": "wb_social",
+      "type": "likert",
+      "prompt": "Me he sentido apoyado/a por otras personas",
+      "required": true,
+      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
+    }
+  ]
+}
+
+

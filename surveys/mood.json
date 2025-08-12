@@ -1,0 +1,38 @@
+{
+  "id": "mood",
+  "title": "Afecto/mood hoy (rápido)",
+  "description": "Evalúa cómo te sientes ahora mismo.",
+  "items": [
+    {
+      "id": "md_valence",
+      "type": "likert",
+      "prompt": "En general ahora me siento...",
+      "options": ["Muy mal", "Mal", "Neutral", "Bien", "Muy bien"],
+      "required": true
+    },
+    {
+      "id": "md_arousal",
+      "type": "likert",
+      "prompt": "Mi nivel de activación/energía es...",
+      "options": ["Muy bajo", "Bajo", "Medio", "Alto", "Muy alto"],
+      "required": true
+    },
+    {
+      "id": "md_focus",
+      "type": "single_choice",
+      "prompt": "Ahora mismo me encuentro...",
+      "options": ["Estudiando", "Trabajando", "Descansando", "Socializando", "Otra actividad"],
+      "required": true
+    },
+    {
+      "id": "md_note",
+      "type": "text",
+      "prompt": "Si quieres, cuéntanos brevemente por qué te sientes así (opcional)",
+      "placeholder": "Escribe aquí...",
+      "long": true,
+      "required": false
+    }
+  ]
+}
+
+

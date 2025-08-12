@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sssss — admin</title>
+    <style>
+      :root { --bg:#0d1117; --fg:#e6edf3; --muted:#9da6b2; --accent:#7aa2f7; --card:#161b22; --border:#30363d; }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;background:var(--bg);color:var(--fg)}
+      header{padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(13,17,23,.9);backdrop-filter: blur(6px)}
+      .brand{font-weight:800}
+      main{max-width:900px;margin:0 auto;padding:16px}
+      .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+      .row{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:12px;padding:12px;margin:8px 0}
+      .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--accent);color:#0b1020;font-weight:700;cursor:pointer}
+      .ghost{background:#0f172a;color:var(--fg)}
+      .muted{color:var(--muted);font-size:12px}
+      .grid{display:grid;gap:10px}
+      a{color:var(--accent);text-decoration:none}
+      .badge{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+      code{background:#0f172a;border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">sssss — admin</div>
+      <div><a href="./">Inicio</a></div>
+    </header>
+    <main>
+      <section class="card">
+        <h2 style="margin:0 0 8px 0">Exportar respuestas</h2>
+        <div class="muted">Sin autenticación por ahora. Cualquiera con este enlace puede descargar.</div>
+        <div id="list" class="grid" style="margin-top:12px"></div>
+      </section>
+
+      <section class="card" style="margin-top:14px">
+        <h3 style="margin:0 0 8px 0">Configuración de Firebase recomendada (temporal)</h3>
+        <div class="muted">Para permitir respuestas anónimas y lectura de admin sin auth (modo demo):</div>
+        <pre style="white-space:pre-wrap;overflow:auto;background:#0b1220;border:1px solid var(--border);padding:12px;border-radius:12px"><code>// Firestore Rules (demo)
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /responses/{surveyId}/entries/{entryId} {
+      allow create: if true;           // cualquiera puede responder
+      allow read: if true;             // cualquiera puede leer en admin.html
+      allow update, delete: if false;  // nadie puede editar/borrar
+    }
+  }
+}</code></pre>
+        <div class="muted">Luego, endurecer (recomendado): restringir <code>read</code> a usuarios autenticados y añadir rate limit en backend.</div>
+      </section>
+    </main>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+      import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCq05NElKm-01Xyraj6qdF31IgOLf8gQbA",
+        authDomain: "sssss-e8013.firebaseapp.com",
+        projectId: "sssss-e8013",
+        storageBucket: "sssss-e8013.firebasestorage.app",
+        messagingSenderId: "765571239773",
+        appId: "1:765571239773:web:39ea76d035d314cdd4a2b4",
+        measurementId: "G-1JDBES8EE2",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const $list = document.getElementById('list');
+
+      async function loadSurveyIndex() {
+        const res = await fetch('surveys/index.json?_=' + Date.now());
+        const data = await res.json();
+        return data.surveys || [];
+      }
+
+      function toCsv(rows) {
+        if (!rows.length) return '';
+        const headers = Object.keys(rows[0]);
+        const esc = (v) => {
+          if (v == null) return '';
+          const s = typeof v === 'string' ? v : JSON.stringify(v);
+          const t = s.replaceAll('"', '""');
+          return '"' + t + '"';
+        };
+        const lines = [headers.join(',')];
+        for (const r of rows) {
+          lines.push(headers.map(h => esc(r[h])).join(','));
+        }
+        return lines.join('\n');
+      }
+
+      function download(filename, text) {
+        const blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = filename; a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+
+      async function exportCsv(meta) {
+        // load survey to define columns ordering
+        const res = await fetch(`surveys/${meta.file}?_=${Date.now()}`);
+        const survey = await res.json();
+        const cols = ['entryId', 'createdAt', ...survey.items.map(i => i.id)];
+        const qRef = query(collection(db, `responses/${meta.id}/entries`), orderBy('createdAt'));
+        const snap = await getDocs(qRef);
+        const rows = [];
+        snap.forEach(doc => {
+          const d = doc.data();
+          const row = Object.fromEntries(cols.map(c => [c, null]));
+          row.entryId = doc.id;
+          try { row.createdAt = d.createdAt?.toDate?.().toISOString?.() || ''; } catch { row.createdAt = ''; }
+          const ans = d.answers || {};
+          for (const it of survey.items) {
+            let v = ans[it.id];
+            if (Array.isArray(v)) v = v.join(' | ');
+            row[it.id] = v == null ? '' : v;
+          }
+          rows.push(row);
+        });
+        const csv = toCsv(rows);
+        const ts = new Date().toISOString().slice(0,19).replaceAll(':','-');
+        download(`${meta.id}-${ts}.csv`, csv || '');
+      }
+
+      (async function init() {
+        const items = await loadSurveyIndex();
+        $list.innerHTML = '';
+        items.forEach(meta => {
+          const row = document.createElement('div');
+          row.className = 'row';
+          row.innerHTML = `
+            <div>
+              <div style="font-weight:700">${meta.title}</div>
+              <div class="muted">${meta.description || ''} <span class="badge">${meta.id}</span></div>
+            </div>
+            <div>
+              <button class="btn">Descargar CSV</button>
+            </div>
+          `;
+          row.querySelector('button').addEventListener('click', () => exportCsv(meta));
+          $list.appendChild(row);
+        });
+      })();
+    </script>
+  </body>
+  </html>
+
+

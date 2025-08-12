@@ -1,0 +1,47 @@
+{
+  "id": "habits",
+  "title": "Hábitos y contexto (mixto)",
+  "description": "Algunas preguntas sobre tu día a día.",
+  "items": [
+    {
+      "id": "hb_study_hours",
+      "type": "number",
+      "prompt": "¿Cuántas horas dedicas al estudio en un día típico?",
+      "min": 0,
+      "max": 24,
+      "required": true
+    },
+    {
+      "id": "hb_commute",
+      "type": "single_choice",
+      "prompt": "Medio de transporte principal",
+      "options": ["A pie", "Bicicleta", "Transporte público", "Auto", "Otro"],
+      "required": true
+    },
+    {
+      "id": "hb_food",
+      "type": "multi_choice",
+      "prompt": "¿Qué sueles consumir a media mañana? (puedes elegir varias)",
+      "options": ["Fruta", "Yogur", "Pan", "Bebida azucarada", "Café/Té", "Nada"],
+      "required": false
+    },
+    {
+      "id": "hb_screen",
+      "type": "likert",
+      "prompt": "Siento que paso demasiado tiempo en pantallas",
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"],
+      "required": false
+    },
+    {
+      "id": "hb_note",
+      "type": "text",
+      "prompt": "Comentario opcional",
+      "placeholder": "Algo que quieras añadir...",
+      "long": true,
+      "maxLength": 600,
+      "required": false
+    }
+  ]
+}
+
+

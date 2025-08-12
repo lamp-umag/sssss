@@ -1,0 +1,24 @@
+{
+  "surveys": [
+    {
+      "id": "wellbeing",
+      "title": "Bienestar breve (5 ítems)",
+      "description": "Auto-reporte de bienestar general. 5 puntos Likert.",
+      "file": "wellbeing.json"
+    },
+    {
+      "id": "habits",
+      "title": "Hábitos y contexto (mixto)",
+      "description": "Preguntas de opción única, múltiple, numéricas y texto.",
+      "file": "habits.json"
+    },
+    {
+      "id": "mood",
+      "title": "Afecto/mood hoy (rápido)",
+      "description": "Valoración rápida del estado de ánimo actual.",
+      "file": "mood.json"
+    }
+  ]
+}
+
+
