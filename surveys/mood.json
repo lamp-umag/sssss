@@ -1,37 +1,20 @@
 {
   "id": "mood",
-  "title": "Afecto/mood hoy (rápido)",
-  "description": "Evalúa cómo te sientes ahora mismo.",
+  "title": "Afecto positivo y negativo (I-PANAS-SF)",
+  "description": "Indica cómo te sientes AHORA MISMO. Incluye apodo al inicio.",
   "items": [
-    {
-      "id": "md_valence",
-      "type": "likert",
-      "prompt": "En general ahora me siento...",
-      "options": ["Muy mal", "Mal", "Neutral", "Bien", "Muy bien"],
-      "required": true
-    },
-    {
-      "id": "md_arousal",
-      "type": "likert",
-      "prompt": "Mi nivel de activación/energía es...",
-      "options": ["Muy bajo", "Bajo", "Medio", "Alto", "Muy alto"],
-      "required": true
-    },
-    {
-      "id": "md_focus",
-      "type": "single_choice",
-      "prompt": "Ahora mismo me encuentro...",
-      "options": ["Estudiando", "Trabajando", "Descansando", "Socializando", "Otra actividad"],
-      "required": true
-    },
-    {
-      "id": "md_note",
-      "type": "text",
-      "prompt": "Si quieres, cuéntanos brevemente por qué te sientes así (opcional)",
-      "placeholder": "Escribe aquí...",
-      "long": true,
-      "required": false
-    }
+    { "id": "id_apodo", "type": "text", "prompt": "Apodo (para identificar tus respuestas en el ejercicio)", "placeholder": "Ej: condorito", "required": true },
+    { "id": "panas_pos1", "type": "likert", "scale": "I-PANAS-SF (Positivo)", "prompt": "Activo/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_pos2", "type": "likert", "scale": "I-PANAS-SF (Positivo)", "prompt": "Inspirado/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_pos3", "type": "likert", "scale": "I-PANAS-SF (Positivo)", "prompt": "Atento/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_pos4", "type": "likert", "scale": "I-PANAS-SF (Positivo)", "prompt": "Entusiasmado/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_pos5", "type": "likert", "scale": "I-PANAS-SF (Positivo)", "prompt": "Decidido/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+
+    { "id": "panas_neg1", "type": "likert", "scale": "I-PANAS-SF (Negativo)", "prompt": "Nervioso/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_neg2", "type": "likert", "scale": "I-PANAS-SF (Negativo)", "prompt": "Atemorizado/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_neg3", "type": "likert", "scale": "I-PANAS-SF (Negativo)", "prompt": "Culpable", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_neg4", "type": "likert", "scale": "I-PANAS-SF (Negativo)", "prompt": "Hostil", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] },
+    { "id": "panas_neg5", "type": "likert", "scale": "I-PANAS-SF (Negativo)", "prompt": "Avergonzado/a", "required": true, "options": ["Nada", "Un poco", "Moderado", "Bastante", "Mucho"] }
   ]
 }
 

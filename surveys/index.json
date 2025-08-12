@@ -2,20 +2,20 @@
   "surveys": [
     {
       "id": "wellbeing",
-      "title": "Bienestar breve (5 ítems)",
-      "description": "Auto-reporte de bienestar general. 5 puntos Likert.",
+      "title": "Bienestar y satisfacción (SWLS + WHO-5)",
+      "description": "Apodo + escalas SWLS y WHO-5.",
       "file": "wellbeing.json"
     },
     {
       "id": "habits",
-      "title": "Hábitos y contexto (mixto)",
-      "description": "Preguntas de opción única, múltiple, numéricas y texto.",
+      "title": "Ánimo, ansiedad y estrés (PHQ-2 + GAD-2 + PSS-4)",
+      "description": "Apodo + PHQ-2, GAD-2 y PSS-4.",
       "file": "habits.json"
     },
     {
       "id": "mood",
-      "title": "Afecto/mood hoy (rápido)",
-      "description": "Valoración rápida del estado de ánimo actual.",
+      "title": "Afecto (I-PANAS-SF)",
+      "description": "Apodo + afecto positivo y negativo.",
       "file": "mood.json"
     }
   ]

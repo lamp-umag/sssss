@@ -1,43 +1,26 @@
 {
   "id": "wellbeing",
-  "title": "Bienestar breve (5 ítems)",
-  "description": "Por favor responde según cómo te has sentido en los últimos 7 días.",
+  "title": "Bienestar y satisfacción (SWLS + WHO-5)",
+  "description": "Responde según los últimos 7 días. Primero, indica un apodo para vincular respuestas a la misma persona en el ejercicio.",
   "items": [
     {
-      "id": "wb_life_satisfaction",
-      "type": "likert",
-      "prompt": "Estoy satisfecho/a con mi vida",
-      "required": true,
-      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+      "id": "id_apodo",
+      "type": "text",
+      "prompt": "Apodo (para identificar tus respuestas en el ejercicio)",
+      "placeholder": "Ej: pingüino_azul",
+      "required": true
     },
-    {
-      "id": "wb_energy",
-      "type": "likert",
-      "prompt": "He tenido suficiente energía para hacer lo que necesito",
-      "required": true,
-      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
-    },
-    {
-      "id": "wb_stress",
-      "type": "likert",
-      "prompt": "Me he sentido estresado/a",
-      "required": true,
-      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
-    },
-    {
-      "id": "wb_sleep",
-      "type": "likert",
-      "prompt": "He dormido bien",
-      "required": true,
-      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
-    },
-    {
-      "id": "wb_social",
-      "type": "likert",
-      "prompt": "Me he sentido apoyado/a por otras personas",
-      "required": true,
-      "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"]
-    }
+    { "id": "swls_1", "type": "likert", "scale": "SWLS", "prompt": "En la mayoría de los aspectos, mi vida se acerca a mi ideal.", "required": true, "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"] },
+    { "id": "swls_2", "type": "likert", "scale": "SWLS", "prompt": "Las condiciones de mi vida son excelentes.", "required": true, "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"] },
+    { "id": "swls_3", "type": "likert", "scale": "SWLS", "prompt": "Estoy satisfecho/a con mi vida.", "required": true, "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"] },
+    { "id": "swls_4", "type": "likert", "scale": "SWLS", "prompt": "Hasta ahora he conseguido las cosas importantes que quiero en la vida.", "required": true, "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"] },
+    { "id": "swls_5", "type": "likert", "scale": "SWLS", "prompt": "Si pudiera vivir mi vida otra vez, casi no cambiaría nada.", "required": true, "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"] },
+
+    { "id": "who5_1", "type": "likert", "scale": "WHO-5", "prompt": "Me he sentido alegre y de buen ánimo.", "required": true, "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"] },
+    { "id": "who5_2", "type": "likert", "scale": "WHO-5", "prompt": "Me he sentido calmado/a y relajado/a.", "required": true, "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"] },
+    { "id": "who5_3", "type": "likert", "scale": "WHO-5", "prompt": "Me he sentido activo/a y con energía.", "required": true, "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"] },
+    { "id": "who5_4", "type": "likert", "scale": "WHO-5", "prompt": "Me he despertado fresco/a y descansado/a.", "required": true, "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"] },
+    { "id": "who5_5", "type": "likert", "scale": "WHO-5", "prompt": "Mi vida diaria ha estado llena de cosas que me interesan.", "required": true, "options": ["Nunca", "Rara vez", "A veces", "A menudo", "Siempre"] }
   ]
 }
 

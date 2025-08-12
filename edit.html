@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sssss — editor de encuestas</title>
+    <style>
+      :root { --bg:#f7fafc; --fg:#0f172a; --muted:#475569; --accent:#2563eb; --card:#ffffff; --border:#e2e8f0; }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;background:var(--bg);color:var(--fg)}
+      header{padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter: blur(6px)}
+      .brand{font-weight:800}
+      main{max-width:1000px;margin:0 auto;padding:16px}
+      .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+      .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+      input, textarea, select{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;font-size:16px;background:#fff}
+      label{font-weight:700;display:block;margin:8px 0 6px}
+      .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+      .ghost{background:#fff;color:var(--fg)}
+      .row{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end}
+      pre{white-space:pre-wrap;background:#f1f5f9;border:1px solid var(--border);padding:12px;border-radius:12px;overflow:auto}
+      .muted{color:var(--muted);font-size:12px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">sssss — editor</div>
+      <div><a href="./">Inicio</a></div>
+    </header>
+    <main class="grid">
+      <section class="card">
+        <h2 style="margin:0 0 8px 0">Nueva encuesta</h2>
+        <label for="s_id">ID</label>
+        <input id="s_id" placeholder="ej: bienestar2" />
+        <label for="s_title">Título</label>
+        <input id="s_title" placeholder="Título visible" />
+        <label for="s_desc">Descripción</label>
+        <textarea id="s_desc" placeholder="Descripción"></textarea>
+        <div style="height:8px"></div>
+        <button class="btn" id="add_apodo">Añadir ítem 'apodo'</button>
+        <div style="height:8px"></div>
+        <div class="row">
+          <select id="preset">
+            <option value="">Añadir escala…</option>
+            <option value="SWLS">SWLS (Satisfacción con la vida)</option>
+            <option value="WHO5">WHO-5 (Bienestar)</option>
+            <option value="PHQ2">PHQ-2 (Depresión breve)</option>
+            <option value="GAD2">GAD-2 (Ansiedad breve)</option>
+            <option value="PSS4">PSS-4 (Estrés percibido)</option>
+            <option value="IPANAS_POS">I-PANAS-SF Positivo</option>
+            <option value="IPANAS_NEG">I-PANAS-SF Negativo</option>
+          </select>
+          <button class="btn ghost" id="add_preset">Agregar</button>
+        </div>
+        <div style="height:8px"></div>
+        <label>Ítems</label>
+        <div id="items"></div>
+        <div style="height:8px"></div>
+        <button class="btn" id="download_json">Descargar JSON</button>
+      </section>
+
+      <section class="card">
+        <h2 style="margin:0 0 8px 0">Vista previa JSON</h2>
+        <pre id="preview"></pre>
+        <div class="muted">Este editor es local (no guarda en el servidor). Para publicar, sube el JSON a `surveys/` y referencia en `surveys/index.json`.</div>
+      </section>
+    </main>
+
+    <script>
+      const items = [];
+      const $items = document.getElementById('items');
+      const $preview = document.getElementById('preview');
+
+      const LIKERT_5 = ["Totalmente en desacuerdo","En desacuerdo","Ni de acuerdo ni en desacuerdo","De acuerdo","Totalmente de acuerdo"];
+      const FREQ_5 = ["Nunca","Rara vez","A veces","A menudo","Siempre"];
+      const FREQ_4 = ["Nada","Varios días","Más de la mitad de los días","Casi todos los días"];
+      const INTENS_5 = ["Nada","Un poco","Moderado","Bastante","Mucho"];
+
+      const PRESETS = {
+        SWLS: [
+          { id: 'swls_1', type: 'likert', scale: 'SWLS', prompt: 'En la mayoría de los aspectos, mi vida se acerca a mi ideal.', options: LIKERT_5, required: true },
+          { id: 'swls_2', type: 'likert', scale: 'SWLS', prompt: 'Las condiciones de mi vida son excelentes.', options: LIKERT_5, required: true },
+          { id: 'swls_3', type: 'likert', scale: 'SWLS', prompt: 'Estoy satisfecho/a con mi vida.', options: LIKERT_5, required: true },
+          { id: 'swls_4', type: 'likert', scale: 'SWLS', prompt: 'Hasta ahora he conseguido las cosas importantes que quiero en la vida.', options: LIKERT_5, required: true },
+          { id: 'swls_5', type: 'likert', scale: 'SWLS', prompt: 'Si pudiera vivir mi vida otra vez, casi no cambiaría nada.', options: LIKERT_5, required: true }
+        ],
+        WHO5: [
+          { id: 'who5_1', type: 'likert', scale: 'WHO-5', prompt: 'Me he sentido alegre y de buen ánimo.', options: FREQ_5, required: true },
+          { id: 'who5_2', type: 'likert', scale: 'WHO-5', prompt: 'Me he sentido calmado/a y relajado/a.', options: FREQ_5, required: true },
+          { id: 'who5_3', type: 'likert', scale: 'WHO-5', prompt: 'Me he sentido activo/a y con energía.', options: FREQ_5, required: true },
+          { id: 'who5_4', type: 'likert', scale: 'WHO-5', prompt: 'Me he despertado fresco/a y descansado/a.', options: FREQ_5, required: true },
+          { id: 'who5_5', type: 'likert', scale: 'WHO-5', prompt: 'Mi vida diaria ha estado llena de cosas que me interesan.', options: FREQ_5, required: true }
+        ],
+        PHQ2: [
+          { id: 'phq2_1', type: 'likert', scale: 'PHQ-2', prompt: 'Poco interés o placer en hacer cosas.', options: FREQ_4, required: true },
+          { id: 'phq2_2', type: 'likert', scale: 'PHQ-2', prompt: 'Sentirse decaído/a, deprimido/a o sin esperanza.', options: FREQ_4, required: true }
+        ],
+        GAD2: [
+          { id: 'gad2_1', type: 'likert', scale: 'GAD-2', prompt: 'Sentirse nervioso/a, ansioso/a o al borde.', options: FREQ_4, required: true },
+          { id: 'gad2_2', type: 'likert', scale: 'GAD-2', prompt: 'No poder parar o controlar la preocupación.', options: FREQ_4, required: true }
+        ],
+        PSS4: [
+          { id: 'pss4_1', type: 'likert', scale: 'PSS-4', prompt: 'En el último mes, ¿con qué frecuencia te has sentido incapaz de controlar las cosas importantes en tu vida?', options: FREQ_5, required: true },
+          { id: 'pss4_2', type: 'likert', scale: 'PSS-4', prompt: 'En el último mes, ¿con qué frecuencia te has sentido confiado/a en tu capacidad para manejar tus problemas personales?', options: FREQ_5, required: true },
+          { id: 'pss4_3', type: 'likert', scale: 'PSS-4', prompt: 'En el último mes, ¿con qué frecuencia has sentido que las cosas te iban bien?', options: FREQ_5, required: true },
+          { id: 'pss4_4', type: 'likert', scale: 'PSS-4', prompt: 'En el último mes, ¿con qué frecuencia sentiste que las dificultades se acumulaban tanto que no podías superarlas?', options: FREQ_5, required: true }
+        ],
+        IPANAS_POS: [
+          { id: 'panas_pos1', type: 'likert', scale: 'I-PANAS-SF (Positivo)', prompt: 'Activo/a', options: INTENS_5, required: true },
+          { id: 'panas_pos2', type: 'likert', scale: 'I-PANAS-SF (Positivo)', prompt: 'Inspirado/a', options: INTENS_5, required: true },
+          { id: 'panas_pos3', type: 'likert', scale: 'I-PANAS-SF (Positivo)', prompt: 'Atento/a', options: INTENS_5, required: true },
+          { id: 'panas_pos4', type: 'likert', scale: 'I-PANAS-SF (Positivo)', prompt: 'Entusiasmado/a', options: INTENS_5, required: true },
+          { id: 'panas_pos5', type: 'likert', scale: 'I-PANAS-SF (Positivo)', prompt: 'Decidido/a', options: INTENS_5, required: true }
+        ],
+        IPANAS_NEG: [
+          { id: 'panas_neg1', type: 'likert', scale: 'I-PANAS-SF (Negativo)', prompt: 'Nervioso/a', options: INTENS_5, required: true },
+          { id: 'panas_neg2', type: 'likert', scale: 'I-PANAS-SF (Negativo)', prompt: 'Atemorizado/a', options: INTENS_5, required: true },
+          { id: 'panas_neg3', type: 'likert', scale: 'I-PANAS-SF (Negativo)', prompt: 'Culpable', options: INTENS_5, required: true },
+          { id: 'panas_neg4', type: 'likert', scale: 'I-PANAS-SF (Negativo)', prompt: 'Hostil', options: INTENS_5, required: true },
+          { id: 'panas_neg5', type: 'likert', scale: 'I-PANAS-SF (Negativo)', prompt: 'Avergonzado/a', options: INTENS_5, required: true }
+        ]
+      };
+
+      function render() {
+        const wrap = document.createElement('div');
+        items.forEach((it, idx) => {
+          const block = document.createElement('div');
+          block.style.border = '1px solid var(--border)';
+          block.style.borderRadius = '10px';
+          block.style.padding = '10px';
+          block.style.margin = '8px 0';
+          block.innerHTML = `<div style="font-weight:700">${it.id} <span class="muted">(${it.type}${it.scale?(', '+it.scale):''})</span></div><div class="muted">${it.prompt}</div>`;
+          wrap.appendChild(block);
+        });
+        $items.innerHTML = '';
+        $items.appendChild(wrap);
+
+        const survey = {
+          id: document.getElementById('s_id').value || 'new_survey',
+          title: document.getElementById('s_title').value || 'Nueva encuesta',
+          description: document.getElementById('s_desc').value || '',
+          items: items
+        };
+        $preview.textContent = JSON.stringify(survey, null, 2);
+      }
+
+      document.getElementById('add_apodo').onclick = () => {
+        items.unshift({ id: 'id_apodo', type: 'text', prompt: 'Apodo (para identificar tus respuestas en el ejercicio)', placeholder: 'Ej: apodo_unico', required: true });
+        render();
+      };
+      document.getElementById('add_preset').onclick = () => {
+        const key = document.getElementById('preset').value;
+        if (!key) return;
+        items.push(...(PRESETS[key] || []));
+        render();
+      };
+      document.getElementById('download_json').onclick = () => {
+        render();
+        const text = $preview.textContent;
+        const id = document.getElementById('s_id').value || 'new_survey';
+        const blob = new Blob([text], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = `${id}.json`; a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      };
+      ['s_id','s_title','s_desc'].forEach(id => document.getElementById(id).addEventListener('input', render));
+      render();
+    </script>
+  </body>
+  </html>
+
+

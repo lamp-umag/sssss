@@ -1,46 +1,20 @@
 {
   "id": "habits",
-  "title": "Hábitos y contexto (mixto)",
-  "description": "Algunas preguntas sobre tu día a día.",
+  "title": "Ánimo, ansiedad y estrés (PHQ-2 + GAD-2 + PSS-4)",
+  "description": "Responde pensando en las últimas 2 semanas (PSS-4: último mes). Incluye apodo al inicio.",
   "items": [
-    {
-      "id": "hb_study_hours",
-      "type": "number",
-      "prompt": "¿Cuántas horas dedicas al estudio en un día típico?",
-      "min": 0,
-      "max": 24,
-      "required": true
-    },
-    {
-      "id": "hb_commute",
-      "type": "single_choice",
-      "prompt": "Medio de transporte principal",
-      "options": ["A pie", "Bicicleta", "Transporte público", "Auto", "Otro"],
-      "required": true
-    },
-    {
-      "id": "hb_food",
-      "type": "multi_choice",
-      "prompt": "¿Qué sueles consumir a media mañana? (puedes elegir varias)",
-      "options": ["Fruta", "Yogur", "Pan", "Bebida azucarada", "Café/Té", "Nada"],
-      "required": false
-    },
-    {
-      "id": "hb_screen",
-      "type": "likert",
-      "prompt": "Siento que paso demasiado tiempo en pantallas",
-      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"],
-      "required": false
-    },
-    {
-      "id": "hb_note",
-      "type": "text",
-      "prompt": "Comentario opcional",
-      "placeholder": "Algo que quieras añadir...",
-      "long": true,
-      "maxLength": 600,
-      "required": false
-    }
+    { "id": "id_apodo", "type": "text", "prompt": "Apodo (para identificar tus respuestas en el ejercicio)", "placeholder": "Ej: zorro_verde", "required": true },
+
+    { "id": "phq2_1", "type": "likert", "scale": "PHQ-2", "prompt": "Poco interés o placer en hacer cosas.", "required": true, "options": ["Nada", "Varios días", "Más de la mitad de los días", "Casi todos los días"] },
+    { "id": "phq2_2", "type": "likert", "scale": "PHQ-2", "prompt": "Sentirse decaído/a, deprimido/a o sin esperanza.", "required": true, "options": ["Nada", "Varios días", "Más de la mitad de los días", "Casi todos los días"] },
+
+    { "id": "gad2_1", "type": "likert", "scale": "GAD-2", "prompt": "Sentirse nervioso/a, ansioso/a o al borde.", "required": true, "options": ["Nada", "Varios días", "Más de la mitad de los días", "Casi todos los días"] },
+    { "id": "gad2_2", "type": "likert", "scale": "GAD-2", "prompt": "No poder parar o controlar la preocupación.", "required": true, "options": ["Nada", "Varios días", "Más de la mitad de los días", "Casi todos los días"] },
+
+    { "id": "pss4_1", "type": "likert", "scale": "PSS-4", "prompt": "En el último mes, ¿con qué frecuencia te has sentido incapaz de controlar las cosas importantes en tu vida?", "required": true, "options": ["Nunca", "Casi nunca", "A veces", "A menudo", "Muy a menudo"] },
+    { "id": "pss4_2", "type": "likert", "scale": "PSS-4", "prompt": "En el último mes, ¿con qué frecuencia te has sentido confiado/a en tu capacidad para manejar tus problemas personales?", "required": true, "options": ["Nunca", "Casi nunca", "A veces", "A menudo", "Muy a menudo"] },
+    { "id": "pss4_3", "type": "likert", "scale": "PSS-4", "prompt": "En el último mes, ¿con qué frecuencia has sentido que las cosas te iban bien?", "required": true, "options": ["Nunca", "Casi nunca", "A veces", "A menudo", "Muy a menudo"] },
+    { "id": "pss4_4", "type": "likert", "scale": "PSS-4", "prompt": "En el último mes, ¿con qué frecuencia sentiste que las dificultades se acumulaban tanto que no podías superarlas?", "required": true, "options": ["Nunca", "Casi nunca", "A veces", "A menudo", "Muy a menudo"] }
   ]
 }
 

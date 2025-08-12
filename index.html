@@ -7,15 +7,15 @@
     <meta name="description" content="Stupidly Simple Short Sample Survey" />
     <style>
       :root {
-        --bg: #0d1117;
-        --fg: #e6edf3;
-        --muted: #9da6b2;
-        --accent: #7aa2f7;
-        --card: #161b22;
-        --border: #30363d;
-        --ok: #22c55e;
-        --warn: #f59e0b;
-        --error: #ef4444;
+        --bg: #f7fafc;
+        --fg: #0f172a;
+        --muted: #475569;
+        --accent: #2563eb;
+        --card: #ffffff;
+        --border: #e2e8f0;
+        --ok: #16a34a;
+        --warn: #d97706;
+        --error: #dc2626;
       }
       * { box-sizing: border-box; }
       html, body { height: 100%; }
@@ -34,7 +34,7 @@
         justify-content: space-between;
         position: sticky;
         top: 0;
-        background: rgba(13,17,23,0.9);
+        background: rgba(255,255,255,0.9);
         backdrop-filter: saturate(180%) blur(8px);
         border-bottom: 1px solid var(--border);
         z-index: 10;
@@ -51,6 +51,7 @@
         border: 1px solid var(--border);
         border-radius: 14px;
         padding: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.04);
       }
       .list { display: grid; gap: 12px; }
       .survey-item {
@@ -59,13 +60,14 @@
         justify-content: space-between;
         padding: 16px;
         border-radius: 12px;
-        background: #0f172a33;
+        background: #ffffff;
         border: 1px solid var(--border);
+        box-shadow: 0 1px 6px rgba(0,0,0,0.04);
       }
       .survey-item button {
         font-size: 18px; font-weight: 700; padding: 12px 16px;
         border-radius: 10px; border: 1px solid var(--border);
-        background: var(--accent); color: #0b1020; cursor: pointer;
+        background: var(--accent); color: #ffffff; cursor: pointer;
       }
       .survey-item h3 { margin: 0 0 4px 0; font-size: 18px; }
       .survey-item p { margin: 0; color: var(--muted); font-size: 14px; }
@@ -74,7 +76,7 @@
       .runner { display: none; }
       .progress {
         margin: 8px 0 16px;
-        height: 10px; background: #111827; border-radius: 999px;
+        height: 10px; background: #e5e7eb; border-radius: 999px;
         border: 1px solid var(--border);
         overflow: hidden;
       }
@@ -86,17 +88,17 @@
       .opt {
         display: block; width: 100%; text-align: left; cursor: pointer;
         padding: 16px; border-radius: 12px; border: 1px solid var(--border);
-        background: #0f172a; font-size: 18px;
+        background: #ffffff; font-size: 18px;
       }
-      .opt.selected { outline: 2px solid var(--accent); background: #0b1220; }
+      .opt.selected { outline: 2px solid var(--accent); background: #eff6ff; }
       .controls { display: flex; gap: 10px; margin-top: 20px; }
       .btn { flex: 1; padding: 14px 16px; font-size: 18px; font-weight: 700; border-radius: 12px; cursor: pointer; border: 1px solid var(--border); }
-      .btn.primary { background: var(--accent); color: #0b1020; }
-      .btn.secondary { background: #0f172a; color: var(--fg); }
+      .btn.primary { background: var(--accent); color: #ffffff; }
+      .btn.secondary { background: #ffffff; color: var(--fg); }
       .btn:disabled { opacity: .5; cursor: not-allowed; }
       input[type="number"], input[type="text"], textarea {
         width: 100%; padding: 14px; font-size: 18px; border-radius: 12px;
-        background: #0f172a; border: 1px solid var(--border); color: var(--fg);
+        background: #ffffff; border: 1px solid var(--border); color: var(--fg);
       }
       textarea { min-height: 120px; resize: vertical; }
       .tiny { font-size: 12px; color: var(--muted); }
@@ -255,14 +257,14 @@
 
         // Render controls depending on type
         if (item.type === 'likert' || item.type === 'single_choice') {
-          const selected = answers[item.id] ?? null;
-          item.options.forEach(opt => {
+          const options = normalizeOptions(item);
+          const selectedCode = answers[item.id] ?? null;
+          options.forEach(opt => {
             const el = document.createElement('button');
-            el.className = 'opt' + (selected === opt ? ' selected' : '');
-            el.textContent = opt;
+            el.className = 'opt' + (selectedCode === opt.code ? ' selected' : '');
+            el.textContent = opt.label;
             el.onclick = () => {
-              answers[item.id] = opt;
-              // quick highlight then next
+              answers[item.id] = opt.code;
               el.classList.add('selected');
               setTimeout(goNext, 120);
             };
@@ -276,14 +278,15 @@
           next.onclick = goNext;
           $ctrls.append(back, next);
         } else if (item.type === 'multi_choice') {
+          const options = normalizeOptions(item);
           const prev = Array.isArray(answers[item.id]) ? new Set(answers[item.id]) : new Set();
-          item.options.forEach(opt => {
+          options.forEach(opt => {
             const el = document.createElement('button');
-            const isSel = prev.has(opt);
+            const isSel = prev.has(opt.code);
             el.className = 'opt' + (isSel ? ' selected' : '');
-            el.textContent = opt;
+            el.textContent = opt.label;
             el.onclick = () => {
-              if (prev.has(opt)) prev.delete(opt); else prev.add(opt);
+              if (prev.has(opt.code)) prev.delete(opt.code); else prev.add(opt.code);
               el.classList.toggle('selected');
             };
             $opts.appendChild(el);
@@ -347,6 +350,17 @@
         b.className = `btn ${kind}`;
         b.textContent = label;
         return b;
+      }
+
+      function normalizeOptions(item) {
+        // Accept ["A", "B"] or [{label, code}] and return [{label, code}]
+        if (!Array.isArray(item.options)) return [];
+        return item.options.map((opt, idx) => {
+          if (typeof opt === 'string') return { label: opt, code: idx + 1 };
+          const label = opt.label ?? String(opt.code ?? opt.value ?? opt);
+          const code = opt.code ?? opt.value ?? (idx + 1);
+          return { label, code };
+        });
       }
 
       async function submitResponses() {
