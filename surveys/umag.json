@@ -601,15 +601,6 @@
       "maxLength": 200
     },
     {
-      "id": "section_personality",
-      "type": "text",
-      "prompt": "SECCIÓN 6: FORMAS DE SER\n\nLas siguientes afirmaciones describen diferentes aspectos de la personalidad. Por favor, indica qué tan bien te describe cada una. No hay respuestas correctas o incorrectas.",
-      "required": false,
-      "long": true,
-      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
-      "maxLength": 1
-    },
-    {
       "id": "section_wellbeing",
       "type": "text",
       "prompt": "SECCIÓN 7: BIENESTAR Y ESTADO DE ÁNIMO\n\nLas siguientes preguntas se refieren a tu satisfacción con la vida y estado de ánimo. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",

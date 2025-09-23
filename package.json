@@ -1,0 +1,25 @@
+{
+  "name": "sssf",
+  "version": "1.0.0",
+  "description": "Sitio estático minimalista (mobile-first) para encuestas breves y respuestas anónimas en Firebase Firestore.",
+  "main": "clear_responses.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lamp-umag/sssss.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/lamp-umag/sssss/issues"
+  },
+  "homepage": "https://github.com/lamp-umag/sssss#readme",
+  "dependencies": {
+    "firebase": "^12.3.0",
+    "firebase-admin": "^13.5.0"
+  }
+}
