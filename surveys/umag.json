@@ -754,14 +754,14 @@
     {
       "id": "religious_orientation",
       "type": "text",
-      "prompt": "¿Qué palabra describe mejor tu perspectiva frente a temas religiosos?",
+      "prompt": "¿Cuál es tu religión u orientación religiosa? o ¿qué concepto o grupo describe mejor tu perspectiva frente a temas religiosos?",
       "required": false,
       "maxLength": 100
     },
     {
       "id": "political_orientation",
       "type": "text",
-      "prompt": "¿Qué figura o grupo político o humano representa mejor tu postura frente a temas políticos?",
+      "prompt": "¿Cuál es tu orientación política? o ¿qué candidato o persona o grupo político o humano representa mejor tu postura frente a temas políticos?",
       "required": false,
       "maxLength": 200
     },

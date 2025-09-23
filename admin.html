@@ -20,6 +20,7 @@
       a{color:var(--accent);text-decoration:none}
       .badge{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
       code{background:#f1f5f9;border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+      .warning{background:#fef3c7;border:1px solid #f59e0b;color:#92400e;padding:12px;border-radius:8px;margin:16px 0}
     </style>
   </head>
   <body>
@@ -27,26 +28,24 @@
       <div class="brand">sssss — admin</div>
       <div>
         <a href="./">Inicio</a> | 
-        <a href="seguimiento.html">Seguimiento</a> | 
-        <span id="userInfo" style="display:none;">
-          <span id="userEmail"></span> | 
-          <button class="btn ghost" onclick="signOutUser()" style="padding:4px 8px;font-size:12px;">Cerrar Sesión</button>
-        </span>
+        <a href="seguimiento.html">Seguimiento</a>
       </div>
     </header>
     <main>
+      <div class="warning">
+        <strong>⚠️ Modo Desarrollo:</strong> El panel de administración está funcionando sin autenticación por ahora. 
+        Para habilitar la autenticación de Google, configura Firebase Auth en la consola de Firebase.
+      </div>
+      
       <section class="card">
         <h2 style="margin:0 0 8px 0">Exportar respuestas</h2>
-        <div class="muted" id="authStatus">Verificando acceso...</div>
+        <div class="muted" id="authStatus">Cargando datos...</div>
         <div id="list" class="grid" style="margin-top:12px"></div>
       </section>
-
-      
     </main>
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-      import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
       import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -60,273 +59,171 @@
       };
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
-      const auth = getAuth(app);
-      const provider = new GoogleAuthProvider();
 
       const $list = document.getElementById('list');
-      let currentUser = null;
 
-      // Allowed emails
-      const allowedEmails = ['hermanelgueta@gmail.com', 'herman.elgueta@umag.cl'];
+      // Load survey data immediately (no auth required for now)
+      loadSurveyData();
 
-      function showLoginScreen() {
-        $list.innerHTML = `
-          <div style="text-align: center; padding: 40px;">
-            <h3>Acceso Requerido</h3>
-            <p>Debes iniciar sesión con tu cuenta de Google para acceder al panel de administración.</p>
-            <button class="btn" onclick="signIn()">🔐 Iniciar Sesión con Google</button>
-          </div>
-        `;
-      }
-
-      function showUnauthorizedScreen() {
-        $list.innerHTML = `
-          <div style="text-align: center; padding: 40px; color: var(--error);">
-            <h3>Acceso Denegado</h3>
-            <p>Tu cuenta no tiene permisos para acceder a este panel.</p>
-            <p>Email: ${currentUser?.email || 'No disponible'}</p>
-            <button class="btn ghost" onclick="signOutUser()">Cerrar Sesión</button>
-          </div>
-        `;
-      }
-
-      async function signIn() {
+      async function loadSurveyData() {
         try {
-          const result = await signInWithPopup(auth, provider);
-          currentUser = result.user;
+          document.getElementById('authStatus').textContent = 'Cargando datos...';
           
-          if (allowedEmails.includes(currentUser.email)) {
-            document.getElementById('authStatus').textContent = 'Acceso autorizado';
-            document.getElementById('userInfo').style.display = 'inline';
-            document.getElementById('userEmail').textContent = currentUser.email;
-            loadSurveyData();
-          } else {
-            showUnauthorizedScreen();
-          }
-        } catch (error) {
-          console.error('Error signing in:', error);
-          alert('Error al iniciar sesión. Intenta de nuevo.');
-        }
-      }
-
-      async function signOutUser() {
-        try {
-          await signOut(auth);
-          currentUser = null;
-          document.getElementById('userInfo').style.display = 'none';
-          document.getElementById('authStatus').textContent = 'Sesión cerrada';
-          showLoginScreen();
-        } catch (error) {
-          console.error('Error signing out:', error);
-        }
-      }
-
-      function loadSurveyData() {
-        init();
-      }
-
-      // Make functions global for onclick handlers
-      window.signIn = signIn;
-      window.signOutUser = signOutUser;
-
-      async function loadSurveyIndex() {
-        const res = await fetch('surveys/index.json?_=' + Date.now());
-        const data = await res.json();
-        return data.surveys || [];
-      }
-
-      function toCsv(rows) {
-        if (!rows.length) return '';
-        const headers = Object.keys(rows[0]);
-        const esc = (v) => {
-          if (v == null) return '';
-          const s = typeof v === 'string' ? v : JSON.stringify(v);
-          const t = s.replaceAll('"', '""');
-          return '"' + t + '"';
-        };
-        const lines = [headers.join(',')];
-        for (const r of rows) {
-          lines.push(headers.map(h => esc(r[h])).join(','));
-        }
-        return lines.join('\n');
-      }
-
-      function download(filename, text) {
-        const blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = filename; a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      }
-
-      function normalizeOptions(item) {
-        if (!Array.isArray(item.options)) return [];
-        return item.options.map((opt, idx) => {
-          if (typeof opt === 'string') return { label: opt, code: idx + 1 };
-          const label = opt.label ?? String(opt.code ?? opt.value ?? opt);
-          const code = opt.code ?? opt.value ?? (idx + 1);
-          return { label, code };
-        });
-      }
-
-      function buildCodebook(survey) {
-        return {
-          id: survey.id,
-          title: survey.title,
-          items: survey.items.map(it => ({
-            id: it.id,
-            type: it.type,
-            scale: it.scale || null,
-            options: Array.isArray(it.options) ? normalizeOptions(it) : null
-          }))
-        };
-      }
-
-      async function exportCsv(meta, exportType = 'simplified') {
-        const res = await fetch(`surveys/${meta.file}?_=${Date.now()}`);
-        const survey = await res.json();
-        
-        // Base columns
-        let cols = ['entryId', 'createdAt'];
-        
-        if (exportType === 'complete') {
-          // Complete export with all data
-          cols.push('serverCode', 'totalTime');
-          cols.push(...survey.items.map(i => `${i.id}_time`));
-          cols.push(...survey.items.map(i => i.id));
-          // Add browser data columns
-          cols.push('browser_userAgent', 'browser_language', 'browser_platform', 
-                   'browser_screenWidth', 'browser_screenHeight', 'browser_timezone');
-        } else {
-          // Simplified export - only survey responses
-          cols.push(...survey.items.map(i => i.id));
-        }
-        
-        const qRef = query(collection(db, `responses/${meta.id}/entries`), orderBy('createdAt'));
-        const snap = await getDocs(qRef);
-        const rows = [];
-        const seenIds = new Set(); // Prevent duplicates
-        
-        snap.forEach(doc => {
-          const d = doc.data();
+          const qRef = query(collection(db, `responses/umag/entries`), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
           
-          // Check for duplicates based on participant_id and serverCode
-          const participantId = d.answers?.participant_id;
-          const serverCode = d.serverCode;
-          const duplicateKey = `${participantId}_${serverCode}`;
-          
-          if (seenIds.has(duplicateKey)) {
-            console.log(`Skipping duplicate: ${duplicateKey}`);
+          if (snap.empty) {
+            $list.innerHTML = '<div class="muted">No hay respuestas disponibles.</div>';
+            document.getElementById('authStatus').textContent = 'Sin respuestas';
             return;
           }
-          seenIds.add(duplicateKey);
+
+          const surveys = {};
+          snap.forEach(doc => {
+            const data = doc.data();
+            const surveyId = data.surveyId || 'unknown';
+            if (!surveys[surveyId]) {
+              surveys[surveyId] = { count: 0, latest: null };
+            }
+            surveys[surveyId].count++;
+            if (!surveys[surveyId].latest || data.createdAt > surveys[surveyId].latest) {
+              surveys[surveyId].latest = data.createdAt;
+            }
+          });
+
+          $list.innerHTML = Object.entries(surveys).map(([id, info]) => `
+            <div class="row">
+              <div>
+                <strong>${id}</strong>
+                <div class="muted">${info.count} respuestas</div>
+              </div>
+              <div>
+                <button class="btn" onclick="exportCsv('${id}', 'simplified')">CSV Simplificado</button>
+                <button class="btn ghost" onclick="exportCsv('${id}', 'complete')">CSV Completo</button>
+              </div>
+            </div>
+          `).join('');
+
+          document.getElementById('authStatus').textContent = `Cargados ${Object.keys(surveys).length} cuestionarios`;
+        } catch (error) {
+          console.error('Error loading data:', error);
+          $list.innerHTML = '<div class="muted">Error al cargar los datos.</div>';
+          document.getElementById('authStatus').textContent = 'Error al cargar datos';
+        }
+      }
+
+      async function exportCsv(surveyId, exportType = 'simplified') {
+        try {
+          const qRef = query(collection(db, `responses/${surveyId}/entries`), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
           
-          const row = Object.fromEntries(cols.map(c => [c, null]));
-          row.entryId = doc.id;
-          try { row.createdAt = d.createdAt?.toDate?.().toISOString?.() || ''; } catch { row.createdAt = ''; }
+          if (snap.empty) {
+            alert('No hay respuestas para exportar.');
+            return;
+          }
+
+          // Define columns based on export type
+          let columns = ['entryId', 'createdAt', 'serverCode', 'participant_id'];
           
           if (exportType === 'complete') {
-            row.serverCode = d.serverCode || '';
-            row.totalTime = d.totalTime || '';
-            
-            // Add browser data
-            const browser = d.browserData || {};
-            row.browser_userAgent = browser.userAgent || '';
-            row.browser_language = browser.language || '';
-            row.browser_platform = browser.platform || '';
-            row.browser_screenWidth = browser.screenWidth || '';
-            row.browser_screenHeight = browser.screenHeight || '';
-            row.browser_timezone = browser.timezone || '';
+            columns = columns.concat([
+              'totalTime', 'itemTimes', 'browser_userAgent', 'browser_language', 
+              'browser_platform', 'browser_screenWidth', 'browser_screenHeight',
+              'browser_timezone', 'browser_timestamp', 'browser_referrer', 'browser_url'
+            ]);
           }
-          
-          const ans = d.answers || {};
-          const times = d.itemTimes || {};
-          
-          for (const it of survey.items) {
-            let v = ans[it.id];
-            if (Array.isArray(v)) v = v.join('|');
-            row[it.id] = v == null ? '' : v;
-            
-            if (exportType === 'complete') {
-              row[`${it.id}_time`] = times[it.id] || '';
+
+          // Add survey-specific columns
+          const firstDoc = snap.docs[0].data();
+          if (firstDoc.answers) {
+            Object.keys(firstDoc.answers).forEach(key => {
+              if (!columns.includes(key)) {
+                columns.push(key);
+              }
+            });
+          }
+
+          const rows = [];
+          const seenIds = new Set(); // Prevent duplicates
+
+          snap.forEach(doc => {
+            const d = doc.data();
+            const participantId = d.answers?.participant_id;
+            const serverCode = d.serverCode;
+            const duplicateKey = `${participantId}_${serverCode}`;
+
+            if (seenIds.has(duplicateKey)) {
+              console.log(`Skipping duplicate: ${duplicateKey}`);
+              return;
             }
-          }
-          rows.push(row);
-        });
-        const csv = toCsv(rows);
-        const ts = new Date().toISOString().slice(0,19).replaceAll(':','-');
-        const suffix = exportType === 'complete' ? '-completo' : '-simplificado';
-        download(`${meta.id}${suffix}-${ts}.csv`, csv || '');
-      }
+            seenIds.add(duplicateKey);
 
-      async function downloadCodebook(meta) {
-        const res = await fetch(`surveys/${meta.file}?_=${Date.now()}`);
-        const survey = await res.json();
-        const codebook = buildCodebook(survey);
-        const text = JSON.stringify(codebook, null, 2);
-        const blob = new Blob([text], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = `${meta.id}-codebook.json`; a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      }
+            const row = {};
+            columns.forEach(col => {
+              if (col === 'entryId') {
+                row[col] = doc.id;
+              } else if (col === 'createdAt') {
+                row[col] = d.createdAt ? d.createdAt.toDate().toISOString() : '';
+              } else if (col === 'serverCode') {
+                row[col] = d.serverCode || '';
+              } else if (col === 'participant_id') {
+                row[col] = d.answers?.participant_id || '';
+              } else if (col.startsWith('browser_')) {
+                const browserKey = col.replace('browser_', '');
+                row[col] = d.browserData?.[browserKey] || '';
+              } else if (col === 'totalTime') {
+                row[col] = d.totalTime || '';
+              } else if (col === 'itemTimes') {
+                row[col] = d.itemTimes ? JSON.stringify(d.itemTimes) : '';
+              } else if (d.answers && d.answers.hasOwnProperty(col)) {
+                const value = d.answers[col];
+                if (Array.isArray(value)) {
+                  row[col] = value.join('; ');
+                } else {
+                  row[col] = value || '';
+                }
+              } else {
+                row[col] = '';
+              }
+            });
+            rows.push(row);
+          });
 
-      async function downloadSurveyJson(meta) {
-        const res = await fetch(`surveys/${meta.file}?_=${Date.now()}`);
-        const survey = await res.json();
-        const text = JSON.stringify(survey, null, 2);
-        const blob = new Blob([text], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = `${meta.id}.json`; a.click();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-      }
+          // Convert to CSV
+          const csvContent = [
+            columns.join(','),
+            ...rows.map(row => 
+              columns.map(col => {
+                const value = row[col] || '';
+                // Escape quotes and wrap in quotes if contains comma, quote, or newline
+                if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                  return `"${value.replace(/"/g, '""')}"`;
+                }
+                return value;
+              }).join(',')
+            )
+          ].join('\n');
 
-      async function init() {
-        const items = await loadSurveyIndex();
-        $list.innerHTML = '';
-        items.forEach(meta => {
-          const row = document.createElement('div');
-          row.className = 'row';
-          row.innerHTML = `
-            <div>
-              <div style="font-weight:700">${meta.title}</div>
-              <div class="muted">${meta.description || ''} <span class="badge">${meta.id}</span></div>
-            </div>
-            <div>
-              <button class="btn" data-act="csv-simple">CSV Simplificado</button>
-              <button class="btn ghost" data-act="csv-complete">CSV Completo</button>
-              <button class="btn ghost" data-act="codebook">Esquema</button>
-              <button class="btn ghost" data-act="json">JSON</button>
-            </div>
-          `;
-          row.querySelector('[data-act=csv-simple]').addEventListener('click', () => exportCsv(meta, 'simplified'));
-          row.querySelector('[data-act=csv-complete]').addEventListener('click', () => exportCsv(meta, 'complete'));
-          row.querySelector('[data-act=codebook]').addEventListener('click', () => downloadCodebook(meta));
-          row.querySelector('[data-act=json]').addEventListener('click', () => downloadSurveyJson(meta));
-          $list.appendChild(row);
-        });
-      }
+          // Download
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const link = document.createElement('a');
+          const url = URL.createObjectURL(blob);
+          link.setAttribute('href', url);
+          link.setAttribute('download', `respuestas_${surveyId}_${exportType}_${new Date().toISOString().split('T')[0]}.csv`);
+          link.style.visibility = 'hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
 
-      // Auth state listener
-      onAuthStateChanged(auth, (user) => {
-        currentUser = user;
-        if (user) {
-          if (allowedEmails.includes(user.email)) {
-            document.getElementById('authStatus').textContent = 'Acceso autorizado';
-            document.getElementById('userInfo').style.display = 'inline';
-            document.getElementById('userEmail').textContent = user.email;
-            loadSurveyData();
-          } else {
-            showUnauthorizedScreen();
-          }
-        } else {
-          document.getElementById('authStatus').textContent = 'No autenticado';
-          showLoginScreen();
+          console.log(`Exported ${rows.length} responses (${exportType})`);
+        } catch (error) {
+          console.error('Error exporting CSV:', error);
+          alert('Error al exportar CSV: ' + error.message);
         }
-      });
+      }
+
+      // Make functions globally available
+      window.exportCsv = exportCsv;
     </script>
   </body>
-  </html>
-
-
+</html>
