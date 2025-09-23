@@ -6,7 +6,7 @@
     {
       "id": "intro_presentation",
       "type": "text",
-      "prompt": "Este cuestionario forma parte de un estudio colaborativo desarrollado por estudiantes de tercer año de Psicología de la Universidad de Magallanes, en el marco de la asignatura Análisis de Datos.\n\nEl propósito de este estudio es explorar experiencias, perspectivas y características de estudiantes universitarios en distintos ámbitos de la vida estudiantil y personal. Los temas incluidos son diversos porque corresponden a diferentes preguntas de investigación planteadas por distintos grupos de estudiantes.\n\nNo existen respuestas buenas o malas: lo que nos interesa es tu experiencia y tu opinión. Responder es completamente voluntario. Usted fue seleccionado/a para participar como parte de una muestra aleatoria de estudiantes de primer año de la universidad. Su colaboración es muy valiosa, ya que nos permitirá contar con una muestra representativa y comprender mejor la realidad de esta población.\n\nLas respuestas serán tratadas de manera anónima y confidencial: antes de su análisis se eliminará cualquier vínculo con tu identidad. No existen riesgos asociados a contestar este cuestionario.\n\nAnte cualquier duda o molestia, puede contactarse con el profesor responsable de la asignatura: Herman Elgueta – herman.elgueta@umag.cl\n\nSi aceptas participar, por favor continúa respondiendo las siguientes preguntas. Gracias de antemano.",
+      "prompt": "Gracias por participar en este estudio realizado por estudiantes de Psicología de la Universidad de Magallanes.\n\nEl cuestionario busca conocer experiencias y opiniones de estudiantes de primer año en distintos aspectos de la vida universitaria. Los temas son diversos porque corresponden a preguntas de investigación planteadas por diferentes grupos de trabajo dentro de la asignatura.\n\nTu participación es voluntaria y tus respuestas serán tratadas de forma anónima y respetuosa con propósitos académicos y formativos.\n\nSi aceptas participar, por favor continúa con las preguntas.\n\nAnte cualquier duda, puedes contactar al profesor responsable de la asignatura:\nHerman Elgueta - herman.elgueta@umag.cl",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
@@ -296,9 +296,9 @@
       "maxLength": 200
     },
     {
-      "id": "section_ai",
+      "id": "section_personality",
       "type": "text",
-      "prompt": "SECCIÓN 5: INTELIGENCIA ARTIFICIAL\n\nLas siguientes preguntas se refieren a tu experiencia y opinión sobre el uso de inteligencia artificial en el contexto académico. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "prompt": "SECCIÓN 5: FORMAS DE SER\n\nLas siguientes preguntas se refieren a aspectos de tu personalidad y forma de ser. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
@@ -726,7 +726,7 @@
     {
       "id": "section_sociodemographic",
       "type": "text",
-      "prompt": "SECCIÓN 8: DATOS SOCIODEMOGRÁFICOS\n\nPara finalizar, nos gustaría conocer algunos datos básicos sobre ti. Esta información nos ayudará a contextualizar mejor las respuestas del cuestionario. Todas las respuestas son completamente opcionales.",
+      "prompt": "SECCIÓN 8: DATOS SOCIODEMOGRÁFICOS Y COMPLEMENTARIOS\n\nPara finalizar, nos gustaría conocer algunos datos básicos sobre ti. Esta información nos ayudará a contextualizar mejor las respuestas del cuestionario. Todas las respuestas son completamente opcionales.",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
@@ -737,35 +737,35 @@
       "type": "single_choice",
       "prompt": "¿Con qué género te identificas?",
       "required": false,
-      "options": ["Masculino", "Femenino", "No binario", "Otro", "Prefiero no responder"]
+      "options": ["Masculino", "Femenino", "No binario", "Otro"]
     },
     {
       "id": "work_status",
       "type": "single_choice",
       "prompt": "¿Actualmente trabajas?",
       "required": false,
-      "options": ["Sí, trabajo formal con contrato", "Sí, trabajo informal u ocasional sin contrato", "No trabajo", "Prefiero no responder"]
+      "options": ["Sí, trabajo formal con contrato", "Sí, trabajo informal u ocasional sin contrato", "No trabajo"]
     },
     {
       "id": "location",
       "type": "single_choice",
       "prompt": "¿Eres de Punta Arenas o de otra localidad?",
       "required": false,
-      "options": ["Soy de Punta Arenas", "Soy de otra localidad", "Prefiero no responder"]
+      "options": ["Soy de Punta Arenas", "Soy de otra localidad"]
     },
     {
       "id": "relationship_status",
       "type": "single_choice",
       "prompt": "¿Actualmente tienes pareja?",
       "required": false,
-      "options": ["Sí, tengo pareja", "No tengo pareja", "Prefiero no responder"]
+      "options": ["Sí, tengo pareja", "No tengo pareja"]
     },
     {
       "id": "religious_orientation",
-      "type": "single_choice",
+      "type": "text",
       "prompt": "¿Qué palabra describe mejor tu perspectiva frente a temas religiosos?",
       "required": false,
-      "options": ["Muy religioso/a", "Religioso/a", "Algo religioso/a", "Poco religioso/a", "Nada religioso/a", "Agnóstico/a", "Ateo/a", "Otra", "Prefiero no responder"]
+      "maxLength": 100
     },
     {
       "id": "political_orientation",
@@ -779,7 +779,7 @@
       "type": "single_choice",
       "prompt": "¿A qué facultad o escuela pertenece tu área de estudios?",
       "required": false,
-      "options": ["Facultad de Ingeniería", "Facultad de Ciencias", "Facultad de Educación y Ciencias Sociales", "Facultad de Ciencias Económicas y Jurídicas", "Escuela de Medicina", "Otra", "Prefiero no responder"]
+      "options": ["Facultad de Ingeniería", "Facultad de Ciencias", "Facultad de Educación y Ciencias Sociales", "Facultad de Ciencias Económicas y Jurídicas", "Escuela de Medicina", "Otra"]
     }
   ]
 }
