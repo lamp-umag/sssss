@@ -303,6 +303,10 @@
           renderStep();
         };
         const goPrev = () => {
+          // Record time spent on current item when going back
+          if (itemStartTime && item) {
+            itemTimes[item.id] = Date.now() - itemStartTime;
+          }
           currentIndex = Math.max(0, currentIndex - 1);
           renderStep();
         };
@@ -325,7 +329,6 @@
           const back = button('Atrás', 'secondary');
           back.onclick = goPrev;
           const next = button('Siguiente', 'primary');
-          next.disabled = !skipAllowed && !(item.id in answers);
           next.onclick = goNext;
           $ctrls.append(back, next);
         } else if (item.type === 'multi_choice') {
@@ -541,7 +544,6 @@
           const back = button('Atrás', 'secondary');
           back.onclick = goPrev;
           const next = button('Siguiente', 'primary');
-          next.disabled = !skipAllowed && !(item.id in answers);
           next.onclick = goNext;
           $ctrls.append(back, next);
         } else if (item.type === 'phone') {
