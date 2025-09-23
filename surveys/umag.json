@@ -24,7 +24,7 @@
     {
       "id": "section_activities",
       "type": "text",
-      "prompt": "SECCIÓN 1: ACTIVIDADES\n\nA continuación te preguntaremos sobre tus actividades artísticas y deportivas. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "prompt": "SECCIÓN 1: ACTIVIDADES\n\nA continuación te preguntaremos sobre participación e interés en actividades culturales y artísticas, así como actividades deportivas. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
@@ -33,37 +33,36 @@
     {
       "id": "art_1",
       "type": "likert",
-      "prompt": "En mi tiempo libre suelo realizar actividades artísticas por mi cuenta.",
+      "prompt": "En mi tiempo libre suelo participar en actividades culturales o artísticas por mi cuenta.",
       "required": false,
       "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
     },
     {
       "id": "art_2",
       "type": "likert",
-      "prompt": "Dedico varias horas a la semana a actividades artísticas.",
+      "prompt": "Dedico varias horas a la semana a actividades culturales o artísticas.",
       "required": false,
       "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
     },
     {
       "id": "art_3",
       "type": "likert",
-      "prompt": "Debido a la carga académica he tenido que dejar de lado mis hobbies artísticos.",
+      "prompt": "Debido a la carga académica he tenido que dejar de lado mis actividades culturales o artísticas.",
       "required": false,
       "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
     },
     {
       "id": "art_4",
       "type": "likert",
-      "prompt": "Las actividades artísticas son una parte importante de mi vida diaria.",
+      "prompt": "Las actividades culturales o artísticas son una parte importante de mi vida diaria.",
       "required": false,
       "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
     },
     {
       "id": "art_activities",
       "type": "text",
-      "prompt": "¿Qué actividades artísticas realizas con mayor frecuencia?",
+      "prompt": "¿Qué actividades culturales o artísticas realizas con mayor frecuencia?",
       "required": false,
-      "placeholder": "Ej: pintura, música, escritura, teatro...",
       "maxLength": 200
     },
     {
@@ -99,7 +98,48 @@
       "type": "text",
       "prompt": "¿Qué tipo de deporte o actividad física realizas con mayor frecuencia?",
       "required": false,
-      "placeholder": "Ej: fútbol, running, gimnasio, yoga...",
+      "maxLength": 200
+    },
+    {
+      "id": "music_1",
+      "type": "likert",
+      "prompt": "Suelo escuchar música mientras estudio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_2",
+      "type": "likert",
+      "prompt": "Dedico tiempo regularmente a escuchar música como forma de distracción o relajación.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_3",
+      "type": "likert",
+      "prompt": "Dedico tiempo a descubrir o explorar nueva música de manera frecuente.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_4",
+      "type": "likert",
+      "prompt": "Escuchar música es una parte importante de mi vida diaria.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_genres",
+      "type": "text",
+      "prompt": "Menciona los tres estilos de música que más escuchas habitualmente.",
+      "required": false,
+      "maxLength": 200
+    },
+    {
+      "id": "music_artists",
+      "type": "text",
+      "prompt": "Menciona los tres artistas o grupos que más crees que escuchas en tu vida diaria.",
+      "required": false,
       "maxLength": 200
     },
     {
@@ -149,9 +189,8 @@
     {
       "id": "red_flags",
       "type": "text",
-      "prompt": "En el contexto de relaciones interpersonales, una red flag se entiende como una señal de alerta que indica la posibilidad de conductas dañinas o poco saludables (por ejemplo, control, manipulación, celos excesivos, falta de comunicación, violencia psicológica). ¿Has vivido alguna red flag en una relación de pareja o amistad? Si es así, ¿puedes mencionarla y/o describirla brevemente?",
+      "prompt": "En el contexto de relaciones interpersonales, una \"red flag\" se entiende como una señal de alerta que indica la posibilidad de conductas dañinas o poco saludables (por ejemplo, control, manipulación, celos excesivos, falta de comunicación, violencia psicológica).\n\n¿Has vivido alguna \"red flag\" en una relación de pareja o amistad? Si es así, ¿puedes mencionarla y/o describirla brevemente?",
       "required": false,
-      "placeholder": "Describe brevemente tu experiencia...",
       "maxLength": 300
     },
     {
@@ -215,7 +254,7 @@
     {
       "id": "section_gambling",
       "type": "text",
-      "prompt": "SECCIÓN 4: JUEGOS DE AZAR\n\nLas siguientes preguntas se refieren a tu participación en juegos de azar y apuestas. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "prompt": "SECCIÓN 4: JUEGOS DE AZAR\n\nEn este cuestionario, por juegos de azar entendemos aquellas actividades en que se arriesga dinero o recursos con la expectativa de ganar más, pero cuyo resultado depende principalmente del azar. Esto incluye, por ejemplo, apuestas deportivas, loterías, póker, tragamonedas, ruleta, bingo, juegos de casino online o presenciales, entre otros.\n\nLas siguientes preguntas se refieren a tu participación en juegos de azar y apuestas. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
@@ -224,7 +263,7 @@
     {
       "id": "gambling_1",
       "type": "likert",
-      "prompt": "En el último mes he jugado en juegos de azar (online o presenciales).",
+      "prompt": "En el último mes he participado reiteradamente en juegos de azar (online o presenciales).",
       "required": false,
       "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
     },
@@ -254,13 +293,12 @@
       "type": "text",
       "prompt": "¿Qué tipo de juegos de azar has practicado en el último año?",
       "required": false,
-      "placeholder": "Ej: lotería, casinos online, apuestas deportivas...",
       "maxLength": 200
     },
     {
-      "id": "section_personality",
+      "id": "section_ai",
       "type": "text",
-      "prompt": "SECCIÓN 5: FORMAS DE SER\n\nLas siguientes afirmaciones describen diferentes aspectos de la personalidad. Por favor, indica qué tan bien te describe cada una. No hay respuestas correctas o incorrectas.",
+      "prompt": "SECCIÓN 5: INTELIGENCIA ARTIFICIAL\n\nLas siguientes preguntas se refieren a tu experiencia y opinión sobre el uso de inteligencia artificial en el contexto académico. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
@@ -553,7 +591,6 @@
       "type": "text",
       "prompt": "¿Cuáles son las herramientas de inteligencia artificial que usas?",
       "required": false,
-      "placeholder": "Ej: ChatGPT, Claude, Copilot, Grammarly...",
       "maxLength": 200
     },
     {
@@ -561,8 +598,16 @@
       "type": "text",
       "prompt": "¿Cuáles son los usos que le das a la inteligencia artificial?",
       "required": false,
-      "placeholder": "Ej: redacción de ensayos, resúmenes, traducción...",
       "maxLength": 200
+    },
+    {
+      "id": "section_personality",
+      "type": "text",
+      "prompt": "SECCIÓN 6: FORMAS DE SER\n\nLas siguientes afirmaciones describen diferentes aspectos de la personalidad. Por favor, indica qué tan bien te describe cada una. No hay respuestas correctas o incorrectas.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
     },
     {
       "id": "section_wellbeing",
@@ -616,37 +661,16 @@
       "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
     },
     {
-      "id": "mood_inspired",
-      "type": "likert",
-      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido inspirado/a?",
-      "required": false,
-      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
-    },
-    {
-      "id": "mood_determined",
-      "type": "likert",
-      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido decidido/a?",
-      "required": false,
-      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
-    },
-    {
-      "id": "mood_active",
-      "type": "likert",
-      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido activo/a?",
-      "required": false,
-      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
-    },
-    {
-      "id": "mood_attentive",
-      "type": "likert",
-      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido atento/a?",
-      "required": false,
-      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
-    },
-    {
       "id": "mood_nervous",
       "type": "likert",
       "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido nervioso/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_inspired",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido inspirado/a?",
       "required": false,
       "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
     },
@@ -658,9 +682,23 @@
       "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
     },
     {
+      "id": "mood_determined",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido decidido/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
       "id": "mood_fearful",
       "type": "likert",
       "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido temeroso/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_active",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido activo/a?",
       "required": false,
       "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
     },
@@ -672,11 +710,76 @@
       "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
     },
     {
+      "id": "mood_attentive",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido atento/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
       "id": "mood_distressed",
       "type": "likert",
       "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido angustiado/a?",
       "required": false,
       "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "section_sociodemographic",
+      "type": "text",
+      "prompt": "SECCIÓN 8: DATOS SOCIODEMOGRÁFICOS\n\nPara finalizar, nos gustaría conocer algunos datos básicos sobre ti. Esta información nos ayudará a contextualizar mejor las respuestas del cuestionario. Todas las respuestas son completamente opcionales.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "gender",
+      "type": "single_choice",
+      "prompt": "¿Con qué género te identificas?",
+      "required": false,
+      "options": ["Masculino", "Femenino", "No binario", "Otro", "Prefiero no responder"]
+    },
+    {
+      "id": "work_status",
+      "type": "single_choice",
+      "prompt": "¿Actualmente trabajas?",
+      "required": false,
+      "options": ["Sí, trabajo formal con contrato", "Sí, trabajo informal u ocasional sin contrato", "No trabajo", "Prefiero no responder"]
+    },
+    {
+      "id": "location",
+      "type": "single_choice",
+      "prompt": "¿Eres de Punta Arenas o de otra localidad?",
+      "required": false,
+      "options": ["Soy de Punta Arenas", "Soy de otra localidad", "Prefiero no responder"]
+    },
+    {
+      "id": "relationship_status",
+      "type": "single_choice",
+      "prompt": "¿Actualmente tienes pareja?",
+      "required": false,
+      "options": ["Sí, tengo pareja", "No tengo pareja", "Prefiero no responder"]
+    },
+    {
+      "id": "religious_orientation",
+      "type": "single_choice",
+      "prompt": "¿Qué palabra describe mejor tu perspectiva frente a temas religiosos?",
+      "required": false,
+      "options": ["Muy religioso/a", "Religioso/a", "Algo religioso/a", "Poco religioso/a", "Nada religioso/a", "Agnóstico/a", "Ateo/a", "Otra", "Prefiero no responder"]
+    },
+    {
+      "id": "political_orientation",
+      "type": "text",
+      "prompt": "¿Qué figura o grupo político o humano representa mejor tu postura frente a temas políticos?",
+      "required": false,
+      "maxLength": 200
+    },
+    {
+      "id": "study_area",
+      "type": "single_choice",
+      "prompt": "¿A qué facultad o escuela pertenece tu área de estudios?",
+      "required": false,
+      "options": ["Facultad de Ingeniería", "Facultad de Ciencias", "Facultad de Educación y Ciencias Sociales", "Facultad de Ciencias Económicas y Jurídicas", "Escuela de Medicina", "Otra", "Prefiero no responder"]
     }
   ]
 }

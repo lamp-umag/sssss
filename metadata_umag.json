@@ -1,0 +1,627 @@
+{
+  "survey_metadata": {
+    "id": "umag",
+    "title": "Estudio colaborativo estudiantes UMAG",
+    "description": "Cuestionario sobre experiencias estudiantiles - Universidad de Magallanes",
+    "total_items": 95,
+    "sections": 7
+  },
+  "variables": {
+    "intro_presentation": {
+      "type": "informational",
+      "description": "Página de presentación con consentimiento informado",
+      "content": "Información del estudio, propósito, confidencialidad, contacto del profesor"
+    },
+    "participant_id": {
+      "type": "text",
+      "description": "Código de identificación del participante",
+      "content": "Código único proporcionado al participante para identificación anónima",
+      "required": true
+    },
+    "section_activities": {
+      "type": "informational",
+      "description": "Introducción a la sección de actividades",
+      "content": "Presentación de preguntas sobre actividades culturales/artísticas y deportivas"
+    },
+    "art_1": {
+      "type": "likert_5",
+      "description": "Participación en actividades culturales/artísticas en tiempo libre",
+      "content": "Frecuencia de participación en actividades culturales o artísticas por cuenta propia",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "art_2": {
+      "type": "likert_5",
+      "description": "Dedicación de tiempo a actividades culturales/artísticas",
+      "content": "Horas semanales dedicadas a actividades culturales o artísticas",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "art_3": {
+      "type": "likert_5",
+      "description": "Impacto académico en actividades culturales/artísticas",
+      "content": "Abandono de actividades culturales/artísticas debido a carga académica",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "art_4": {
+      "type": "likert_5",
+      "description": "Importancia de actividades culturales/artísticas en la vida diaria",
+      "content": "Relevancia de las actividades culturales/artísticas en la rutina diaria",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "art_activities": {
+      "type": "text_open",
+      "description": "Tipos de actividades culturales/artísticas realizadas",
+      "content": "Descripción abierta de las actividades culturales o artísticas más frecuentes",
+      "max_length": 200
+    },
+    "sport_1": {
+      "type": "likert_5",
+      "description": "Participación en actividades deportivas en tiempo libre",
+      "content": "Frecuencia de participación en actividad física o deportiva por cuenta propia",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "sport_2": {
+      "type": "likert_5",
+      "description": "Dedicación de tiempo a actividades deportivas",
+      "content": "Horas semanales dedicadas a práctica deportiva o ejercicio físico",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "sport_3": {
+      "type": "likert_5",
+      "description": "Impacto académico en actividades deportivas",
+      "content": "Abandono de actividades deportivas debido a carga académica",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "sport_4": {
+      "type": "likert_5",
+      "description": "Importancia de actividades deportivas en la vida diaria",
+      "content": "Relevancia de la práctica deportiva en la rutina diaria",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "sport_activities": {
+      "type": "text_open",
+      "description": "Tipos de actividades deportivas realizadas",
+      "content": "Descripción abierta de los deportes o actividades físicas más frecuentes",
+      "max_length": 200
+    },
+    "music_1": {
+      "type": "likert_5",
+      "description": "Escucha de música durante el estudio",
+      "content": "Frecuencia de escucha de música mientras estudia",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "music_2": {
+      "type": "likert_5",
+      "description": "Música como distracción o relajación",
+      "content": "Uso de música como forma de distracción o relajación",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "music_3": {
+      "type": "likert_5",
+      "description": "Exploración de nueva música",
+      "content": "Frecuencia de descubrimiento o exploración de nueva música",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "music_4": {
+      "type": "likert_5",
+      "description": "Importancia de la música en la vida diaria",
+      "content": "Relevancia de escuchar música en la rutina diaria",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "music_genres": {
+      "type": "text_open",
+      "description": "Estilos de música más escuchados",
+      "content": "Tres estilos de música que más escucha habitualmente",
+      "max_length": 200
+    },
+    "music_artists": {
+      "type": "text_open",
+      "description": "Artistas o grupos más escuchados",
+      "content": "Tres artistas o grupos que más escucha en la vida diaria",
+      "max_length": 200
+    },
+    "section_relationships": {
+      "type": "informational",
+      "description": "Introducción a la sección de relaciones interpersonales",
+      "content": "Presentación de preguntas sobre experiencias en relaciones de pareja y amistad"
+    },
+    "control_1": {
+      "type": "likert_5",
+      "description": "Experiencia de conductas de control o celos excesivos",
+      "content": "Vivencia de conductas de control o celos excesivos en relaciones cercanas",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "control_2": {
+      "type": "likert_5",
+      "description": "Experiencia de manipulación en relaciones",
+      "content": "Sensación de haber sido manipulado/a en relaciones amorosas o de amistad",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "control_3": {
+      "type": "likert_5",
+      "description": "Aceptabilidad de revisión de mensajes privados",
+      "content": "Consideración de aceptable que pareja/amistad revise mensajes o redes sociales",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "control_4": {
+      "type": "likert_5",
+      "description": "Normalización de celos frecuentes",
+      "content": "Creencia de que los celos frecuentes son normales en una relación",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "control_5": {
+      "type": "likert_5",
+      "description": "Percepción de conductas de control en otros",
+      "content": "Visión de conductas de control en relaciones de otros como señal preocupante",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "red_flags": {
+      "type": "text_open",
+      "description": "Experiencias con red flags en relaciones",
+      "content": "Descripción de red flags vividas en relaciones de pareja o amistad",
+      "max_length": 300
+    },
+    "section_university": {
+      "type": "informational",
+      "description": "Introducción a la sección de vínculos universitarios",
+      "content": "Presentación de preguntas sobre relaciones y vínculos en el contexto universitario"
+    },
+    "university_1": {
+      "type": "likert_5",
+      "description": "Formación de amistades cercanas en la universidad",
+      "content": "Desarrollo de amistades cercanas en el contexto universitario",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "university_2": {
+      "type": "likert_5",
+      "description": "Confianza con amigos universitarios",
+      "content": "Capacidad de compartir cosas personales con amigos/as de la universidad",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "university_3": {
+      "type": "likert_5",
+      "description": "Lealtad de amistades universitarias",
+      "content": "Confianza en que amistades universitarias estarían ahí a pesar de conflictos",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "university_4": {
+      "type": "likert_5",
+      "description": "Satisfacción con amistades universitarias",
+      "content": "Nivel de satisfacción con la calidad de amistades en la universidad",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "university_5": {
+      "type": "likert_5",
+      "description": "Aceptación por otros estudiantes",
+      "content": "Sensación de ser aceptado/a por otros estudiantes",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "university_6": {
+      "type": "likert_5",
+      "description": "Adaptación al ambiente universitario",
+      "content": "Sensación de encajar bien en el ambiente universitario",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "university_7": {
+      "type": "likert_5",
+      "description": "Pertenencia a la comunidad estudiantil",
+      "content": "Sensación de ser parte de la comunidad estudiantil de la institución",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "section_gambling": {
+      "type": "informational",
+      "description": "Introducción a la sección de juegos de azar",
+      "content": "Definición de juegos de azar y presentación de preguntas sobre participación"
+    },
+    "gambling_1": {
+      "type": "likert_5",
+      "description": "Participación en juegos de azar en el último mes",
+      "content": "Participación en juegos de azar (online o presenciales) en los últimos 30 días",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "gambling_2": {
+      "type": "likert_5",
+      "description": "Frecuencia de participación en juegos de azar",
+      "content": "Frecuencia general de participación en apuestas o juegos de azar",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "gambling_3": {
+      "type": "likert_5",
+      "description": "Gasto en juegos de azar en el último mes",
+      "content": "Gasto de dinero en juegos de azar en los últimos 30 días",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "gambling_4": {
+      "type": "likert_5",
+      "description": "Preocupación por consecuencias de juegos de azar",
+      "content": "Preocupación por consecuencias económicas o personales de la participación en juegos de azar",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "gambling_types": {
+      "type": "text_open",
+      "description": "Tipos de juegos de azar practicados",
+      "content": "Descripción de tipos de juegos de azar practicados en el último año",
+      "max_length": 200
+    },
+    "section_personality": {
+      "type": "informational",
+      "description": "Introducción a la sección de personalidad",
+      "content": "Presentación de afirmaciones sobre diferentes aspectos de la personalidad (Big Five)"
+    },
+    "personality_1": {
+      "type": "likert_5",
+      "description": "Extraversión - Ser el alma de las fiestas",
+      "content": "Tendencia a ser el centro de atención en eventos sociales",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_2": {
+      "type": "likert_5",
+      "description": "Amabilidad - Empatía",
+      "content": "Capacidad de empatizar con los sentimientos de otros",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_3": {
+      "type": "likert_5",
+      "description": "Responsabilidad - Cumplimiento inmediato",
+      "content": "Tendencia a cumplir responsabilidades de inmediato",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_4": {
+      "type": "likert_5",
+      "description": "Neuroticismo - Cambios de ánimo",
+      "content": "Frecuencia de cambios en el estado de ánimo",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_5": {
+      "type": "likert_5",
+      "description": "Apertura - Imaginación",
+      "content": "Nivel de imaginación y creatividad",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_6": {
+      "type": "likert_5",
+      "description": "Síndrome del impostor - Atribución a la suerte",
+      "content": "Tendencia a atribuir logros a la suerte en lugar de capacidades",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_7": {
+      "type": "likert_5",
+      "description": "Extraversión - Hablar poco",
+      "content": "Tendencia a no hablar demasiado (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_8": {
+      "type": "likert_5",
+      "description": "Amabilidad - Desinterés en problemas ajenos",
+      "content": "Falta de interés en problemas de otros (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_9": {
+      "type": "likert_5",
+      "description": "Responsabilidad - Desorden",
+      "content": "Tendencia a olvidar guardar cosas en su lugar (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_10": {
+      "type": "likert_5",
+      "description": "Neuroticismo - Relajación",
+      "content": "Tendencia a estar relajado/a la mayor parte del tiempo (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_11": {
+      "type": "likert_5",
+      "description": "Apertura - Interés en ideas abstractas",
+      "content": "Interés en ideas abstractas y conceptuales",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_12": {
+      "type": "likert_5",
+      "description": "Síndrome del impostor - Miedo a ser descubierto",
+      "content": "Preocupación por que otros descubran falta de competencia",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_13": {
+      "type": "likert_5",
+      "description": "Maquiavelismo - Ocultar verdad",
+      "content": "Tendencia a ocultar parte de la verdad para conseguir objetivos",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_14": {
+      "type": "likert_5",
+      "description": "Narcisismo - Disfrutar reconocimiento",
+      "content": "Disfrute cuando otros reconocen logros personales",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_15": {
+      "type": "likert_5",
+      "description": "Impulsividad - Actuar sin pensar",
+      "content": "Tendencia a actuar impulsivamente sin considerar consecuencias",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_16": {
+      "type": "likert_5",
+      "description": "Extraversión - Hablar con muchas personas",
+      "content": "Tendencia a hablar con muchas personas diferentes en fiestas",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_17": {
+      "type": "likert_5",
+      "description": "Amabilidad - Sentir emociones ajenas",
+      "content": "Capacidad de sentir las emociones que sienten otros",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_18": {
+      "type": "likert_5",
+      "description": "Responsabilidad - Gusto por el orden",
+      "content": "Preferencia por el orden y la organización",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_19": {
+      "type": "likert_5",
+      "description": "Neuroticismo - Enojarse fácilmente",
+      "content": "Tendencia a enojarse con facilidad",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_20": {
+      "type": "likert_5",
+      "description": "Apertura - Dificultad con ideas abstractas",
+      "content": "Dificultad para entender ideas abstractas (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_21": {
+      "type": "likert_5",
+      "description": "Síndrome del impostor - Dudar de capacidades",
+      "content": "Duda sobre capacidad para repetir éxitos importantes",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_22": {
+      "type": "likert_5",
+      "description": "Maquiavelismo - Planear para obtener ventaja",
+      "content": "Tendencia a planear cuidadosamente para obtener ventaja",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_23": {
+      "type": "likert_5",
+      "description": "Narcisismo - Cualidades destacadas",
+      "content": "Creencia de tener cualidades que destacan frente a la mayoría",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_24": {
+      "type": "likert_5",
+      "description": "Psicopatía - Decisiones que afectan a otros",
+      "content": "Facilidad para tomar decisiones que afecten negativamente a otros",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_25": {
+      "type": "likert_5",
+      "description": "Extraversión - No llamar la atención",
+      "content": "Preferencia por no llamar la atención (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_26": {
+      "type": "likert_5",
+      "description": "Amabilidad - Desinterés en otros",
+      "content": "Falta de interés real en otras personas (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_27": {
+      "type": "likert_5",
+      "description": "Responsabilidad - Desorden",
+      "content": "Tendencia a ser desordenado/a (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_28": {
+      "type": "likert_5",
+      "description": "Neuroticismo - Poca tristeza",
+      "content": "Frecuencia de sentimientos de tristeza (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_29": {
+      "type": "likert_5",
+      "description": "Apertura - Poca imaginación",
+      "content": "Nivel de imaginación (invertido)",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_30": {
+      "type": "likert_5",
+      "description": "Ansiedad - Preocupación por fracasar",
+      "content": "Preocupación por fracasar en proyectos o exámenes",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_31": {
+      "type": "likert_5",
+      "description": "Maquiavelismo - Utilidad de persuadir",
+      "content": "Consideración de la persuasión como útil para obtener beneficios",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_32": {
+      "type": "likert_5",
+      "description": "Narcisismo - Centro de atención social",
+      "content": "Gusto por estar en el centro de la atención social",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "personality_33": {
+      "type": "likert_5",
+      "description": "Psicopatía - Romper reglas",
+      "content": "Poca preocupación por romper reglas para alcanzar metas",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "section_ai": {
+      "type": "informational",
+      "description": "Introducción a la sección de inteligencia artificial",
+      "content": "Presentación de preguntas sobre actitudes y uso de IA en contexto académico"
+    },
+    "ai_1": {
+      "type": "likert_5",
+      "description": "IA mejora calidad del aprendizaje universitario",
+      "content": "Creencia de que el uso de IA puede mejorar la calidad del aprendizaje universitario",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "ai_2": {
+      "type": "likert_5",
+      "description": "Confianza en docentes que usan IA",
+      "content": "Confianza en que docentes utilicen herramientas de IA en el aula",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "ai_3": {
+      "type": "likert_5",
+      "description": "IA complementa trabajo de estudiantes",
+      "content": "Creencia de que la IA puede complementar positivamente el trabajo de estudiantes",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "ai_4": {
+      "type": "likert_5",
+      "description": "Uso de IA para apoyar estudios",
+      "content": "Experiencia de haber utilizado herramientas de IA para apoyar estudios",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "ai_5": {
+      "type": "likert_5",
+      "description": "IA integrada en hábitos de estudio",
+      "content": "Integración de IA como parte de hábitos de estudio o preparación académica",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "ai_6": {
+      "type": "likert_5",
+      "description": "Uso frecuente de IA en último semestre",
+      "content": "Frecuencia de recurrir a IA para tareas o actividades académicas en último semestre",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "ai_tools": {
+      "type": "text_open",
+      "description": "Herramientas de IA utilizadas",
+      "content": "Descripción de herramientas de inteligencia artificial que utiliza",
+      "max_length": 200
+    },
+    "ai_uses": {
+      "type": "text_open",
+      "description": "Usos de IA",
+      "content": "Descripción de los usos que le da a la inteligencia artificial",
+      "max_length": 200
+    },
+    "section_wellbeing": {
+      "type": "informational",
+      "description": "Introducción a la sección de bienestar y estado de ánimo",
+      "content": "Presentación de preguntas sobre satisfacción con la vida y estado de ánimo (SWLS + PANAS)"
+    },
+    "wellbeing_1": {
+      "type": "likert_5",
+      "description": "SWLS - Vida se acerca al ideal",
+      "content": "Grado en que la vida se acerca al ideal personal",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "wellbeing_2": {
+      "type": "likert_5",
+      "description": "SWLS - Condiciones de vida excelentes",
+      "content": "Evaluación de las condiciones de vida como excelentes",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "wellbeing_3": {
+      "type": "likert_5",
+      "description": "SWLS - Satisfacción con la vida",
+      "content": "Nivel general de satisfacción con la vida",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "wellbeing_4": {
+      "type": "likert_5",
+      "description": "SWLS - Conseguir cosas importantes",
+      "content": "Grado de consecución de cosas importantes en la vida",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "wellbeing_5": {
+      "type": "likert_5",
+      "description": "SWLS - No cambiaría nada",
+      "content": "Disposición a cambiar cosas si pudiera vivir la vida de nuevo",
+      "scale": "Totalmente en desacuerdo - Totalmente de acuerdo"
+    },
+    "mood_enthusiastic": {
+      "type": "likert_5",
+      "description": "PANAS - Entusiasmo",
+      "content": "Grado de entusiasmo durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_nervous": {
+      "type": "likert_5",
+      "description": "PANAS - Nerviosismo",
+      "content": "Grado de nerviosismo durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_inspired": {
+      "type": "likert_5",
+      "description": "PANAS - Inspiración",
+      "content": "Grado de inspiración durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_restless": {
+      "type": "likert_5",
+      "description": "PANAS - Inquietud",
+      "content": "Grado de inquietud durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_determined": {
+      "type": "likert_5",
+      "description": "PANAS - Determinación",
+      "content": "Grado de determinación durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_fearful": {
+      "type": "likert_5",
+      "description": "PANAS - Temor",
+      "content": "Grado de temor durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_active": {
+      "type": "likert_5",
+      "description": "PANAS - Actividad",
+      "content": "Grado de actividad durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_ashamed": {
+      "type": "likert_5",
+      "description": "PANAS - Vergüenza",
+      "content": "Grado de vergüenza durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_attentive": {
+      "type": "likert_5",
+      "description": "PANAS - Atención",
+      "content": "Grado de atención durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    },
+    "mood_distressed": {
+      "type": "likert_5",
+      "description": "PANAS - Angustia",
+      "content": "Grado de angustia durante las últimas semanas",
+      "scale": "Nada o muy poco - Extremadamente"
+    }
+  },
+  "scales": {
+    "likert_5_agreement": {
+      "description": "Escala de acuerdo de 5 puntos",
+      "values": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"],
+      "coding": [1, 2, 3, 4, 5]
+    },
+    "likert_5_frequency": {
+      "description": "Escala de frecuencia de 5 puntos",
+      "values": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"],
+      "coding": [1, 2, 3, 4, 5]
+    }
+  },
+  "constructs": {
+    "big_five": {
+      "extraversion": ["personality_1", "personality_7", "personality_16", "personality_25"],
+      "agreeableness": ["personality_2", "personality_8", "personality_17", "personality_26"],
+      "conscientiousness": ["personality_3", "personality_9", "personality_18", "personality_27"],
+      "neuroticism": ["personality_4", "personality_10", "personality_19", "personality_28"],
+      "openness": ["personality_5", "personality_11", "personality_20", "personality_29"]
+    },
+    "dark_triad": {
+      "narcissism": ["personality_14", "personality_23", "personality_32"],
+      "machiavellianism": ["personality_13", "personality_22", "personality_31"],
+      "psychopathy": ["personality_24", "personality_33"]
+    },
+    "impostor_syndrome": ["personality_6", "personality_12", "personality_21"],
+    "swls": ["wellbeing_1", "wellbeing_2", "wellbeing_3", "wellbeing_4", "wellbeing_5"],
+    "panas_positive": ["mood_enthusiastic", "mood_inspired", "mood_determined", "mood_active", "mood_attentive"],
+    "panas_negative": ["mood_nervous", "mood_restless", "mood_fearful", "mood_ashamed", "mood_distressed"]
+  }
+}

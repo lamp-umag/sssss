@@ -25,12 +25,19 @@
   <body>
     <header>
       <div class="brand">sssss — admin</div>
-      <div><a href="./">Inicio</a></div>
+      <div>
+        <a href="./">Inicio</a> | 
+        <a href="seguimiento.html">Seguimiento</a> | 
+        <span id="userInfo" style="display:none;">
+          <span id="userEmail"></span> | 
+          <button class="btn ghost" onclick="signOutUser()" style="padding:4px 8px;font-size:12px;">Cerrar Sesión</button>
+        </span>
+      </div>
     </header>
     <main>
       <section class="card">
         <h2 style="margin:0 0 8px 0">Exportar respuestas</h2>
-        <div class="muted">Sin autenticación por ahora. Cualquiera con este enlace puede descargar.</div>
+        <div class="muted" id="authStatus">Verificando acceso...</div>
         <div id="list" class="grid" style="margin-top:12px"></div>
       </section>
 
@@ -39,6 +46,7 @@
 
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+      import { getAuth, signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
       import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
       const firebaseConfig = {
@@ -52,8 +60,74 @@
       };
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
 
       const $list = document.getElementById('list');
+      let currentUser = null;
+
+      // Allowed emails
+      const allowedEmails = ['hermanelgueta@gmail.com', 'herman.elgueta@umag.cl'];
+
+      function showLoginScreen() {
+        $list.innerHTML = `
+          <div style="text-align: center; padding: 40px;">
+            <h3>Acceso Requerido</h3>
+            <p>Debes iniciar sesión con tu cuenta de Google para acceder al panel de administración.</p>
+            <button class="btn" onclick="signIn()">🔐 Iniciar Sesión con Google</button>
+          </div>
+        `;
+      }
+
+      function showUnauthorizedScreen() {
+        $list.innerHTML = `
+          <div style="text-align: center; padding: 40px; color: var(--error);">
+            <h3>Acceso Denegado</h3>
+            <p>Tu cuenta no tiene permisos para acceder a este panel.</p>
+            <p>Email: ${currentUser?.email || 'No disponible'}</p>
+            <button class="btn ghost" onclick="signOutUser()">Cerrar Sesión</button>
+          </div>
+        `;
+      }
+
+      async function signIn() {
+        try {
+          const result = await signInWithPopup(auth, provider);
+          currentUser = result.user;
+          
+          if (allowedEmails.includes(currentUser.email)) {
+            document.getElementById('authStatus').textContent = 'Acceso autorizado';
+            document.getElementById('userInfo').style.display = 'inline';
+            document.getElementById('userEmail').textContent = currentUser.email;
+            loadSurveyData();
+          } else {
+            showUnauthorizedScreen();
+          }
+        } catch (error) {
+          console.error('Error signing in:', error);
+          alert('Error al iniciar sesión. Intenta de nuevo.');
+        }
+      }
+
+      async function signOutUser() {
+        try {
+          await signOut(auth);
+          currentUser = null;
+          document.getElementById('userInfo').style.display = 'none';
+          document.getElementById('authStatus').textContent = 'Sesión cerrada';
+          showLoginScreen();
+        } catch (error) {
+          console.error('Error signing out:', error);
+        }
+      }
+
+      function loadSurveyData() {
+        init();
+      }
+
+      // Make functions global for onclick handlers
+      window.signIn = signIn;
+      window.signOutUser = signOutUser;
 
       async function loadSurveyIndex() {
         const res = await fetch('surveys/index.json?_=' + Date.now());
@@ -108,29 +182,81 @@
         };
       }
 
-      async function exportCsv(meta) {
+      async function exportCsv(meta, exportType = 'simplified') {
         const res = await fetch(`surveys/${meta.file}?_=${Date.now()}`);
         const survey = await res.json();
-        const cols = ['entryId', 'createdAt', ...survey.items.map(i => i.id)];
+        
+        // Base columns
+        let cols = ['entryId', 'createdAt'];
+        
+        if (exportType === 'complete') {
+          // Complete export with all data
+          cols.push('serverCode', 'totalTime');
+          cols.push(...survey.items.map(i => `${i.id}_time`));
+          cols.push(...survey.items.map(i => i.id));
+          // Add browser data columns
+          cols.push('browser_userAgent', 'browser_language', 'browser_platform', 
+                   'browser_screenWidth', 'browser_screenHeight', 'browser_timezone');
+        } else {
+          // Simplified export - only survey responses
+          cols.push(...survey.items.map(i => i.id));
+        }
+        
         const qRef = query(collection(db, `responses/${meta.id}/entries`), orderBy('createdAt'));
         const snap = await getDocs(qRef);
         const rows = [];
+        const seenIds = new Set(); // Prevent duplicates
+        
         snap.forEach(doc => {
           const d = doc.data();
+          
+          // Check for duplicates based on participant_id and serverCode
+          const participantId = d.answers?.participant_id;
+          const serverCode = d.serverCode;
+          const duplicateKey = `${participantId}_${serverCode}`;
+          
+          if (seenIds.has(duplicateKey)) {
+            console.log(`Skipping duplicate: ${duplicateKey}`);
+            return;
+          }
+          seenIds.add(duplicateKey);
+          
           const row = Object.fromEntries(cols.map(c => [c, null]));
           row.entryId = doc.id;
           try { row.createdAt = d.createdAt?.toDate?.().toISOString?.() || ''; } catch { row.createdAt = ''; }
+          
+          if (exportType === 'complete') {
+            row.serverCode = d.serverCode || '';
+            row.totalTime = d.totalTime || '';
+            
+            // Add browser data
+            const browser = d.browserData || {};
+            row.browser_userAgent = browser.userAgent || '';
+            row.browser_language = browser.language || '';
+            row.browser_platform = browser.platform || '';
+            row.browser_screenWidth = browser.screenWidth || '';
+            row.browser_screenHeight = browser.screenHeight || '';
+            row.browser_timezone = browser.timezone || '';
+          }
+          
           const ans = d.answers || {};
+          const times = d.itemTimes || {};
+          
           for (const it of survey.items) {
             let v = ans[it.id];
             if (Array.isArray(v)) v = v.join('|');
             row[it.id] = v == null ? '' : v;
+            
+            if (exportType === 'complete') {
+              row[`${it.id}_time`] = times[it.id] || '';
+            }
           }
           rows.push(row);
         });
         const csv = toCsv(rows);
         const ts = new Date().toISOString().slice(0,19).replaceAll(':','-');
-        download(`${meta.id}-${ts}.csv`, csv || '');
+        const suffix = exportType === 'complete' ? '-completo' : '-simplificado';
+        download(`${meta.id}${suffix}-${ts}.csv`, csv || '');
       }
 
       async function downloadCodebook(meta) {
@@ -156,7 +282,7 @@
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
 
-      (async function init() {
+      async function init() {
         const items = await loadSurveyIndex();
         $list.innerHTML = '';
         items.forEach(meta => {
@@ -168,17 +294,37 @@
               <div class="muted">${meta.description || ''} <span class="badge">${meta.id}</span></div>
             </div>
             <div>
-              <button class="btn" data-act="csv">CSV</button>
+              <button class="btn" data-act="csv-simple">CSV Simplificado</button>
+              <button class="btn ghost" data-act="csv-complete">CSV Completo</button>
               <button class="btn ghost" data-act="codebook">Esquema</button>
               <button class="btn ghost" data-act="json">JSON</button>
             </div>
           `;
-          row.querySelector('[data-act=csv]').addEventListener('click', () => exportCsv(meta));
+          row.querySelector('[data-act=csv-simple]').addEventListener('click', () => exportCsv(meta, 'simplified'));
+          row.querySelector('[data-act=csv-complete]').addEventListener('click', () => exportCsv(meta, 'complete'));
           row.querySelector('[data-act=codebook]').addEventListener('click', () => downloadCodebook(meta));
           row.querySelector('[data-act=json]').addEventListener('click', () => downloadSurveyJson(meta));
           $list.appendChild(row);
         });
-      })();
+      }
+
+      // Auth state listener
+      onAuthStateChanged(auth, (user) => {
+        currentUser = user;
+        if (user) {
+          if (allowedEmails.includes(user.email)) {
+            document.getElementById('authStatus').textContent = 'Acceso autorizado';
+            document.getElementById('userInfo').style.display = 'inline';
+            document.getElementById('userEmail').textContent = user.email;
+            loadSurveyData();
+          } else {
+            showUnauthorizedScreen();
+          }
+        } else {
+          document.getElementById('authStatus').textContent = 'No autenticado';
+          showLoginScreen();
+        }
+      });
     </script>
   </body>
   </html>

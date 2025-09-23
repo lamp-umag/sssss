@@ -84,6 +84,20 @@
       .q {
         font-size: 22px; line-height: 1.3; margin: 12px 0 20px;
       }
+      .info-text {
+        font-size: 18px; line-height: 1.6; margin: 16px 0;
+        white-space: pre-line;
+        text-align: left;
+      }
+      .definition {
+        font-style: italic;
+        color: var(--muted);
+      }
+      .section-header {
+        font-size: 24px; font-weight: 700; margin: 20px 0 16px 0;
+        color: var(--accent);
+        text-align: center;
+      }
       .options { display: grid; gap: 10px; }
       .opt {
         display: block; width: 100%; text-align: left; cursor: pointer;
@@ -164,6 +178,9 @@
       let survey = null;
       let currentIndex = 0;
       let answers = {};
+      let startTime = null;
+      let itemStartTime = null;
+      let itemTimes = {};
 
       async function loadSurveyIndex() {
         const res = await fetch('surveys/index.json?_=' + Date.now());
@@ -219,6 +236,8 @@
         survey = data;
         currentIndex = 0;
         answers = {};
+        startTime = Date.now();
+        itemTimes = {};
         $home.style.display = 'none';
         $runner.style.display = 'block';
         // Hide header in survey mode
@@ -250,9 +269,36 @@
         }
 
         const item = survey.items[currentIndex];
-        $q.innerHTML = `<div class="q">${item.prompt}</div>`;
+        
+        // Record time for this item
+        itemStartTime = Date.now();
+        
+        // Check if this is an informational text (maxLength = 1)
+        if (item.type === 'text' && item.maxLength === 1) {
+          // This is an informational page
+          if (item.prompt.includes('SECCIÓN')) {
+            // Section header
+            const lines = item.prompt.split('\n');
+            const header = lines[0];
+            const content = lines.slice(1).join('\n').trim();
+            $q.innerHTML = `
+              <div class="section-header">${header}</div>
+              <div class="info-text">${content}</div>
+            `;
+          } else {
+            // Regular info text
+            $q.innerHTML = `<div class="info-text">${item.prompt}</div>`;
+          }
+        } else {
+          // Regular question
+          $q.innerHTML = `<div class="q">${item.prompt}</div>`;
+        }
 
         const goNext = () => {
+          // Record time spent on current item
+          if (itemStartTime && item) {
+            itemTimes[item.id] = Date.now() - itemStartTime;
+          }
           currentIndex += 1;
           renderStep();
         };
@@ -278,8 +324,7 @@
           });
           const back = button('Atrás', 'secondary');
           back.onclick = goPrev;
-          const skipAllowed = !item.required;
-          const next = button(skipAllowed ? 'Saltar' : 'Siguiente', 'primary');
+          const next = button('Siguiente', 'primary');
           next.disabled = !skipAllowed && !(item.id in answers);
           next.onclick = goNext;
           $ctrls.append(back, next);
@@ -495,8 +540,7 @@
           });
           const back = button('Atrás', 'secondary');
           back.onclick = goPrev;
-          const skipAllowed = !item.required;
-          const next = button(skipAllowed ? 'Saltar' : 'Siguiente', 'primary');
+          const next = button('Siguiente', 'primary');
           next.disabled = !skipAllowed && !(item.id in answers);
           next.onclick = goNext;
           $ctrls.append(back, next);
@@ -570,21 +614,43 @@
         const urlParams = new URLSearchParams(location.search);
         const serverCode = urlParams.get('srv') || null;
         
+        // Calculate total time
+        const totalTime = startTime ? Date.now() - startTime : null;
+        
+        // Collect automatic browser data
+        const browserData = {
+          userAgent: navigator.userAgent,
+          language: navigator.language,
+          platform: navigator.platform,
+          cookieEnabled: navigator.cookieEnabled,
+          onLine: navigator.onLine,
+          screenWidth: screen.width,
+          screenHeight: screen.height,
+          screenColorDepth: screen.colorDepth,
+          timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+          timestamp: new Date().toISOString(),
+          referrer: document.referrer,
+          url: location.href
+        };
+        
         const payload = {
           surveyId: survey.id,
           answers,
           serverCode, // Add server code to payload
+          totalTime, // Total time in milliseconds
+          itemTimes, // Time per item in milliseconds
+          browserData, // Automatic browser data
           createdAt: serverTimestamp(),
-          ua: navigator.userAgent,
+          ua: navigator.userAgent, // Keep for compatibility
           path: location.pathname + location.search,
         };
         try {
           const col = collection(db, `responses/${survey.id}/entries`);
           await addDoc(col, payload);
-          $q.innerHTML = '<div class="q center">¡Gracias! Tus respuestas fueron enviadas.</div>';
+          $q.innerHTML = '<div class="q center">¡Muchas gracias por tu participación!</div><div class="info-text center">Tus respuestas contribuirán al aprendizaje colectivo de la asignatura y a una mejor comprensión de la experiencia estudiantil en la Universidad de Magallanes.<br><br>Ante cualquier duda o consulta, puedes contactarte con el profesor responsable:<br><strong>Herman Elgueta</strong><br>herman.elgueta@umag.cl</div>';
           $opts.innerHTML = '';
           $ctrls.innerHTML = '';
-          $foot.innerHTML = '<div class="center tiny">Puedes volver al <a href="./">inicio</a> para otra encuesta.</div>';
+          $foot.innerHTML = '';
         } catch (e) {
           alert('Error al enviar. Intenta de nuevo.');
           console.error(e);
@@ -598,7 +664,19 @@
         if (selected) {
           startSurveyById(selected, items);
         } else {
-          showHome(items);
+          // Show access denied message instead of survey list
+          $home.innerHTML = `
+            <div class="center">
+              <h2 style="margin:0 0 12px 0; font-size:22px; color: var(--error);">Acceso Restringido</h2>
+              <div class="info-text">
+                Este cuestionario solo está disponible mediante enlaces específicos.<br><br>
+                Si recibiste un enlace para participar, asegúrate de usarlo completo.<br><br>
+                Para más información, contacta al profesor responsable:<br>
+                <strong>Herman Elgueta</strong><br>
+                herman.elgueta@umag.cl
+              </div>
+            </div>
+          `;
         }
         // Smooth scrolling room at bottom for thumbs
         document.body.style.paddingBottom = '24px';

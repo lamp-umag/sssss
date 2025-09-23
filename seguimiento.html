@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sssss — seguimiento</title>
+    <style>
+      :root { 
+        --bg:#f7fafc; 
+        --fg:#0f172a; 
+        --muted:#475569; 
+        --accent:#2563eb; 
+        --card:#ffffff; 
+        --border:#e2e8f0;
+        --ok: #16a34a;
+        --warn: #d97706;
+        --error: #dc2626;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;background:var(--bg);color:var(--fg)}
+      header{padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter: blur(6px)}
+      .brand{font-weight:800}
+      main{max-width:1200px;margin:0 auto;padding:16px}
+      .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:16px}
+      .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--accent);color:#fff;font-weight:700;cursor:pointer;margin:4px}
+      .ghost{background:#ffffff;color:var(--fg)}
+      .muted{color:var(--muted);font-size:12px}
+      .grid{display:grid;gap:10px}
+      a{color:var(--accent);text-decoration:none}
+      .badge{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+      code{background:#f1f5f9;border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+      .stats{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin-bottom:20px}
+      .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+      .stat-number{font-size:24px;font-weight:700;color:var(--accent)}
+      .stat-label{font-size:14px;color:var(--muted);margin-top:4px}
+      .participant-list{max-height:400px;overflow-y:auto;border:1px solid var(--border);border-radius:8px}
+      .participant-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--border);background:#fff}
+      .participant-item:last-child{border-bottom:none}
+      .participant-code{font-weight:700;font-family:monospace}
+      .participant-time{font-size:12px;color:var(--muted)}
+      .refresh-btn{position:fixed;bottom:20px;right:20px;z-index:1000}
+      .loading{text-align:center;padding:20px;color:var(--muted)}
+      .error{color:var(--error);text-align:center;padding:20px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">sssss — seguimiento</div>
+      <div><a href="./">Inicio</a> | <a href="admin.html">Admin</a></div>
+    </header>
+    <main>
+      <section class="card">
+        <h2 style="margin:0 0 8px 0">Seguimiento de Participantes</h2>
+        <div class="muted">Códigos de participantes que han completado el cuestionario UMAG</div>
+        
+        <div class="stats" id="stats">
+          <div class="stat-card">
+            <div class="stat-number" id="totalResponses">-</div>
+            <div class="stat-label">Total Respuestas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="uniqueParticipants">-</div>
+            <div class="stat-label">Participantes Únicos</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="serverCodes">-</div>
+            <div class="stat-label">Códigos de Servidor</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="avgTime">-</div>
+            <div class="stat-label">Tiempo Promedio (min)</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <button class="btn" onclick="refreshData()">🔄 Actualizar</button>
+          <button class="btn ghost" onclick="exportParticipantList()">📥 Exportar Lista</button>
+        </div>
+
+        <div class="participant-list" id="participantList">
+          <div class="loading">Cargando datos...</div>
+        </div>
+      </section>
+    </main>
+
+    <button class="btn refresh-btn" onclick="refreshData()" title="Actualizar datos">🔄</button>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+      import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCq05NElKm-01Xyraj6qdF31IgOLf8gQbA",
+        authDomain: "sssss-e8013.firebaseapp.com",
+        projectId: "sssss-e8013",
+        storageBucket: "sssss-e8013.firebasestorage.app",
+        messagingSenderId: "765571239773",
+        appId: "1:765571239773:web:39ea76d035d314cdd4a2b4",
+        measurementId: "G-1JDBES8EE2",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      let participants = [];
+      let serverCodes = new Set();
+
+      async function loadData() {
+        try {
+          document.getElementById('participantList').innerHTML = '<div class="loading">Cargando datos...</div>';
+          
+          const qRef = query(collection(db, 'responses/umag/entries'), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
+          
+          participants = [];
+          serverCodes.clear();
+          
+          snap.forEach(doc => {
+            const data = doc.data();
+            const participantId = data.answers?.participant_id;
+            const serverCode = data.serverCode;
+            
+            if (participantId) {
+              participants.push({
+                id: doc.id,
+                participantId: participantId,
+                serverCode: serverCode || 'Sin código',
+                createdAt: data.createdAt?.toDate?.() || new Date(),
+                totalTime: data.totalTime || 0,
+                answers: data.answers || {}
+              });
+              
+              if (serverCode) {
+                serverCodes.add(serverCode);
+              }
+            }
+          });
+          
+          updateStats();
+          updateParticipantList();
+          
+        } catch (error) {
+          console.error('Error loading data:', error);
+          document.getElementById('participantList').innerHTML = '<div class="error">Error al cargar los datos. Intenta de nuevo.</div>';
+        }
+      }
+
+      function updateStats() {
+        const totalResponses = participants.length;
+        const uniqueParticipants = new Set(participants.map(p => p.participantId)).size;
+        const uniqueServerCodes = serverCodes.size;
+        
+        const avgTime = participants.length > 0 
+          ? Math.round(participants.reduce((sum, p) => sum + (p.totalTime || 0), 0) / participants.length / 1000 / 60 * 10) / 10
+          : 0;
+        
+        document.getElementById('totalResponses').textContent = totalResponses;
+        document.getElementById('uniqueParticipants').textContent = uniqueParticipants;
+        document.getElementById('serverCodes').textContent = uniqueServerCodes;
+        document.getElementById('avgTime').textContent = avgTime;
+      }
+
+      function updateParticipantList() {
+        const list = document.getElementById('participantList');
+        
+        if (participants.length === 0) {
+          list.innerHTML = '<div class="loading">No hay respuestas aún</div>';
+          return;
+        }
+        
+        const html = participants.map(p => {
+          const timeStr = p.totalTime ? `${Math.round(p.totalTime / 1000 / 60)} min` : 'N/A';
+          const dateStr = p.createdAt.toLocaleString('es-CL');
+          
+          return `
+            <div class="participant-item">
+              <div>
+                <div class="participant-code">${p.participantId}</div>
+                <div class="participant-time">${dateStr} • ${timeStr}</div>
+              </div>
+              <div>
+                <span class="badge">${p.serverCode}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        list.innerHTML = html;
+      }
+
+      function exportParticipantList() {
+        const csv = [
+          ['Código Participante', 'Código Servidor', 'Fecha', 'Tiempo Total (min)', 'ID Respuesta'],
+          ...participants.map(p => [
+            p.participantId,
+            p.serverCode,
+            p.createdAt.toISOString(),
+            p.totalTime ? Math.round(p.totalTime / 1000 / 60) : '',
+            p.id
+          ])
+        ].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+        
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `participantes-umag-${new Date().toISOString().slice(0,19).replaceAll(':','-')}.csv`;
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+
+      function refreshData() {
+        loadData();
+      }
+
+      // Auto-refresh every 30 seconds
+      setInterval(refreshData, 30000);
+
+      // Load data on page load
+      loadData();
+    </script>
+  </body>
+</html>
