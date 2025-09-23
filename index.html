@@ -112,7 +112,7 @@
   <body>
     <header>
       <div class="brand" title="Stupidly Simple Short Sample Survey">sssss</div>
-      <a href="admin.html" class="pill">admin</a>
+      <!-- <a href="admin.html" class="pill">admin</a> -->
     </header>
     <main>
       <section id="home" class="card">
@@ -177,6 +177,10 @@
       }
 
       function showHome(items) {
+        // Show header when returning to home
+        document.querySelector('header').style.display = 'flex';
+        $home.style.display = 'block';
+        $runner.style.display = 'none';
         $list.innerHTML = '';
         items.forEach(item => {
           const row = document.createElement('div');
@@ -217,6 +221,8 @@
         answers = {};
         $home.style.display = 'none';
         $runner.style.display = 'block';
+        // Hide header in survey mode
+        document.querySelector('header').style.display = 'none';
         renderStep();
       }
 
@@ -321,10 +327,37 @@
           };
           $ctrls.append(back, next);
         } else if (item.type === 'text') {
-          const input = document.createElement(item.long ? 'textarea' : 'input');
-          if (input.tagName.toLowerCase() === 'input') input.type = 'text';
-          input.placeholder = item.placeholder || '';
-          input.maxLength = item.maxLength || 500;
+          // Check if this is an informational text (maxLength = 1)
+          if (item.maxLength === 1) {
+            // This is an informational page, no input needed
+            const back = button('Atrás', 'secondary');
+            back.onclick = goPrev;
+            const next = button('Siguiente', 'primary');
+            next.onclick = goNext;
+            $ctrls.append(back, next);
+          } else {
+            // This is a regular text input
+            const input = document.createElement(item.long ? 'textarea' : 'input');
+            if (input.tagName.toLowerCase() === 'input') input.type = 'text';
+            input.placeholder = item.placeholder || '';
+            input.maxLength = item.maxLength || 500;
+            if (answers[item.id] != null) input.value = answers[item.id];
+            input.addEventListener('input', () => { answers[item.id] = input.value; });
+            $opts.appendChild(input);
+            const back = button('Atrás', 'secondary');
+            back.onclick = goPrev;
+            const next = button('Siguiente', 'primary');
+            next.onclick = () => {
+              if (item.required && (!answers[item.id] || String(answers[item.id]).trim() === '')) return;
+              goNext();
+            };
+            $ctrls.append(back, next);
+          }
+        } else if (item.type === 'email') {
+          const input = document.createElement('input');
+          input.type = 'email';
+          input.placeholder = item.placeholder || 'ejemplo@correo.com';
+          input.maxLength = item.maxLength || 100;
           if (answers[item.id] != null) input.value = answers[item.id];
           input.addEventListener('input', () => { answers[item.id] = input.value; });
           $opts.appendChild(input);
@@ -336,8 +369,177 @@
             goNext();
           };
           $ctrls.append(back, next);
+        } else if (item.type === 'url') {
+          const input = document.createElement('input');
+          input.type = 'url';
+          input.placeholder = item.placeholder || 'https://ejemplo.com';
+          input.maxLength = item.maxLength || 200;
+          if (answers[item.id] != null) input.value = answers[item.id];
+          input.addEventListener('input', () => { answers[item.id] = input.value; });
+          $opts.appendChild(input);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && (!answers[item.id] || String(answers[item.id]).trim() === '')) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
+        } else if (item.type === 'date') {
+          const input = document.createElement('input');
+          input.type = 'date';
+          if (answers[item.id] != null) input.value = answers[item.id];
+          input.addEventListener('change', () => { answers[item.id] = input.value; });
+          $opts.appendChild(input);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && (!answers[item.id] || String(answers[item.id]).trim() === '')) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
+        } else if (item.type === 'time') {
+          const input = document.createElement('input');
+          input.type = 'time';
+          if (answers[item.id] != null) input.value = answers[item.id];
+          input.addEventListener('change', () => { answers[item.id] = input.value; });
+          $opts.appendChild(input);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && (!answers[item.id] || String(answers[item.id]).trim() === '')) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
+        } else if (item.type === 'rating') {
+          const scale = item.scale || 5;
+          const selected = answers[item.id] || null;
+          const container = document.createElement('div');
+          container.style.display = 'flex';
+          container.style.gap = '8px';
+          container.style.justifyContent = 'center';
+          container.style.flexWrap = 'wrap';
+          
+          for (let i = 1; i <= scale; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'opt' + (selected === i ? ' selected' : '');
+            btn.textContent = i;
+            btn.style.minWidth = '50px';
+            btn.style.height = '50px';
+            btn.style.borderRadius = '50%';
+            btn.onclick = () => {
+              answers[item.id] = i;
+              container.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
+              btn.classList.add('selected');
+            };
+            container.appendChild(btn);
+          }
+          $opts.appendChild(container);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && answers[item.id] == null) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
+        } else if (item.type === 'slider') {
+          const container = document.createElement('div');
+          const slider = document.createElement('input');
+          slider.type = 'range';
+          slider.min = item.min || 0;
+          slider.max = item.max || 100;
+          slider.step = item.step || 1;
+          slider.value = answers[item.id] || slider.min;
+          const valueDisplay = document.createElement('div');
+          valueDisplay.style.textAlign = 'center';
+          valueDisplay.style.fontSize = '18px';
+          valueDisplay.style.fontWeight = '700';
+          valueDisplay.style.marginTop = '8px';
+          valueDisplay.textContent = slider.value;
+          
+          slider.addEventListener('input', () => {
+            answers[item.id] = Number(slider.value);
+            valueDisplay.textContent = slider.value;
+          });
+          
+          container.appendChild(slider);
+          container.appendChild(valueDisplay);
+          $opts.appendChild(container);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && answers[item.id] == null) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
+        } else if (item.type === 'yes_no') {
+          const options = [
+            { label: 'Sí', code: 'yes' },
+            { label: 'No', code: 'no' }
+          ];
+          const selectedCode = answers[item.id] ?? null;
+          options.forEach(opt => {
+            const el = document.createElement('button');
+            el.className = 'opt' + (selectedCode === opt.code ? ' selected' : '');
+            el.textContent = opt.label;
+            el.onclick = () => {
+              answers[item.id] = opt.code;
+              el.classList.add('selected');
+              setTimeout(goNext, 120);
+            };
+            $opts.appendChild(el);
+          });
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const skipAllowed = !item.required;
+          const next = button(skipAllowed ? 'Saltar' : 'Siguiente', 'primary');
+          next.disabled = !skipAllowed && !(item.id in answers);
+          next.onclick = goNext;
+          $ctrls.append(back, next);
+        } else if (item.type === 'phone') {
+          const input = document.createElement('input');
+          input.type = 'tel';
+          input.placeholder = item.placeholder || '+34 123 456 789';
+          input.maxLength = item.maxLength || 20;
+          if (answers[item.id] != null) input.value = answers[item.id];
+          input.addEventListener('input', () => { answers[item.id] = input.value; });
+          $opts.appendChild(input);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && (!answers[item.id] || String(answers[item.id]).trim() === '')) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
+        } else if (item.type === 'file') {
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = item.accept || '*/*';
+          input.multiple = item.multiple || false;
+          input.addEventListener('change', () => {
+            if (input.files.length > 0) {
+              const files = Array.from(input.files).map(f => f.name);
+              answers[item.id] = files;
+            } else {
+              answers[item.id] = null;
+            }
+          });
+          $opts.appendChild(input);
+          const back = button('Atrás', 'secondary');
+          back.onclick = goPrev;
+          const next = button('Siguiente', 'primary');
+          next.onclick = () => {
+            if (item.required && !answers[item.id]) return;
+            goNext();
+          };
+          $ctrls.append(back, next);
         } else {
-          $opts.innerHTML = '<div class="tiny">Tipo de ítem no soportado</div>';
+          $opts.innerHTML = '<div class="tiny">Tipo de ítem no soportado: ' + item.type + '</div>';
         }
 
         if (item.help) {
@@ -364,9 +566,14 @@
       }
 
       async function submitResponses() {
+        // Extract server code from URL parameter
+        const urlParams = new URLSearchParams(location.search);
+        const serverCode = urlParams.get('srv') || null;
+        
         const payload = {
           surveyId: survey.id,
           answers,
+          serverCode, // Add server code to payload
           createdAt: serverTimestamp(),
           ua: navigator.userAgent,
           path: location.pathname + location.search,

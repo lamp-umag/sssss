@@ -1,0 +1,682 @@
+{
+  "id": "umag",
+  "title": "Estudio colaborativo estudiantes UMAG",
+  "description": "Cuestionario sobre experiencias estudiantiles - Universidad de Magallanes",
+  "items": [
+    {
+      "id": "intro_presentation",
+      "type": "text",
+      "prompt": "Este cuestionario forma parte de un estudio colaborativo desarrollado por estudiantes de tercer año de Psicología de la Universidad de Magallanes, en el marco de la asignatura Análisis de Datos.\n\nEl propósito de este estudio es explorar experiencias, perspectivas y características de estudiantes universitarios en distintos ámbitos de la vida estudiantil y personal. Los temas incluidos son diversos porque corresponden a diferentes preguntas de investigación planteadas por distintos grupos de estudiantes.\n\nNo existen respuestas buenas o malas: lo que nos interesa es tu experiencia y tu opinión. Responder es completamente voluntario. Usted fue seleccionado/a para participar como parte de una muestra aleatoria de estudiantes de primer año de la universidad. Su colaboración es muy valiosa, ya que nos permitirá contar con una muestra representativa y comprender mejor la realidad de esta población.\n\nLas respuestas serán tratadas de manera anónima y confidencial: antes de su análisis se eliminará cualquier vínculo con tu identidad. No existen riesgos asociados a contestar este cuestionario.\n\nAnte cualquier duda o molestia, puede contactarse con el profesor responsable de la asignatura: Herman Elgueta – herman.elgueta@umag.cl\n\nSi aceptas participar, por favor continúa respondiendo las siguientes preguntas. Gracias de antemano.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "participant_id",
+      "type": "text",
+      "prompt": "Código de identificación del participante",
+      "required": true,
+      "placeholder": "Ingresa el código que te proporcionamos",
+      "maxLength": 20,
+      "help": "Este código nos permite identificar tu respuesta de forma anónima para el análisis de datos."
+    },
+    {
+      "id": "section_activities",
+      "type": "text",
+      "prompt": "SECCIÓN 1: ACTIVIDADES\n\nA continuación te preguntaremos sobre tus actividades artísticas y deportivas. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "art_1",
+      "type": "likert",
+      "prompt": "En mi tiempo libre suelo realizar actividades artísticas por mi cuenta.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "art_2",
+      "type": "likert",
+      "prompt": "Dedico varias horas a la semana a actividades artísticas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "art_3",
+      "type": "likert",
+      "prompt": "Debido a la carga académica he tenido que dejar de lado mis hobbies artísticos.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "art_4",
+      "type": "likert",
+      "prompt": "Las actividades artísticas son una parte importante de mi vida diaria.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "art_activities",
+      "type": "text",
+      "prompt": "¿Qué actividades artísticas realizas con mayor frecuencia?",
+      "required": false,
+      "placeholder": "Ej: pintura, música, escritura, teatro...",
+      "maxLength": 200
+    },
+    {
+      "id": "sport_1",
+      "type": "likert",
+      "prompt": "En mi tiempo libre suelo realizar actividad física o deportiva por mi cuenta.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "sport_2",
+      "type": "likert",
+      "prompt": "Dedico varias horas a la semana a practicar deporte o ejercicio físico.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "sport_3",
+      "type": "likert",
+      "prompt": "Debido a la carga académica he tenido que dejar de lado mis actividades deportivas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "sport_4",
+      "type": "likert",
+      "prompt": "La práctica deportiva es una parte importante de mi vida diaria.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "sport_activities",
+      "type": "text",
+      "prompt": "¿Qué tipo de deporte o actividad física realizas con mayor frecuencia?",
+      "required": false,
+      "placeholder": "Ej: fútbol, running, gimnasio, yoga...",
+      "maxLength": 200
+    },
+    {
+      "id": "section_relationships",
+      "type": "text",
+      "prompt": "SECCIÓN 2: RELACIONES INTERPERSONALES\n\nLas siguientes preguntas se refieren a tus experiencias en relaciones de pareja y amistad. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "control_1",
+      "type": "likert",
+      "prompt": "He vivido conductas de control o celos excesivos en una relación de pareja o amistad cercana.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "control_2",
+      "type": "likert",
+      "prompt": "Me he sentido manipulado/a en alguna relación amorosa o de amistad.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "control_3",
+      "type": "likert",
+      "prompt": "Considero aceptable que una pareja o amistad revise mis mensajes privados o redes sociales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "control_4",
+      "type": "likert",
+      "prompt": "Creo que los celos frecuentes son una señal normal en una relación.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "control_5",
+      "type": "likert",
+      "prompt": "Si un amigo/a experimenta conductas de control en su relación, lo veo como una señal preocupante.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "red_flags",
+      "type": "text",
+      "prompt": "En el contexto de relaciones interpersonales, una red flag se entiende como una señal de alerta que indica la posibilidad de conductas dañinas o poco saludables (por ejemplo, control, manipulación, celos excesivos, falta de comunicación, violencia psicológica). ¿Has vivido alguna red flag en una relación de pareja o amistad? Si es así, ¿puedes mencionarla y/o describirla brevemente?",
+      "required": false,
+      "placeholder": "Describe brevemente tu experiencia...",
+      "maxLength": 300
+    },
+    {
+      "id": "section_university",
+      "type": "text",
+      "prompt": "SECCIÓN 3: VÍNCULOS EN LA UNIVERSIDAD\n\nLas siguientes preguntas se refieren a tus relaciones y vínculos en el contexto universitario. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "university_1",
+      "type": "likert",
+      "prompt": "He formado amistades cercanas en la universidad.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "university_2",
+      "type": "likert",
+      "prompt": "Puedo contarle cosas personales a mis amigos/as de la universidad.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "university_3",
+      "type": "likert",
+      "prompt": "Siento que mis amistades universitarias estarían ahí para mí aunque tuviéramos un conflicto.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "university_4",
+      "type": "likert",
+      "prompt": "Estoy satisfecho/a con la calidad de mis amistades en la universidad.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "university_5",
+      "type": "likert",
+      "prompt": "Me siento aceptado/a por otros estudiantes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "university_6",
+      "type": "likert",
+      "prompt": "Siento que encajo bien en el ambiente universitario.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "university_7",
+      "type": "likert",
+      "prompt": "Me siento parte de la comunidad estudiantil de mi institución.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_gambling",
+      "type": "text",
+      "prompt": "SECCIÓN 4: JUEGOS DE AZAR\n\nLas siguientes preguntas se refieren a tu participación en juegos de azar y apuestas. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "gambling_1",
+      "type": "likert",
+      "prompt": "En el último mes he jugado en juegos de azar (online o presenciales).",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "gambling_2",
+      "type": "likert",
+      "prompt": "Participo con frecuencia en apuestas o juegos de azar.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "gambling_3",
+      "type": "likert",
+      "prompt": "He gastado dinero en juegos de azar en los últimos 30 días.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "gambling_4",
+      "type": "likert",
+      "prompt": "Mi participación en juegos de azar me genera preocupación por las consecuencias económicas o personales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "gambling_types",
+      "type": "text",
+      "prompt": "¿Qué tipo de juegos de azar has practicado en el último año?",
+      "required": false,
+      "placeholder": "Ej: lotería, casinos online, apuestas deportivas...",
+      "maxLength": 200
+    },
+    {
+      "id": "section_personality",
+      "type": "text",
+      "prompt": "SECCIÓN 5: FORMAS DE SER\n\nLas siguientes afirmaciones describen diferentes aspectos de la personalidad. Por favor, indica qué tan bien te describe cada una. No hay respuestas correctas o incorrectas.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "personality_1",
+      "type": "likert",
+      "prompt": "Soy el alma de las fiestas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_2",
+      "type": "likert",
+      "prompt": "Empatizo con lo que sienten los demás.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_3",
+      "type": "likert",
+      "prompt": "Cumplo con mis responsabilidades de inmediato.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_4",
+      "type": "likert",
+      "prompt": "Tengo cambios frecuentes en mi estado de ánimo.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_5",
+      "type": "likert",
+      "prompt": "Tengo una gran imaginación.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_6",
+      "type": "likert",
+      "prompt": "A veces siento que mis logros se deben más a la suerte que a mis capacidades.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_7",
+      "type": "likert",
+      "prompt": "No suelo hablar demasiado.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_8",
+      "type": "likert",
+      "prompt": "No me interesan demasiado los problemas de los demás.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_9",
+      "type": "likert",
+      "prompt": "Usualmente me olvido de guardar las cosas en su lugar.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_10",
+      "type": "likert",
+      "prompt": "Suelo estar relajado/a la mayor parte del tiempo.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_11",
+      "type": "likert",
+      "prompt": "Me interesan las ideas abstractas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_12",
+      "type": "likert",
+      "prompt": "Me preocupa que otros descubran que no soy tan competente como creen.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_13",
+      "type": "likert",
+      "prompt": "Para conseguir lo que quiero, a veces oculto parte de la verdad.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_14",
+      "type": "likert",
+      "prompt": "Disfruto cuando los demás reconocen mis logros.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_15",
+      "type": "likert",
+      "prompt": "A veces actúo de manera impulsiva sin pensar demasiado en las consecuencias.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_16",
+      "type": "likert",
+      "prompt": "Hablo con muchas personas diferentes en fiestas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_17",
+      "type": "likert",
+      "prompt": "Puedo sentir las emociones que sienten los demás.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_18",
+      "type": "likert",
+      "prompt": "Me gusta el orden.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_19",
+      "type": "likert",
+      "prompt": "Me enojo fácilmente.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_20",
+      "type": "likert",
+      "prompt": "Tengo dificultad para entender ideas abstractas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_21",
+      "type": "likert",
+      "prompt": "Cuando logro algo importante, dudo de mi capacidad para repetir ese éxito.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_22",
+      "type": "likert",
+      "prompt": "Prefiero planear con cuidado mis acciones para obtener ventaja en una situación.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_23",
+      "type": "likert",
+      "prompt": "Creo que tengo cualidades que me hacen destacar frente a la mayoría de las personas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_24",
+      "type": "likert",
+      "prompt": "No me resulta difícil tomar decisiones aunque puedan afectar negativamente a otros.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_25",
+      "type": "likert",
+      "prompt": "Prefiero no llamar la atención.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_26",
+      "type": "likert",
+      "prompt": "No me interesan realmente los demás.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_27",
+      "type": "likert",
+      "prompt": "Soy algo desordenado/a.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_28",
+      "type": "likert",
+      "prompt": "Sólo en pocas ocasiones me siento triste.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_29",
+      "type": "likert",
+      "prompt": "No tengo una buena imaginación.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_30",
+      "type": "likert",
+      "prompt": "Suelo preocuparme de fracasar en proyectos o exámenes, incluso cuando otros confían en que me irá bien.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_31",
+      "type": "likert",
+      "prompt": "Considero que es útil persuadir a otros para que hagan cosas que me beneficien.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_32",
+      "type": "likert",
+      "prompt": "Me gusta estar en el centro de la atención social.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_33",
+      "type": "likert",
+      "prompt": "No me preocupo mucho por romper reglas si eso me ayuda a alcanzar mis metas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_ai",
+      "type": "text",
+      "prompt": "SECCIÓN 6: INTELIGENCIA ARTIFICIAL\n\nLas siguientes preguntas se refieren a tu experiencia y opinión sobre el uso de inteligencia artificial en el contexto académico. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "ai_1",
+      "type": "likert",
+      "prompt": "Considero que el uso de inteligencia artificial puede mejorar la calidad del aprendizaje universitario.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ai_2",
+      "type": "likert",
+      "prompt": "Me genera confianza que docentes utilicen herramientas de inteligencia artificial en el aula.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ai_3",
+      "type": "likert",
+      "prompt": "Pienso que la inteligencia artificial puede complementar positivamente el trabajo de los/as estudiantes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ai_4",
+      "type": "likert",
+      "prompt": "He utilizado herramientas de inteligencia artificial para apoyar mis estudios.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ai_5",
+      "type": "likert",
+      "prompt": "Integro la inteligencia artificial como parte de mis hábitos de estudio o de preparación académica.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ai_6",
+      "type": "likert",
+      "prompt": "En el último semestre, he recurrido a la inteligencia artificial de manera frecuente para realizar tareas o actividades académicas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ai_tools",
+      "type": "text",
+      "prompt": "¿Cuáles son las herramientas de inteligencia artificial que usas?",
+      "required": false,
+      "placeholder": "Ej: ChatGPT, Claude, Copilot, Grammarly...",
+      "maxLength": 200
+    },
+    {
+      "id": "ai_uses",
+      "type": "text",
+      "prompt": "¿Cuáles son los usos que le das a la inteligencia artificial?",
+      "required": false,
+      "placeholder": "Ej: redacción de ensayos, resúmenes, traducción...",
+      "maxLength": 200
+    },
+    {
+      "id": "section_wellbeing",
+      "type": "text",
+      "prompt": "SECCIÓN 7: BIENESTAR Y ESTADO DE ÁNIMO\n\nLas siguientes preguntas se refieren a tu satisfacción con la vida y estado de ánimo. Por favor, indica tu grado de acuerdo o desacuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "wellbeing_1",
+      "type": "likert",
+      "prompt": "En la mayoría de los aspectos, mi vida se acerca a mi ideal.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "wellbeing_2",
+      "type": "likert",
+      "prompt": "Las condiciones de mi vida son excelentes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "wellbeing_3",
+      "type": "likert",
+      "prompt": "Estoy satisfecho/a con mi vida.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "wellbeing_4",
+      "type": "likert",
+      "prompt": "Hasta ahora he conseguido las cosas importantes que quiero en la vida.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "wellbeing_5",
+      "type": "likert",
+      "prompt": "Si pudiera vivir mi vida de nuevo, no cambiaría casi nada.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "mood_enthusiastic",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido entusiasmado/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_inspired",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido inspirado/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_determined",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido decidido/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_active",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido activo/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_attentive",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido atento/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_nervous",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido nervioso/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_restless",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido inquieto/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_fearful",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido temeroso/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_ashamed",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido avergonzado/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    },
+    {
+      "id": "mood_distressed",
+      "type": "likert",
+      "prompt": "Durante las últimas semanas, ¿en qué medida te has sentido angustiado/a?",
+      "required": false,
+      "options": ["Nada o muy poco", "Poco", "Moderadamente", "Bastante", "Extremadamente"]
+    }
+  ]
+}

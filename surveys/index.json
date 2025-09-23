@@ -17,6 +17,18 @@
       "title": "Afecto (I-PANAS-SF)",
       "description": "Apodo + afecto positivo y negativo.",
       "file": "mood.json"
+    },
+    {
+      "id": "sample",
+      "title": "Encuesta de Ejemplo - Todos los Tipos",
+      "description": "Demuestra todos los tipos de preguntas disponibles en el sistema.",
+      "file": "sample.json"
+    },
+    {
+      "id": "umag",
+      "title": "Estudio colaborativo estudiantes UMAG",
+      "description": "Cuestionario misceláneo sobre experiencias estudiantiles - Universidad de Magallanes",
+      "file": "umag.json"
     }
   ]
 }

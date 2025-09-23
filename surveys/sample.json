@@ -1,0 +1,173 @@
+{
+  "id": "sample",
+  "title": "Encuesta de Ejemplo - Todos los Tipos de Preguntas",
+  "description": "Esta encuesta demuestra todos los tipos de preguntas disponibles en el sistema. Perfecta para probar la funcionalidad completa.",
+  "items": [
+    {
+      "id": "texto_corto",  
+      "type": "text",
+      "prompt": "¿Cuál es tu nombre completo?",
+      "placeholder": "Escribe tu nombre aquí",
+      "required": true,
+      "maxLength": 100,
+      "help": "Solo se aceptan nombres reales"
+    },
+    {
+      "id": "texto_largo",
+      "type": "text",
+      "prompt": "Cuéntanos sobre ti en detalle",
+      "placeholder": "Escribe una breve biografía...",
+      "long": true,
+      "required": false,
+      "maxLength": 1000,
+      "help": "Máximo 1000 caracteres"
+    },
+    {
+      "id": "email",
+      "type": "email",
+      "prompt": "¿Cuál es tu correo electrónico?",
+      "placeholder": "tu@email.com",
+      "required": true,
+      "help": "Usaremos este email para contactarte"
+    },
+    {
+      "id": "telefono",
+      "type": "phone",
+      "prompt": "¿Cuál es tu número de teléfono?",
+      "placeholder": "+34 123 456 789",
+      "required": false,
+      "help": "Incluye el código de país"
+    },
+    {
+      "id": "sitio_web",
+      "type": "url",
+      "prompt": "¿Tienes un sitio web personal?",
+      "placeholder": "https://mi-sitio.com",
+      "required": false,
+      "help": "Opcional: tu portafolio, blog, etc."
+    },
+    {
+      "id": "fecha_nacimiento",
+      "type": "date",
+      "prompt": "¿Cuál es tu fecha de nacimiento?",
+      "required": true,
+      "help": "Necesitamos verificar tu edad"
+    },
+    {
+      "id": "hora_preferida",
+      "type": "time",
+      "prompt": "¿A qué hora prefieres que te contactemos?",
+      "required": false,
+      "help": "En formato 24 horas"
+    },
+    {
+      "id": "edad",
+      "type": "number",
+      "prompt": "¿Cuántos años tienes?",
+      "placeholder": "25",
+      "min": 18,
+      "max": 100,
+      "required": true,
+      "help": "Debes ser mayor de 18 años"
+    },
+    {
+      "id": "satisfaccion_general",
+      "type": "rating",
+      "prompt": "¿Qué tan satisfecho estás con nuestro servicio?",
+      "scale": 10,
+      "required": true,
+      "help": "1 = Muy insatisfecho, 10 = Muy satisfecho"
+    },
+    {
+      "id": "probabilidad_recomendacion",
+      "type": "slider",
+      "prompt": "¿Qué tan probable es que nos recomiendes?",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "required": true,
+      "help": "0 = Nada probable, 100 = Muy probable"
+    },
+    {
+      "id": "genero",
+      "type": "single_choice",
+      "prompt": "¿Con qué género te identificas?",
+      "options": [
+        "Masculino",
+        "Femenino",
+        "No binario",
+        "Prefiero no decir",
+        "Otro"
+      ],
+      "required": true,
+      "help": "Esta información es confidencial"
+    },
+    {
+      "id": "intereses",
+      "type": "multi_choice",
+      "prompt": "¿Cuáles de estos temas te interesan? (puedes seleccionar varios)",
+      "options": [
+        "Tecnología",
+        "Deportes",
+        "Arte y cultura",
+        "Ciencia",
+        "Viajes",
+        "Música",
+        "Cocina",
+        "Fotografía"
+      ],
+      "required": false,
+      "help": "Selecciona todos los que apliquen"
+    },
+    {
+      "id": "nivel_educacion",
+      "type": "likert",
+      "prompt": "¿Estás de acuerdo con que la educación es fundamental para el desarrollo?",
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Neutral",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "required": true,
+      "help": "Tu opinión es importante para nosotros"
+    },
+    {
+      "id": "tiene_experiencia",
+      "type": "yes_no",
+      "prompt": "¿Tienes experiencia previa con este tipo de encuestas?",
+      "required": true,
+      "help": "Esto nos ayuda a personalizar tu experiencia"
+    },
+    {
+      "id": "archivo_cv",
+      "type": "file",
+      "prompt": "Sube tu currículum (opcional)",
+      "accept": ".pdf,.doc,.docx",
+      "multiple": false,
+      "required": false,
+      "help": "Formatos aceptados: PDF, DOC, DOCX"
+    },
+    {
+      "id": "fotos_portfolio",
+      "type": "file",
+      "prompt": "Sube fotos de tu portafolio (máximo 5 archivos)",
+      "accept": "image/*",
+      "multiple": true,
+      "required": false,
+      "help": "Formatos: JPG, PNG, GIF. Máximo 5 archivos"
+    },
+    {
+      "id": "comentarios_finales",
+      "type": "text",
+      "prompt": "¿Tienes algún comentario adicional?",
+      "placeholder": "Escribe aquí cualquier comentario, sugerencia o pregunta...",
+      "long": true,
+      "required": false,
+      "maxLength": 2000,
+      "help": "Tus comentarios nos ayudan a mejorar"
+    }
+  ]
+}
+
