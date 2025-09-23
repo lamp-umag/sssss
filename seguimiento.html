@@ -75,6 +75,7 @@
         <div style="margin-bottom:16px">
           <button class="btn" onclick="refreshData()">🔄 Actualizar</button>
           <button class="btn ghost" onclick="exportParticipantList()">📥 Exportar Lista</button>
+          <button class="btn" onclick="exportSimpleResponses()">📊 Descargar Respuestas Simples</button>
         </div>
 
         <div class="participant-list" id="participantList">
@@ -206,6 +207,76 @@
         a.download = `participantes-umag-${new Date().toISOString().slice(0,19).replaceAll(':','-')}.csv`;
         a.click();
         setTimeout(() => URL.revokeObjectURL(url), 1000);
+      }
+
+      async function exportSimpleResponses() {
+        try {
+          const qRef = query(collection(db, 'responses/umag/entries'), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
+          
+          if (snap.empty) {
+            alert('No hay respuestas para exportar.');
+            return;
+          }
+
+          // Get all unique column names from responses
+          const allColumns = new Set(['participant_id', 'serverCode']);
+          const responses = [];
+          
+          snap.forEach(doc => {
+            const data = doc.data();
+            if (data.answers) {
+              Object.keys(data.answers).forEach(key => allColumns.add(key));
+            }
+            responses.push({ id: doc.id, ...data });
+          });
+
+          const columns = Array.from(allColumns).sort();
+          
+          // Create CSV content
+          const csvRows = [
+            columns.join(','),
+            ...responses.map(response => 
+              columns.map(col => {
+                let value = '';
+                if (col === 'participant_id') {
+                  value = response.answers?.participant_id || '';
+                } else if (col === 'serverCode') {
+                  value = response.serverCode || '';
+                } else if (response.answers && response.answers.hasOwnProperty(col)) {
+                  const val = response.answers[col];
+                  if (Array.isArray(val)) {
+                    value = val.join('; ');
+                  } else {
+                    value = val || '';
+                  }
+                }
+                
+                // Escape CSV values
+                if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                  return `"${value.replace(/"/g, '""')}"`;
+                }
+                return value;
+              }).join(',')
+            )
+          ];
+
+          const csvContent = csvRows.join('\n');
+          
+          // Download file
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `respuestas-simples-umag-${new Date().toISOString().slice(0,19).replaceAll(':','-')}.csv`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          
+          console.log(`Exported ${responses.length} simple responses`);
+        } catch (error) {
+          console.error('Error exporting simple responses:', error);
+          alert('Error al exportar respuestas: ' + error.message);
+        }
       }
 
       function refreshData() {
