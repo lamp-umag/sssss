@@ -6,7 +6,7 @@
     {
       "id": "intro_consent",
       "type": "text",
-      "prompt": "Este cuestionario forma parte de un estudio académico desarrollado por la Universidad de Magallanes y la University of Portsmouth. La información que usted entregue será tratada de manera confidencial y solo con fines de investigación. Su participación es voluntaria, puede no responder cualquier pregunta y retirarse en cualquier momento. Una copia del consentimiento informado completo está disponible en el siguiente enlace: https://lamp-umag.github.io/sssss/consentimiento.pdf.\n\nPara comenzar, usted declara ser mayor de 18 años y conocer las condiciones de participación. Si está de acuerdo, haga clic en Continuar.",
+      "prompt": "Este cuestionario forma parte de un estudio académico desarrollado por la Universidad de Magallanes y la University of Portsmouth. La información que usted entregue será tratada de manera confidencial y solo con fines de investigación. Su participación es voluntaria, puede no responder cualquier pregunta y retirarse en cualquier momento. Una copia del consentimiento informado completo está disponible en el siguiente enlace: <a href="https://lamp-umag.github.io/sssss/consentimiento.pdf" target="_blank" rel="noopener noreferrer">https://lamp-umag.github.io/sssss/consentimiento.pdf</a>.\n\nPara comenzar, usted declara ser mayor de 18 años y conocer las condiciones de participación. Si está de acuerdo, haga clic en Continuar.",
       "required": false,
       "long": true,
       "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
