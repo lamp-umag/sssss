@@ -29,12 +29,8 @@
       "title": "Estudio colaborativo estudiantes UMAG",
       "description": "Cuestionario misceláneo sobre experiencias estudiantiles - Universidad de Magallanes",
       "file": "umag.json"
-    },
-    {
-      "id": "mapa_eh",
-      "title": "Percepciones sobre Proyectos de Hidrógeno en San Gregorio",
-      "description": "Estudio académico desarrollado por la Universidad de Magallanes",
-      "file": "mapa_eh.json"
     }
   ]
 }
+
+

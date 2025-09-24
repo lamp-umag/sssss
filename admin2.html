@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sssss — admin</title>
+    <style>
+      :root { --bg:#f7fafc; --fg:#0f172a; --muted:#475569; --accent:#2563eb; --card:#ffffff; --border:#e2e8f0; --ok:#16a34a; --error:#dc2626; }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;background:var(--bg);color:var(--fg)}
+      header{padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter: blur(6px);display:flex;justify-content:space-between;align-items:center}
+      .brand{font-weight:800}
+      .user-info{display:flex;align-items:center;gap:10px}
+      .user-avatar{width:32px;height:32px;border-radius:50%;border:1px solid var(--border)}
+      main{max-width:900px;margin:0 auto;padding:16px}
+      .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:16px}
+      .row{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);border-radius:12px;padding:12px;margin:8px 0;background:#fff}
+      .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--accent);color:#fff;font-weight:700;cursor:pointer;margin:4px}
+      .btn:hover{opacity:0.9}
+      .btn:disabled{opacity:0.5;cursor:not-allowed}
+      .ghost{background:#ffffff;color:var(--fg)}
+      .muted{color:var(--muted);font-size:12px}
+      .grid{display:grid;gap:10px}
+      a{color:var(--accent);text-decoration:none}
+      .badge{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+      code{background:#f1f5f9;border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+      .warning{background:#fef3c7;border:1px solid #f59e0b;color:#92400e;padding:12px;border-radius:8px;margin:16px 0}
+      .success{background:#d1fae5;border:1px solid #10b981;color:#065f46;padding:12px;border-radius:8px;margin:16px 0}
+      .error{background:#fee2e2;border:1px solid #ef4444;color:#991b1b;padding:12px;border-radius:8px;margin:16px 0}
+      .hidden{display:none}
+      .login-container{text-align:center;padding:40px 20px}
+      .google-signin{background:#4285f4;color:white;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-size:16px;display:inline-flex;align-items:center;gap:8px}
+      .google-signin:hover{background:#3367d6}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">sssss — admin</div>
+      <div class="user-info" id="userInfo">
+        <div class="muted">Cargando...</div>
+      </div>
+    </header>
+
+    <!-- Login Screen -->
+    <div id="loginScreen" class="hidden">
+      <main>
+        <div class="card login-container">
+          <h2>Acceso Administrador</h2>
+          <p class="muted">Inicia sesión con tu cuenta de Google para acceder al panel de administración</p>
+          <button id="googleSignIn" class="google-signin">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+              <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+            </svg>
+            Iniciar sesión con Google
+          </button>
+        </div>
+      </main>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="hidden">
+      <main>
+        <div class="card">
+          <h2>Panel de Administración</h2>
+          <div class="muted" id="authStatus">Cargando...</div>
+        </div>
+
+        <div class="card">
+          <h3>Cuestionarios y Respuestas</h3>
+          <div id="list">
+            <div class="muted">Cargando datos...</div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+      import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+      import { getFirestore, collection, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCq05NElKm-01Xyraj6qdF31IgOLf8gQbA",
+        authDomain: "sssss-e8013.firebaseapp.com",
+        projectId: "sssss-e8013",
+        storageBucket: "sssss-e8013.firebasestorage.app",
+        messagingSenderId: "765571239773",
+        appId: "1:765571239773:web:39ea76d035d314cdd4a2b4",
+        measurementId: "G-1JDBES8EE2",
+      };
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const db = getFirestore(app);
+      const provider = new GoogleAuthProvider();
+
+      // DOM elements
+      const $loginScreen = document.getElementById('loginScreen');
+      const $adminDashboard = document.getElementById('adminDashboard');
+      const $userInfo = document.getElementById('userInfo');
+      const $googleSignIn = document.getElementById('googleSignIn');
+      const $list = document.getElementById('list');
+      
+      // Current user
+      let currentUser = null;
+
+      // Auth state listener
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          currentUser = user;
+          showAdminDashboard(user);
+          loadSurveyData();
+        } else {
+          currentUser = null;
+          showLoginScreen();
+        }
+      });
+
+      function showLoginScreen() {
+        $loginScreen.classList.remove('hidden');
+        $adminDashboard.classList.add('hidden');
+        $userInfo.innerHTML = '<div class="muted">Sin autenticar</div>';
+      }
+
+      function showAdminDashboard(user) {
+        $loginScreen.classList.add('hidden');
+        $adminDashboard.classList.remove('hidden');
+        $userInfo.innerHTML = `
+          <img src="${user.photoURL}" alt="Avatar" class="user-avatar">
+          <span>${user.displayName}</span>
+          <button class="btn ghost" onclick="signOutUser()">Cerrar sesión</button>
+        `;
+      }
+
+      // Load available surveys from index.json
+      async function loadAvailableSurveys() {
+        try {
+          const response = await fetch('/surveys/index.json');
+          const data = await response.json();
+          return data.surveys || [];
+        } catch (error) {
+          console.error('Error loading survey index:', error);
+          return [];
+        }
+      }
+
+      async function loadSurveyData() {
+        if (!currentUser) return;
+        
+        try {
+          document.getElementById('authStatus').textContent = 'Cargando datos...';
+          
+          // Load available surveys first
+          const availableSurveys = await loadAvailableSurveys();
+          const surveyMap = {};
+          availableSurveys.forEach(survey => {
+            surveyMap[survey.id] = survey;
+          });
+          
+          // Load responses from all surveys
+          const allSurveys = {};
+          
+          for (const survey of availableSurveys) {
+            try {
+              const qRef = query(collection(db, `responses/${survey.id}/entries`), orderBy('createdAt', 'desc'));
+              const snap = await getDocs(qRef);
+              
+              if (!snap.empty) {
+                allSurveys[survey.id] = {
+                  count: snap.size,
+                  latest: snap.docs[0].data().createdAt,
+                  title: survey.title,
+                  description: survey.description
+                };
+              } else {
+                allSurveys[survey.id] = {
+                  count: 0,
+                  latest: null,
+                  title: survey.title,
+                  description: survey.description
+                };
+              }
+            } catch (error) {
+              console.error(`Error loading ${survey.id}:`, error);
+              allSurveys[survey.id] = {
+                count: 0,
+                latest: null,
+                title: survey.title,
+                description: survey.description
+              };
+            }
+          }
+
+          if (Object.keys(allSurveys).length === 0) {
+            $list.innerHTML = '<div class="muted">No hay respuestas disponibles.</div>';
+            document.getElementById('authStatus').textContent = 'Sin respuestas';
+            return;
+          }
+
+          $list.innerHTML = Object.entries(allSurveys).map(([id, info]) => `
+            <div class="row">
+              <div>
+                <strong>${info.title || id}</strong>
+                <div class="muted">${info.count} respuestas</div>
+                <div class="muted" style="font-size:11px;">${info.description || ''}</div>
+              </div>
+              <div>
+                <button class="btn" onclick="exportCsv('${id}', 'simplified')">CSV Simplificado</button>
+                <button class="btn ghost" onclick="exportCsv('${id}', 'complete')">CSV Completo</button>
+              </div>
+            </div>
+          `).join('');
+
+          document.getElementById('authStatus').textContent = `Cargados ${Object.keys(allSurveys).length} cuestionarios`;
+        } catch (error) {
+          console.error('Error loading data:', error);
+          $list.innerHTML = '<div class="muted">Error al cargar los datos.</div>';
+          document.getElementById('authStatus').textContent = 'Error al cargar datos';
+        }
+      }
+
+      // Export CSV function
+      async function exportCsv(surveyId, exportType = 'simplified') {
+        if (!currentUser) return;
+        
+        try {
+          const qRef = query(collection(db, `responses/${surveyId}/entries`), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
+          
+          if (snap.empty) {
+            alert('No hay respuestas para exportar.');
+            return;
+          }
+
+          // Define columns based on export type
+          let columns = ['entryId', 'createdAt', 'serverCode'];
+          
+          if (exportType === 'complete') {
+            columns = columns.concat([
+              'totalTime', 'itemTimes', 'browser_userAgent', 'browser_language', 
+              'browser_platform', 'browser_screenWidth', 'browser_screenHeight',
+              'browser_timezone', 'browser_timestamp', 'browser_referrer', 'browser_url'
+            ]);
+          }
+
+          // Add survey-specific columns
+          const firstDoc = snap.docs[0].data();
+          if (firstDoc.answers) {
+            Object.keys(firstDoc.answers).forEach(key => {
+              if (!columns.includes(key)) {
+                columns.push(key);
+              }
+            });
+          }
+
+          const rows = [];
+          const seenIds = new Set(); // Prevent duplicates
+
+          snap.forEach(doc => {
+            const d = doc.data();
+            const serverCode = d.serverCode;
+            const duplicateKey = `${doc.id}_${serverCode}`;
+
+            if (seenIds.has(duplicateKey)) {
+              console.log(`Skipping duplicate: ${duplicateKey}`);
+              return;
+            }
+            seenIds.add(duplicateKey);
+
+            const row = {
+              entryId: doc.id,
+              createdAt: d.createdAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+              serverCode: serverCode || ''
+            };
+
+            if (exportType === 'complete') {
+              row.totalTime = d.totalTime || '';
+              row.itemTimes = JSON.stringify(d.itemTimes || {});
+              row.browser_userAgent = d.browserData?.userAgent || '';
+              row.browser_language = d.browserData?.language || '';
+              row.browser_platform = d.browserData?.platform || '';
+              row.browser_screenWidth = d.browserData?.screenWidth || '';
+              row.browser_screenHeight = d.browserData?.screenHeight || '';
+              row.browser_timezone = d.browserData?.timezone || '';
+              row.browser_timestamp = d.browserData?.timestamp || '';
+              row.browser_referrer = d.browserData?.referrer || '';
+              row.browser_url = d.browserData?.url || '';
+            }
+
+            // Add survey answers
+            if (d.answers) {
+              Object.entries(d.answers).forEach(([key, value]) => {
+                if (Array.isArray(value)) {
+                  row[key] = value.join('; ');
+                } else {
+                  row[key] = value || '';
+                }
+              });
+            }
+
+            rows.push(row);
+          });
+
+          // Convert to CSV
+          const csvContent = [
+            columns.join(','),
+            ...rows.map(row => 
+              columns.map(col => {
+                const value = row[col] || '';
+                // Escape CSV values
+                if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                  return `"${value.replace(/"/g, '""')}"`;
+                }
+                return value;
+              }).join(',')
+            )
+          ].join('\n');
+
+          // Download
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', `respuestas_${surveyId}_${exportType}_${new Date().toISOString().split('T')[0]}.csv`);
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          URL.revokeObjectURL(url);
+        } catch (error) {
+          console.error('Error exporting CSV:', error);
+          alert('Error al exportar CSV: ' + error.message);
+        }
+      }
+
+      // Event listeners
+      $googleSignIn.addEventListener('click', async () => {
+        try {
+          await signInWithPopup(auth, provider);
+        } catch (error) {
+          console.error('Error signing in:', error);
+          alert('Error al iniciar sesión: ' + error.message);
+        }
+      });
+
+      // Global functions
+      window.signOutUser = async () => {
+        try {
+          await signOut(auth);
+        } catch (error) {
+          console.error('Error signing out:', error);
+        }
+      };
+
+      window.exportCsv = exportCsv;
+    </script>
+  </body>
+</html>

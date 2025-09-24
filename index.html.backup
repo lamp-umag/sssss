@@ -614,7 +614,7 @@
       async function submitResponses() {
         // Extract server code from URL parameter
         const urlParams = new URLSearchParams(location.search);
-        const serverCode = urlParams.get('srv') || urlParams.get('iden') || null;
+        const serverCode = urlParams.get('srv') || null;
         
         // Calculate total time
         const totalTime = startTime ? Date.now() - startTime : null;
@@ -649,7 +649,7 @@
         try {
           const col = collection(db, `responses/${survey.id}/entries`);
           await addDoc(col, payload);
-          $q.innerHTML = survey.id === 'mapa_eh' ? '<div class="q center">¡Muchas gracias por tu participación!</div><div class="info-text center">Sus respuestas son un aporte valioso para comprender cómo se perciben los proyectos en la comuna y en la región.<br><br>Ante cualquier duda o comentario, puede escribir al profesor responsable del estudio:<br><strong>Herman Elgueta</strong> — herman.elgueta@umag.cl<br><br>Universidad de Magallanes</div>' : '<div class="q center">¡Muchas gracias por tu participación!</div><div class="info-text center">Tus respuestas contribuirán al aprendizaje colectivo de la asignatura y a una mejor comprensión de la experiencia estudiantil en la Universidad de Magallanes.<br><br>Ante cualquier duda o consulta, puedes contactarte con el profesor responsable:<br><strong>Herman Elgueta</strong><br>herman.elgueta@umag.cl</div>';
+          $q.innerHTML = '<div class="q center">¡Muchas gracias por tu participación!</div><div class="info-text center">Tus respuestas contribuirán al aprendizaje colectivo de la asignatura y a una mejor comprensión de la experiencia estudiantil en la Universidad de Magallanes.<br><br>Ante cualquier duda o consulta, puedes contactarte con el profesor responsable:<br><strong>Herman Elgueta</strong><br>herman.elgueta@umag.cl</div>';
           $opts.innerHTML = '';
           $ctrls.innerHTML = '';
           $foot.innerHTML = '';

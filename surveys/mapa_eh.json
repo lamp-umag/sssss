@@ -1,0 +1,377 @@
+{
+  "id": "mapa_eh",
+  "title": "Percepciones sobre Proyectos de Hidrógeno en San Gregorio",
+  "description": "Estudio académico desarrollado por la Universidad de Magallanes",
+  "items": [
+    {
+      "id": "intro_consent",
+      "type": "text",
+      "prompt": "Este cuestionario forma parte de un estudio académico desarrollado por la Universidad de Magallanes y la University of Portsmouth. La información que usted entregue será tratada de manera confidencial y solo con fines de investigación. Su participación es voluntaria, puede no responder cualquier pregunta y retirarse en cualquier momento. Una copia del consentimiento informado completo está disponible en el siguiente enlace: https://lamp-umag.github.io/sssss/consentimiento.pdf.\n\nPara comenzar, usted declara ser mayor de 18 años y conocer las condiciones de participación. Si está de acuerdo, haga clic en Continuar.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "section_1_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 1. PERCEPCIONES SOBRE PROYECTOS DE HIDRÓGENO EN LA ZONA\n\nEn esta parte queremos conocer sus percepciones sobre los proyectos de hidrógeno que se han propuesto en la comuna de San Gregorio. No hay respuestas correctas o incorrectas: lo importante es su opinión personal. Por favor, indique su grado de acuerdo con cada afirmación.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "heard_about_project",
+      "type": "likert",
+      "prompt": "He escuchado hablar sobre el proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "clear_idea_project",
+      "type": "likert",
+      "prompt": "Tengo una idea clara de qué trata el proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "discussed_project",
+      "type": "likert",
+      "prompt": "En el último mes he conversado con familiares, vecinos o amigos sobre el proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "trust_authorities",
+      "type": "likert",
+      "prompt": "Confío en que las autoridades regionales actuarán en defensa del interés de la comunidad respecto de proyectos en la zona.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "trust_companies",
+      "type": "likert",
+      "prompt": "Confío en que las empresas vinculadas a proyectos energéticos en la zona entregan información clara, completa y verificable.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "trust_institutions",
+      "type": "likert",
+      "prompt": "Confío en que las instituciones públicas que evalúan proyectos en la zona actuarán con independencia y rigor.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "economic_benefits",
+      "type": "likert",
+      "prompt": "Creo que si se desarrollan proyectos energéticos en la zona, la comunidad de San Gregorio recibirá suficientes beneficios económicos directos y visibles.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "infrastructure_improvements",
+      "type": "likert",
+      "prompt": "Pienso que proyectos energéticos en la zona traerán considerables mejoras en servicios o infraestructura para San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "fair_compensation",
+      "type": "likert",
+      "prompt": "Considero que, en proyectos energéticos en la zona, los costos y riesgos se manejarán de forma justa, con compensaciones adecuadas para la comunidad.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "effective_participation",
+      "type": "likert",
+      "prompt": "En San Gregorio existen canales efectivos para que la comunidad participe en decisiones sobre proyectos que afectan a la comuna.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "capable_express_opinion",
+      "type": "likert",
+      "prompt": "Me siento capaz de expresar mi opinión sobre proyectos que afectan a la comuna en instancias formales (reuniones, consultas, encuestas).",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "community_influence",
+      "type": "likert",
+      "prompt": "Creo que los habitantes de San Gregorio podemos influir en decisiones sobre proyectos que afectan a la comuna.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "project_will_proceed",
+      "type": "likert",
+      "prompt": "Creo que el proyecto de hidrógeno en San Gregorio se llevará a cabo según lo planificado.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "project_likely_success",
+      "type": "likert",
+      "prompt": "Pienso que lo más probable es que el proyecto de hidrógeno en San Gregorio sí se concrete.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "visible_progress_soon",
+      "type": "likert",
+      "prompt": "Estimo que pronto veremos avances visibles del proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "good_idea_general",
+      "type": "likert",
+      "prompt": "En general, considero que es una buena idea que se realice el proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "support_installation",
+      "type": "likert",
+      "prompt": "Apoyo la instalación del proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "participate_support",
+      "type": "likert",
+      "prompt": "Participaría en actividades para respaldar el proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "bad_idea",
+      "type": "likert",
+      "prompt": "Pienso que es una pésima idea que se instalen proyectos de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "oppose_actively",
+      "type": "likert",
+      "prompt": "Me opongo activamente a la instalación de cualquier proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "participate_oppose",
+      "type": "likert",
+      "prompt": "Participaría en actividades para oponerme al proyecto de hidrógeno en San Gregorio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_2_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 2. IDENTIDAD Y ACTITUDES AMBIENTALES\n\nEn esta parte queremos conocer cómo se siente en relación con el lugar en el que vive, con la región de Magallanes y con el medioambiente en general. No hay respuestas correctas o incorrectas: lo importante es su experiencia y sus creencias personales.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "local_identity_1",
+      "type": "likert",
+      "prompt": "Me siento orgulloso/a de presentarme como habitante del lugar en el que habito.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "local_identity_2",
+      "type": "likert",
+      "prompt": "Vivir en el lugar en el que habito influye en cómo me veo a mí mismo/a.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "local_identity_3",
+      "type": "likert",
+      "prompt": "Considero el lugar en el que habito como mi hogar, incluso cuando estoy lejos.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "regional_identity_1",
+      "type": "likert",
+      "prompt": "Siento orgullo de pertenecer a la región de Magallanes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "regional_identity_2",
+      "type": "likert",
+      "prompt": "Me identifico con la comunidad de Magallanes y sus tradiciones.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "regional_identity_3",
+      "type": "likert",
+      "prompt": "Percibo un fuerte sentido de pertenencia con las personas que viven en la región de Magallanes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "environmental_attitude_1",
+      "type": "likert",
+      "prompt": "Cuidar el medioambiente debe ser una prioridad en la vida cotidiana.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "environmental_attitude_2",
+      "type": "likert",
+      "prompt": "Considero importante luchar contra el cambio climático aunque implique cambiar ciertos hábitos.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "environmental_attitude_3",
+      "type": "likert",
+      "prompt": "Proteger la naturaleza me parece algo fundamental.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ecocentric_1",
+      "type": "likert",
+      "prompt": "La naturaleza tiene un valor propio más allá de su utilidad para las personas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ecocentric_2",
+      "type": "likert",
+      "prompt": "Cuando hay conflicto entre empleo y conservación, la decisión debe resguardar la salud de los ecosistemas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ecocentric_3",
+      "type": "likert",
+      "prompt": "Es importante limitar actividades humanas si amenazan el equilibrio de los ecosistemas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Neutral", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_3_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 3. EXPERIENCIA, CONOCIMIENTO Y DATOS GENERALES\n\nEn esta parte le pedimos que nos cuente si ha tenido experiencias previas relacionadas con el gran proyecto de hidrogeno que está propuesto para San Gregorio y que responda algunas preguntas más concretas sobre la información disponible. No se trata de una prueba con nota, sino de una forma de saber cuánta información circula actualmente. Está bien responder \"No sé\" si no conoce la respuesta. Finalmente, le pedimos algunos datos generales para comprender mejor el perfil de quienes participan en este estudio.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "attended_activities",
+      "type": "yes_no",
+      "prompt": "¿Ha asistido a alguna actividad informativa o participativa relacionada con el proyecto de hidrógeno en San Gregorio?",
+      "required": false
+    },
+    {
+      "id": "which_activities",
+      "type": "text",
+      "prompt": "Si respondió \"Sí\" a la pregunta anterior: ¿A cuál(es)?",
+      "required": false,
+      "maxLength": 300,
+      "help": "Solo responde si asististe a alguna actividad"
+    },
+    {
+      "id": "words_ideas",
+      "type": "text",
+      "prompt": "¿Qué palabras o ideas se le vienen a la mente al pensar en el posible proyecto de hidrógeno en San Gregorio?",
+      "required": false,
+      "maxLength": 300
+    },
+    {
+      "id": "construction_start",
+      "type": "single_choice",
+      "prompt": "¿Cuándo está previsto que comiencen las obras de construcción de la primera fase del proyecto?",
+      "required": false,
+      "options": ["Antes de 2027", "Entre 2027 y 2028", "Después de 2028", "No sé"]
+    },
+    {
+      "id": "number_turbines",
+      "type": "single_choice",
+      "prompt": "Aproximadamente, ¿cuántos aerogeneradores contempla el proyecto?",
+      "required": false,
+      "options": ["Menos de 400", "Entre 400 y 600", "Más de 600", "No sé"]
+    },
+    {
+      "id": "max_workers",
+      "type": "single_choice",
+      "prompt": "Durante la fase de construcción, ¿cuál es el número máximo estimado de trabajadores?",
+      "required": false,
+      "options": ["Menos de 4.000", "Entre 4.000 y 8.000", "Más de 8.000", "No sé"]
+    },
+    {
+      "id": "main_product",
+      "type": "single_choice",
+      "prompt": "¿Cuál será el principal producto que se fabricará en el proyecto?",
+      "required": false,
+      "options": ["Hidrógeno", "Amoníaco", "Metanol", "No sé"]
+    },
+    {
+      "id": "product_destination",
+      "type": "single_choice",
+      "prompt": "¿Cuál será el destino principal del producto?",
+      "required": false,
+      "options": ["Principalmente para Magallanes", "Principalmente para Chile", "Principalmente para exportación internacional", "No sé"]
+    },
+    {
+      "id": "section_4_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 4. DATOS SOCIODEMOGRÁFICOS\n\nPara finalizar, le pedimos algunos datos generales. Estos datos nos permiten comprender mejor el perfil de las personas que participan, pero no se usarán para identificar a nadie en particular.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "age",
+      "type": "number",
+      "prompt": "Edad",
+      "required": false,
+      "min": 18,
+      "max": 120,
+      "placeholder": "Ingresa tu edad"
+    },
+    {
+      "id": "occupation",
+      "type": "text",
+      "prompt": "Ocupación",
+      "required": false,
+      "maxLength": 100,
+      "placeholder": "Describe tu ocupación o trabajo"
+    },
+    {
+      "id": "gender",
+      "type": "single_choice",
+      "prompt": "Género",
+      "required": false,
+      "options": ["Masculino", "Femenino", "Otro"]
+    },
+    {
+      "id": "time_in_commune",
+      "type": "text",
+      "prompt": "¿Hace cuánto vive en esta comuna?",
+      "required": false,
+      "maxLength": 100,
+      "placeholder": "Ej: 5 años, desde 2018, toda la vida, etc."
+    },
+    {
+      "id": "intention_stay",
+      "type": "yes_no",
+      "prompt": "¿Tiene intenciones de seguir viviendo en esta comuna los próximos años?",
+      "required": false
+    }
+  ]
+}

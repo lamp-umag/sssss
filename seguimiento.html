@@ -46,7 +46,7 @@
   <body>
     <header>
       <div class="brand">sssss — seguimiento</div>
-      <div><a href="./">Inicio</a> | <a href="admin.html">Admin</a></div>
+      <div><a href="./">Inicio</a> | <a href="admin2.html">Admin</a></div>
     </header>
     <main>
       <section class="card">
@@ -75,7 +75,7 @@
         <div style="margin-bottom:16px">
           <button class="btn" onclick="refreshData()">🔄 Actualizar</button>
           <button class="btn ghost" onclick="exportParticipantList()">📥 Exportar Lista</button>
-          <button class="btn" onclick="exportSimpleResponses()">📊 Descargar Respuestas Simples</button>
+          <button class="btn" onclick="exportUMAGResponses()">📊 Descargar Respuestas UMAG</button>
         </div>
 
         <div class="participant-list" id="participantList">
@@ -104,6 +104,109 @@
 
       let participants = [];
       let serverCodes = new Set();
+
+      // Define the exact order of columns based on the UMAG survey structure
+      const UMAG_COLUMNS = [
+        'participant_id',
+        'serverCode',
+        'art_1',
+        'art_2', 
+        'art_3',
+        'art_4',
+        'art_activities',
+        'sport_1',
+        'sport_2',
+        'sport_3',
+        'sport_4',
+        'sport_activities',
+        'music_1',
+        'music_2',
+        'music_3',
+        'music_4',
+        'music_genres',
+        'music_artists',
+        'control_1',
+        'control_2',
+        'control_3',
+        'control_4',
+        'control_5',
+        'red_flags',
+        'university_1',
+        'university_2',
+        'university_3',
+        'university_4',
+        'university_5',
+        'university_6',
+        'university_7',
+        'gambling_1',
+        'gambling_2',
+        'gambling_3',
+        'gambling_4',
+        'gambling_types',
+        'personality_1',
+        'personality_2',
+        'personality_3',
+        'personality_4',
+        'personality_5',
+        'personality_6',
+        'personality_7',
+        'personality_8',
+        'personality_9',
+        'personality_10',
+        'personality_11',
+        'personality_12',
+        'personality_13',
+        'personality_14',
+        'personality_15',
+        'personality_16',
+        'personality_17',
+        'personality_18',
+        'personality_19',
+        'personality_20',
+        'personality_21',
+        'personality_22',
+        'personality_23',
+        'personality_24',
+        'personality_25',
+        'personality_26',
+        'personality_27',
+        'personality_28',
+        'personality_29',
+        'personality_30',
+        'personality_31',
+        'personality_32',
+        'personality_33',
+        'ai_1',
+        'ai_2',
+        'ai_3',
+        'ai_4',
+        'ai_5',
+        'ai_6',
+        'ai_tools',
+        'ai_uses',
+        'wellbeing_1',
+        'wellbeing_2',
+        'wellbeing_3',
+        'wellbeing_4',
+        'wellbeing_5',
+        'mood_enthusiastic',
+        'mood_nervous',
+        'mood_inspired',
+        'mood_restless',
+        'mood_determined',
+        'mood_fearful',
+        'mood_active',
+        'mood_ashamed',
+        'mood_attentive',
+        'mood_distressed',
+        'gender',
+        'work_status',
+        'location',
+        'relationship_status',
+        'religious_orientation',
+        'political_orientation',
+        'study_area'
+      ];
 
       async function loadData() {
         try {
@@ -209,7 +312,7 @@
         setTimeout(() => URL.revokeObjectURL(url), 1000);
       }
 
-      async function exportSimpleResponses() {
+      async function exportUMAGResponses() {
         try {
           const qRef = query(collection(db, 'responses/umag/entries'), orderBy('createdAt', 'desc'));
           const snap = await getDocs(qRef);
@@ -219,47 +322,41 @@
             return;
           }
 
-          // Get all unique column names from responses
-          const allColumns = new Set(['participant_id', 'serverCode']);
-          const responses = [];
-          
+          // Create CSV with exact column order and empty cells for missing responses
+          const csvRows = [
+            UMAG_COLUMNS.join(',')
+          ];
+
           snap.forEach(doc => {
             const data = doc.data();
-            if (data.answers) {
-              Object.keys(data.answers).forEach(key => allColumns.add(key));
-            }
-            responses.push({ id: doc.id, ...data });
+            const answers = data.answers || {};
+            
+            const row = UMAG_COLUMNS.map(column => {
+              let value = '';
+              
+              if (column === 'participant_id') {
+                value = answers.participant_id || '';
+              } else if (column === 'serverCode') {
+                value = data.serverCode || '';
+              } else if (answers.hasOwnProperty(column)) {
+                const val = answers[column];
+                if (Array.isArray(val)) {
+                  value = val.join('; ');
+                } else {
+                  value = val || '';
+                }
+              }
+              // If column doesn't exist in answers, value remains empty string
+              
+              // Escape CSV values
+              if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                return `"${value.replace(/"/g, '""')}"`;
+              }
+              return value;
+            });
+            
+            csvRows.push(row.join(','));
           });
-
-          const columns = Array.from(allColumns).sort();
-          
-          // Create CSV content
-          const csvRows = [
-            columns.join(','),
-            ...responses.map(response => 
-              columns.map(col => {
-                let value = '';
-                if (col === 'participant_id') {
-                  value = response.answers?.participant_id || '';
-                } else if (col === 'serverCode') {
-                  value = response.serverCode || '';
-                } else if (response.answers && response.answers.hasOwnProperty(col)) {
-                  const val = response.answers[col];
-                  if (Array.isArray(val)) {
-                    value = val.join('; ');
-                  } else {
-                    value = val || '';
-                  }
-                }
-                
-                // Escape CSV values
-                if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
-                  return `"${value.replace(/"/g, '""')}"`;
-                }
-                return value;
-              }).join(',')
-            )
-          ];
 
           const csvContent = csvRows.join('\n');
           
@@ -268,13 +365,13 @@
           const url = URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
-          a.download = `respuestas-simples-umag-${new Date().toISOString().slice(0,19).replaceAll(':','-')}.csv`;
+          a.download = `respuestas-umag-${new Date().toISOString().slice(0,19).replaceAll(':','-')}.csv`;
           a.click();
           setTimeout(() => URL.revokeObjectURL(url), 1000);
           
-          console.log(`Exported ${responses.length} simple responses`);
+          console.log(`Exported ${snap.size} UMAG responses with ${UMAG_COLUMNS.length} columns`);
         } catch (error) {
-          console.error('Error exporting simple responses:', error);
+          console.error('Error exporting UMAG responses:', error);
           alert('Error al exportar respuestas: ' + error.message);
         }
       }
@@ -282,6 +379,11 @@
       function refreshData() {
         loadData();
       }
+
+      // Make functions globally available
+      window.refreshData = refreshData;
+      window.exportParticipantList = exportParticipantList;
+      window.exportUMAGResponses = exportUMAGResponses;
 
       // Auto-refresh every 30 seconds
       setInterval(refreshData, 30000);
