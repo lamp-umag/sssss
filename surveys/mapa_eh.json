@@ -27,8 +27,7 @@
       "prompt": "¿Cuál es su edad? (en años cumplidos)",
       "required": false,
       "min": 18,
-      "max": 120,
-      "placeholder": "Ingresa tu edad"
+      "max": 120
     },
     {
       "id": "gender",
@@ -42,16 +41,14 @@
       "type": "text",
       "prompt": "¿Cuál es su ocupación o trabajo principal?",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Describe tu ocupación o trabajo"
+      "maxLength": 100
     },
     {
       "id": "time_in_commune",
       "type": "text",
       "prompt": "¿Hace cuántos años vive en esta comuna?",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Ej: 5 años, desde 2018, toda la vida, etc."
+      "maxLength": 100
     },
     {
       "id": "intention_stay",
@@ -328,8 +325,7 @@
       "type": "text",
       "prompt": "Si marcó que sí: ¿A qué actividad(es) asistió?",
       "required": false,
-      "maxLength": 300,
-      "help": "Solo responde si asististe a alguna actividad"
+      "maxLength": 300
     },
     {
       "id": "words_ideas",
@@ -343,49 +339,35 @@
       "type": "text",
       "prompt": "¿Cuándo está previsto que comiencen las obras de construcción de la primera fase? Diga un año aproximado según lo que conoce.",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Ej: 2027, después de 2028, etc."
+      "maxLength": 100
     },
     {
       "id": "number_turbines",
       "type": "text",
       "prompt": "Aproximadamente, ¿cuántos aerogeneradores contempla el proyecto? De un valor aproximado según lo que conoce.",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Ej: 400, entre 400 y 600, etc."
+      "maxLength": 100
     },
     {
       "id": "max_workers",
       "type": "text",
       "prompt": "Durante la fase de construcción, ¿cuál es el número máximo estimado de trabajadores? Dé un valor según lo que conoce.",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Ej: 4000, entre 4000 y 8000, etc."
+      "maxLength": 100
     },
     {
       "id": "main_product",
       "type": "text",
       "prompt": "¿Cuál será el principal producto que se fabricará en el proyecto? Mencione lo que conoce.",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Ej: Hidrógeno, Amoníaco, Metanol, etc."
+      "maxLength": 100
     },
     {
       "id": "product_destination",
       "type": "text",
       "prompt": "¿Cuál será el destino principal del producto? Mencione lo que conoce.",
       "required": false,
-      "maxLength": 100,
-      "placeholder": "Ej: Para Magallanes, para Chile, para exportación, etc."
-    },
-    {
-      "id": "final_thanks",
-      "type": "text",
-      "prompt": "Muchas gracias por su tiempo y por compartir su opinión. Sus respuestas son un aporte valioso para comprender cómo se perciben los proyectos en la comuna y en la región.\n\nAnte cualquier duda o comentario, puede escribir al profesor responsable del estudio:\nHerman Elgueta — herman.elgueta@umag.cl\n\nUniversidad de Magallanes",
-      "required": false,
-      "long": true,
-      "placeholder": "Gracias por tu participación",
-      "maxLength": 1
+      "maxLength": 100
     }
   ]
 }
