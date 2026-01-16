@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>sssss — seguimiento música</title>
+    <style>
+      :root { 
+        --bg:#f7fafc; 
+        --fg:#0f172a; 
+        --muted:#475569; 
+        --accent:#2563eb; 
+        --card:#ffffff; 
+        --border:#e2e8f0;
+        --ok: #16a34a;
+        --warn: #d97706;
+        --error: #dc2626;
+      }
+      *{box-sizing:border-box}
+      body{margin:0;font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial;background:var(--bg);color:var(--fg)}
+      header{padding:16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter: blur(6px)}
+      .brand{font-weight:800}
+      main{max-width:1200px;margin:0 auto;padding:16px}
+      .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.04);margin-bottom:16px}
+      .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--border);background:var(--accent);color:#fff;font-weight:700;cursor:pointer;margin:4px}
+      .ghost{background:#ffffff;color:var(--fg)}
+      .muted{color:var(--muted);font-size:12px}
+      .grid{display:grid;gap:10px}
+      a{color:var(--accent);text-decoration:none}
+      .badge{display:inline-block;padding:2px 8px;border:1px solid var(--border);border-radius:999px;color:var(--muted);font-size:12px}
+      code{background:#f1f5f9;border:1px solid var(--border);padding:2px 6px;border-radius:6px}
+      .stats{display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:16px;margin-bottom:20px}
+      .stat-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center}
+      .stat-number{font-size:24px;font-weight:700;color:var(--accent)}
+      .stat-label{font-size:14px;color:var(--muted);margin-top:4px}
+      .participant-list{max-height:400px;overflow-y:auto;border:1px solid var(--border);border-radius:8px}
+      .participant-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--border);background:#fff}
+      .participant-item:last-child{border-bottom:none}
+      .participant-code{font-weight:700;font-family:monospace;font-size:12px}
+      .participant-time{font-size:12px;color:var(--muted)}
+      .refresh-btn{position:fixed;bottom:20px;right:20px;z-index:1000}
+      .loading{text-align:center;padding:20px;color:var(--muted)}
+      .error{color:var(--error);text-align:center;padding:20px}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">sssss — seguimiento música</div>
+      <div><a href="./">Inicio</a> | <a href="admin2.html">Admin</a></div>
+    </header>
+    <main>
+      <section class="card">
+        <h2 style="margin:0 0 8px 0">Seguimiento de Participantes</h2>
+        <div class="muted">Respuestas completadas del cuestionario de usos y preferencias musicales</div>
+        
+        <div class="stats" id="stats">
+          <div class="stat-card">
+            <div class="stat-number" id="totalResponses">-</div>
+            <div class="stat-label">Total Respuestas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="serverCodes">-</div>
+            <div class="stat-label">Códigos de Servidor</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-number" id="avgTime">-</div>
+            <div class="stat-label">Tiempo Promedio (min)</div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:16px">
+          <button class="btn" onclick="refreshData()">🔄 Actualizar</button>
+          <button class="btn" onclick="exportMusicResponses()">📊 Descargar Respuestas Música</button>
+        </div>
+
+        <div class="participant-list" id="participantList">
+          <div class="loading">Cargando datos...</div>
+        </div>
+      </section>
+    </main>
+
+    <button class="btn refresh-btn" onclick="refreshData()" title="Actualizar datos">🔄</button>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+      import { getFirestore, collection, getDocs, orderBy, query } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyCq05NElKm-01Xyraj6qdF31IgOLf8gQbA",
+        authDomain: "sssss-e8013.firebaseapp.com",
+        projectId: "sssss-e8013",
+        storageBucket: "sssss-e8013.firebasestorage.app",
+        messagingSenderId: "765571239773",
+        appId: "1:765571239773:web:39ea76d035d314cdd4a2b4",
+        measurementId: "G-1JDBES8EE2",
+      };
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      let responses = [];
+      let serverCodes = new Set();
+
+      async function loadData() {
+        try {
+          document.getElementById('participantList').innerHTML = '<div class="loading">Cargando datos...</div>';
+          
+          const qRef = query(collection(db, 'responses/music/entries'), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
+          
+          responses = [];
+          serverCodes.clear();
+          
+          snap.forEach(doc => {
+            const data = doc.data();
+            const serverCode = data.serverCode;
+            
+            responses.push({
+              id: doc.id,
+              serverCode: serverCode || 'Sin código',
+              createdAt: data.createdAt?.toDate?.() || new Date(),
+              totalTime: data.totalTime || 0,
+              answers: data.answers || {},
+              browserData: data.browserData || {}
+            });
+            
+            if (serverCode) {
+              serverCodes.add(serverCode);
+            }
+          });
+          
+          updateStats();
+          updateResponseList();
+          
+        } catch (error) {
+          console.error('Error loading data:', error);
+          document.getElementById('participantList').innerHTML = '<div class="error">Error al cargar los datos. Intenta de nuevo.</div>';
+        }
+      }
+
+      function updateStats() {
+        const totalResponses = responses.length;
+        const uniqueServerCodes = serverCodes.size;
+        
+        const avgTime = responses.length > 0 
+          ? Math.round(responses.reduce((sum, r) => sum + (r.totalTime || 0), 0) / responses.length / 1000 / 60 * 10) / 10
+          : 0;
+        
+        document.getElementById('totalResponses').textContent = totalResponses;
+        document.getElementById('serverCodes').textContent = uniqueServerCodes;
+        document.getElementById('avgTime').textContent = avgTime;
+      }
+
+      function updateResponseList() {
+        const list = document.getElementById('participantList');
+        
+        if (responses.length === 0) {
+          list.innerHTML = '<div class="loading">No hay respuestas aún</div>';
+          return;
+        }
+        
+        const html = responses.map(r => {
+          const timeStr = r.totalTime ? `${Math.round(r.totalTime / 1000 / 60)} min` : 'N/A';
+          const dateStr = r.createdAt.toLocaleString('es-CL');
+          const ageRange = r.answers?.age_range || 'N/A';
+          const gender = r.answers?.gender || 'N/A';
+          
+          return `
+            <div class="participant-item">
+              <div>
+                <div class="participant-code">ID: ${r.id.substring(0, 8)}...</div>
+                <div class="participant-time">${dateStr} • ${timeStr} • ${ageRange} • ${gender}</div>
+              </div>
+              <div>
+                <span class="badge">${r.serverCode}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+        
+        list.innerHTML = html;
+      }
+
+      async function exportMusicResponses() {
+        try {
+          const qRef = query(collection(db, 'responses/music/entries'), orderBy('createdAt', 'desc'));
+          const snap = await getDocs(qRef);
+          
+          if (snap.empty) {
+            alert('No hay respuestas para exportar.');
+            return;
+          }
+
+          // Get all unique field names from all responses
+          const allFields = new Set();
+          snap.forEach(doc => {
+            const data = doc.data();
+            if (data.answers) {
+              Object.keys(data.answers).forEach(key => allFields.add(key));
+            }
+            if (data.browserData) {
+              Object.keys(data.browserData).forEach(key => allFields.add(`browser_${key}`));
+            }
+          });
+
+          // Create ordered column list
+          const baseColumns = [
+            'response_id',
+            'serverCode',
+            'totalTime',
+            'createdAt',
+            'age_range',
+            'gender',
+            'occupation',
+            'education_level',
+            'religion',
+            'political_orientation'
+          ];
+
+          const answerFields = Array.from(allFields).filter(f => !baseColumns.includes(f));
+          const columns = [...baseColumns, ...answerFields.sort()];
+
+          // Create CSV
+          const csvRows = [columns.join(',')];
+
+          snap.forEach(doc => {
+            const data = doc.data();
+            const answers = data.answers || {};
+            const browserData = data.browserData || {};
+            
+            const row = columns.map(column => {
+              let value = '';
+              
+              if (column === 'response_id') {
+                value = doc.id;
+              } else if (column === 'serverCode') {
+                value = data.serverCode || '';
+              } else if (column === 'totalTime') {
+                value = data.totalTime ? Math.round(data.totalTime / 1000 / 60) : '';
+              } else if (column === 'createdAt') {
+                value = data.createdAt?.toDate?.() ? data.createdAt.toDate().toISOString() : '';
+              } else if (column.startsWith('browser_')) {
+                const browserKey = column.replace('browser_', '');
+                value = browserData[browserKey] || '';
+              } else if (answers.hasOwnProperty(column)) {
+                const val = answers[column];
+                if (Array.isArray(val)) {
+                  value = val.join('; ');
+                } else {
+                  value = val || '';
+                }
+              }
+              
+              // Escape CSV values
+              if (typeof value === 'string' && (value.includes(',') || value.includes('"') || value.includes('\n'))) {
+                return `"${value.replace(/"/g, '""')}"`;
+              }
+              return value;
+            });
+            
+            csvRows.push(row.join(','));
+          });
+
+          const csvContent = csvRows.join('\n');
+          
+          // Download file
+          const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `respuestas-music-${new Date().toISOString().slice(0,19).replaceAll(':','-')}.csv`;
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+          
+          console.log(`Exported ${snap.size} music responses with ${columns.length} columns`);
+        } catch (error) {
+          console.error('Error exporting music responses:', error);
+          alert('Error al exportar respuestas: ' + error.message);
+        }
+      }
+
+      function refreshData() {
+        loadData();
+      }
+
+      // Make functions globally available
+      window.refreshData = refreshData;
+      window.exportMusicResponses = exportMusicResponses;
+
+      // Auto-refresh every 30 seconds
+      setInterval(refreshData, 30000);
+
+      // Load data on page load
+      loadData();
+    </script>
+  </body>
+</html>
