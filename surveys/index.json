@@ -35,6 +35,12 @@
       "title": "Percepciones sobre Proyectos de Hidrógeno en San Gregorio",
       "description": "Estudio académico desarrollado por la Universidad de Magallanes",
       "file": "mapa_eh.json"
+    },
+    {
+      "id": "music",
+      "title": "Estudio comparativo de usos y preferencias musicales entre generaciones millennials y centennials",
+      "description": "Estudio académico desarrollado por la Universidad de Magallanes",
+      "file": "music.json"
     }
   ]
 }
