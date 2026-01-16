@@ -1,0 +1,618 @@
+{
+  "id": "music",
+  "title": "Estudio comparativo de usos y preferencias musicales entre generaciones millennials y centennials",
+  "description": "Estudio académico desarrollado por la Universidad de Magallanes",
+  "items": [
+    {
+      "id": "intro_consent",
+      "type": "text",
+      "prompt": "Le invitamos a participar en un estudio en la Universidad de Magallanes en el contexto de un Seminario de Título de último año de la Carrera de Psicología del estudiante Fabián Chávez Miranda. El objetivo es comprender mejor los hábitos de escucha musical de las personas y cómo estos se relacionan con su forma de ser en general.\n\nSu participación es totalmente voluntaria, y consistirá en responder un cuestionario que no debería tomar más de 10 minutos. Puede negarse a responder cualquier pregunta y retirarse en cualquier momento sin consecuencias.\n\nSu participación es anónima y voluntaria. Los datos recopilados podrán ser utilizados con fines de investigación y puestos a disposición para análisis secundario.\n\nSi tiene preguntas, observaciones o desea más información, puede comunicarse con el profesor guía, Dr. Herman Elgueta, al correo electrónico: herman.elgueta@umag.cl.\n\nPara comenzar, usted declara ser mayor de 18 años y conocer las condiciones de participación. Si está de acuerdo, haga clic en Siguiente.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "section_demographics_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 1. DATOS SOCIODEMOGRÁFICOS\n\nPrimero, le pedimos algunos datos generales que nos permitirán comprender mejor el perfil de las personas que participan. Su participación es anónima.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "age_range",
+      "type": "single_choice",
+      "prompt": "¿En qué rango de edad se encuentra?",
+      "required": false,
+      "options": ["18-29 años", "30-39 años", "40-49 años", "50-59 años", "60 años o más"]
+    },
+    {
+      "id": "gender",
+      "type": "single_choice",
+      "prompt": "¿Cuál es su género?",
+      "required": false,
+      "options": ["Masculino", "Femenino", "Otro"]
+    },
+    {
+      "id": "occupation",
+      "type": "single_choice",
+      "prompt": "¿Cuál es su situación ocupacional actual?",
+      "required": false,
+      "options": ["Estudiante", "Trabajador dependiente", "Trabajador independiente", "No trabaja"]
+    },
+    {
+      "id": "education_level",
+      "type": "single_choice",
+      "prompt": "¿Cuál es el nivel educativo más alto que ha completado?",
+      "required": false,
+      "options": ["Sin estudios formales", "Educación básica", "Educación media", "Educación técnico profesional", "Educación universitaria", "Posítulo o postgrado"]
+    },
+    {
+      "id": "religion",
+      "type": "text",
+      "prompt": "¿Cuál es su religión u orientación religiosa? o ¿Tiene algún grupo o referente que refleje su postura?",
+      "required": false,
+      "maxLength": 100
+    },
+    {
+      "id": "political_orientation",
+      "type": "text",
+      "prompt": "¿Cuál es su orientación política? o ¿Tiene algún grupo o referente que refleje sus ideas?",
+      "required": false,
+      "maxLength": 100
+    },
+    {
+      "id": "section_music_uses_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 2. USOS Y EXPERIENCIAS CON LA MÚSICA\n\nEn esta sección queremos conocer cómo utiliza la música en su vida cotidiana y qué experiencias tiene con ella. Por favor, indique su grado de acuerdo o desacuerdo con cada una de las siguientes afirmaciones.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "music_mood",
+      "type": "likert",
+      "prompt": "Escuchar música afecta significativamente mi humor.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_analyze",
+      "type": "likert",
+      "prompt": "Generalmente disfruto analizar composiciones musicales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_work_study",
+      "type": "likert",
+      "prompt": "Disfruto escuchar música mientras trabajo o estudio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_nostalgia",
+      "type": "likert",
+      "prompt": "La música que marcó etapas anteriores de mi vida me hace sentir nostalgia.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_intellectual",
+      "type": "likert",
+      "prompt": "Escuchar música es una experiencia intelectual para mí.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_distracting",
+      "type": "likert",
+      "prompt": "La música me distrae, así que cuando trabajo o estudio necesito silencio.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_happiness",
+      "type": "likert",
+      "prompt": "Cuando quiero estar feliz, escucho una canción alegre.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_technique",
+      "type": "likert",
+      "prompt": "En general pongo atención a la técnica de los artistas de la música que me gusta.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_boredom",
+      "type": "likert",
+      "prompt": "Si no escucho música mientras hago algo, por lo general me aburro.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_sad_songs",
+      "type": "likert",
+      "prompt": "Me conmuevo mucho cuando escucho canciones tristes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_popular_primitive",
+      "type": "likert",
+      "prompt": "La música popular suena demasiado primitiva para mi gusto.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_social",
+      "type": "likert",
+      "prompt": "Disfruto escuchando música en eventos sociales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_memories",
+      "type": "likert",
+      "prompt": "Casi todos los recuerdos que tengo están asociados a una canción en particular.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_focus",
+      "type": "likert",
+      "prompt": "Escucho música que me gusta para concentrarme en ella.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_loneliness",
+      "type": "likert",
+      "prompt": "Con frecuencia me siento solo si no escucho música.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_personality_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 3. FORMAS DE SER\n\nA continuación le presentamos una serie de afirmaciones sobre su personalidad y forma de ser. Por favor, indique su grado de acuerdo o desacuerdo con cada una. No hay respuestas correctas o incorrectas, lo importante es su opinión honesta.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "personality_extraversion_1",
+      "type": "likert",
+      "prompt": "Me siento cómodo iniciando conversaciones con personas nuevas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_agreeableness_1",
+      "type": "likert",
+      "prompt": "Trato de ser considerado y amable con los demás.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_conscientiousness_1",
+      "type": "likert",
+      "prompt": "Cumplo con mis compromisos incluso cuando requieren esfuerzo.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_neuroticism_1",
+      "type": "likert",
+      "prompt": "Me preocupo con facilidad por cosas pequeñas.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_openness_1",
+      "type": "likert",
+      "prompt": "Me interesa explorar ideas nuevas y diferentes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_extraversion_2",
+      "type": "likert",
+      "prompt": "Disfruto estar rodeado de gente y participar en actividades sociales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_agreeableness_2",
+      "type": "likert",
+      "prompt": "Me preocupo por las necesidades de las personas que me rodean.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_conscientiousness_2",
+      "type": "likert",
+      "prompt": "Soy organizado en mis tareas y responsabilidades.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_neuroticism_2",
+      "type": "likert",
+      "prompt": "A menudo me siento ansioso o nervioso.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_openness_2",
+      "type": "likert",
+      "prompt": "Disfruto actividades creativas como leer, escribir o arte.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_extraversion_3",
+      "type": "likert",
+      "prompt": "Me considero una persona que disfruta al interactuar en grupos.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_agreeableness_3",
+      "type": "likert",
+      "prompt": "Busco cooperar más que competir en mis relaciones.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_conscientiousness_3",
+      "type": "likert",
+      "prompt": "Me esfuerzo por terminar lo que empiezo.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_neuroticism_3",
+      "type": "likert",
+      "prompt": "Me afecta mucho cuando enfrento situaciones estresantes.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "personality_openness_3",
+      "type": "likert",
+      "prompt": "Estoy abierto a probar experiencias distintas y poco habituales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_emotional_intelligence_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 4. EMOCIONES\n\nLas siguientes afirmaciones se refieren a cómo percibe y maneja sus emociones. Por favor, indique su grado de acuerdo o desacuerdo con cada una.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "ei_self_awareness_1",
+      "type": "likert",
+      "prompt": "Generalmente sé cómo me siento.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_empathy_1",
+      "type": "likert",
+      "prompt": "Me resulta fácil identificar cómo se sienten los demás.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_self_regulation_1",
+      "type": "likert",
+      "prompt": "Sé cómo controlar mis emociones cuando lo necesito.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_motivation_1",
+      "type": "likert",
+      "prompt": "Soy capaz de mantenerme positivo/a incluso en situaciones difíciles.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_expression_1",
+      "type": "likert",
+      "prompt": "Me resulta difícil expresar mis emociones.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_expression_2",
+      "type": "likert",
+      "prompt": "Me siento cómodo/a hablando de mis sentimientos.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_empathy_2",
+      "type": "likert",
+      "prompt": "Puedo ayudar a otros a entender sus emociones.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_motivation_2",
+      "type": "likert",
+      "prompt": "Sé cómo motivarme a mí mismo/a.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_self_regulation_2",
+      "type": "likert",
+      "prompt": "Me resulta difícil mantenerme tranquilo/a bajo presión.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "ei_social_skills",
+      "type": "likert",
+      "prompt": "Suelo tener buenas relaciones personales.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "section_music_genres_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 5. GÉNEROS MUSICALES\n\nA continuación se presenta una lista de estilos musicales. Por favor, indique con qué frecuencia escucha cada uno de ellos por elección personal.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "genre_pop",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Pop / K-Pop",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_rock",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Rock / Metal",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_hiphop",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Hip hop / Rap",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_reggaeton",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Reggaetón / Trap latino",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_latin",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Música latina bailable / Rancheras",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_jazz",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Jazz / Blues",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_classical",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Música clásica",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_electronic",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Electrónica / Dance",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_indie",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Indie / Alternativa",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_folk",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Folclórica / Tradicional",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_religious",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Religiosa / Espiritual",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_experimental",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Avant-garde / Experimental / Otros",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_country",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Country / Folk anglosajón",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "genre_reggae",
+      "type": "likert",
+      "prompt": "¿Qué tan frecuentemente escuchas este género? Reggae / Ska",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "section_music_motives_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 6. USOS DE LA MÚSICA\n\nPor favor, indique con qué frecuencia utiliza la música para cada uno de los siguientes propósitos.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "motive_relax",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: relajarte o reducir el estrés",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_mood",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: animarte o mejorar tu estado de ánimo",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_daily",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: acompañar actividades cotidianas (ej. cocinar, limpiar, trabajar)",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_study",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: concentrarte o estudiar",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_social",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: socializar o compartir con otras personas",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_exercise",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: bailar o hacer ejercicio",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_expression",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: expresarte emocionalmente (ej. cantar, tocar instrumentos, sentirte identificado/a)",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_identity",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: conectar con tu identidad cultural o espiritual",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "motive_discovery",
+      "type": "likert",
+      "prompt": "Indica qué tan frecuentemente usas la música para: explorar y descubrir nueva música",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "section_music_importance_intro",
+      "type": "text",
+      "prompt": "SECCIÓN 7. TIEMPO E IMPORTANCIA DE LA MÚSICA EN LA VIDA\n\nFinalmente, le preguntamos sobre el tiempo que dedica a escuchar música y el lugar que ocupa en su vida.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "listening_time_intentional",
+      "type": "single_choice",
+      "prompt": "En un día normal, ¿cuánto rato escuchas música porque tú quieres (pones música, eliges canciones, playlists, etc.)?",
+      "required": false,
+      "options": ["Nada", "Menos de 30 minutos", "Entre 30 min y 1 hora", "Entre 1 y 2 horas", "Más de 2 horas"]
+    },
+    {
+      "id": "listening_time_background",
+      "type": "single_choice",
+      "prompt": "En un día normal, ¿cuánto rato escuchas música que está sonando de fondo sin que tú la hayas puesto (ej. en la micro, en tiendas, en la casa de alguien)?",
+      "required": false,
+      "options": ["Nada", "Menos de 30 minutos", "Entre 30 min y 1 hora", "Entre 1 y 2 horas", "Más de 2 horas"]
+    },
+    {
+      "id": "music_importance_daily",
+      "type": "likert",
+      "prompt": "La música es una parte importante de mi vida cotidiana.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_importance_imagine",
+      "type": "likert",
+      "prompt": "Me costaría imaginar mi vida sin música.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_importance_identity",
+      "type": "likert",
+      "prompt": "La música me ayuda a sentirme más yo mismo/a.",
+      "required": false,
+      "options": ["Totalmente en desacuerdo", "En desacuerdo", "Ni de acuerdo ni en desacuerdo", "De acuerdo", "Totalmente de acuerdo"]
+    },
+    {
+      "id": "music_making_frequency",
+      "type": "single_choice",
+      "prompt": "¿Con qué frecuencia haces música tú mismo/a (cantas, tocas instrumentos, produces, etc.)?",
+      "required": false,
+      "options": ["Nunca", "Rara vez", "Algunas veces", "Frecuentemente", "Todos los días"]
+    },
+    {
+      "id": "music_training",
+      "type": "single_choice",
+      "prompt": "¿Has recibido algún tipo de entrenamiento o clases de música (formal o informal)?",
+      "required": false,
+      "options": ["Sí, formal (conservatorio, universidad, etc.)", "Sí, informal (clases particulares, tutoriales, etc.)", "No"]
+    },
+    {
+      "id": "additional_comments",
+      "type": "text",
+      "prompt": "Si tienes cualquier observación adicional o situación especial que deberíamos tener en cuenta, lo puedes expresar en el siguiente espacio",
+      "required": false,
+      "maxLength": 500
+    }
+  ]
+}
