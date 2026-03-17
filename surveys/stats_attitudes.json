@@ -1,0 +1,236 @@
+{
+  "id": "stats_attitudes",
+  "title": "Cuestionario sobre actitudes hacia la estadística",
+  "description": "Breve cuestionario sobre tus actitudes hacia la estadística.",
+  "items": [
+    {
+      "id": "intro_stats_attitudes",
+      "type": "text",
+      "prompt": "Cuestionario sobre actitudes hacia la estadística\n\nEn las siguientes preguntas te pediremos tu grado de acuerdo con distintas afirmaciones sobre la estadística.\n\nNo hay respuestas correctas o incorrectas: responde según lo que realmente piensas.",
+      "required": false,
+      "long": true,
+      "placeholder": "Lee la información y presiona 'Siguiente' para continuar",
+      "maxLength": 1
+    },
+    {
+      "id": "rut",
+      "type": "text",
+      "prompt": "Antes de comenzar, por favor indica tu RUT (sin puntos, con guion).",
+      "required": true,
+      "long": false,
+      "placeholder": "Ejemplo: 12345678-9",
+      "maxLength": 12
+    },
+    {
+      "id": "stat_item_1",
+      "type": "likert",
+      "prompt": "La estadística es una materia muy necesaria en la carrera",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_2",
+      "type": "likert",
+      "prompt": "Utilizar la estadística puede ser algo entretenido",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_3",
+      "type": "likert",
+      "prompt": "Las asignaturas de estadísticas son las que me generan más temor",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_4",
+      "type": "likert",
+      "prompt": "Tengo confianza en mí para poder enfrentarme al aprendizaje de la estadística",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_5",
+      "type": "likert",
+      "prompt": "Espero no tener que utilizar la estadística en mi vida profesional",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_6",
+      "type": "likert",
+      "prompt": "Saber utilizar la estadística podría incrementar mis oportunidades de trabajo",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_7",
+      "type": "likert",
+      "prompt": "Puede llegar a ser divertido hablar de estadística con otros",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_8",
+      "type": "likert",
+      "prompt": "Trabajar con la estadística hace que me sienta muy nervioso/a",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_9",
+      "type": "likert",
+      "prompt": "Puedo mantener la calma al tener que trabajar en problemas de estadística",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_10",
+      "type": "likert",
+      "prompt": "Otras asignaturas son mucho más importantes que la estadística",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_11",
+      "type": "likert",
+      "prompt": "Para mi carrera es muy importante el estudio de la estadística",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_12",
+      "type": "likert",
+      "prompt": "La estadística suena como algo intersante para mí",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_13",
+      "type": "likert",
+      "prompt": "La estadística hace que me sienta nervioso/a",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_14",
+      "type": "likert",
+      "prompt": "Si me lo propongo, puedo llegar a dominar bien la estadística",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    },
+    {
+      "id": "stat_item_15",
+      "type": "likert",
+      "prompt": "Los contenidos de estadísticas son poco interesantes para mí",
+      "required": false,
+      "options": [
+        "Totalmente en desacuerdo",
+        "En desacuerdo",
+        "Ni de acuerdo ni en desacuerdo",
+        "De acuerdo",
+        "Totalmente de acuerdo"
+      ],
+      "randomizeGroup": "stats_attitudes_main"
+    }
+  ]
+}
+

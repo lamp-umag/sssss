@@ -233,7 +233,7 @@
       }
 
       function startSurvey(data) {
-        survey = data;
+        survey = applyRandomization(data);
         currentIndex = 0;
         answers = {};
         startTime = Date.now();
@@ -243,6 +243,41 @@
         // Hide header in survey mode
         document.querySelector('header').style.display = 'none';
         renderStep();
+      }
+
+      function applyRandomization(data) {
+        if (!data || !Array.isArray(data.items)) return data;
+        const items = [...data.items];
+
+        // Group items by randomizeGroup key if present
+        const groups = new Map();
+        items.forEach((item, index) => {
+          if (item.randomizeGroup) {
+            const key = item.randomizeGroup;
+            if (!groups.has(key)) {
+              groups.set(key, []);
+            }
+            groups.get(key).push({ index, item });
+          }
+        });
+
+        if (groups.size === 0) {
+          return data;
+        }
+
+        // For each group, shuffle items within their original index positions
+        groups.forEach(entries => {
+          const shuffled = [...entries.map(e => e.item)];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+          entries.forEach((entry, idx) => {
+            items[entry.index] = shuffled[idx];
+          });
+        });
+
+        return { ...data, items };
       }
 
       function renderStep() {

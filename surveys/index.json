@@ -41,6 +41,12 @@
       "title": "Estudio comparativo de usos y preferencias musicales entre generaciones millennials y centennials",
       "description": "Estudio académico desarrollado por la Universidad de Magallanes",
       "file": "music.json"
+    },
+    {
+      "id": "stats_attitudes",
+      "title": "Cuestionario sobre actitudes hacia la estadística",
+      "description": "Breve cuestionario sobre tus actitudes hacia la estadística.",
+      "file": "stats_attitudes.json"
     }
   ]
 }
