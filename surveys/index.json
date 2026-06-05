@@ -1,52 +1,10 @@
 {
   "surveys": [
     {
-      "id": "wellbeing",
-      "title": "Bienestar y satisfacción (SWLS + WHO-5)",
-      "description": "Apodo + escalas SWLS y WHO-5.",
-      "file": "wellbeing.json"
-    },
-    {
-      "id": "habits",
-      "title": "Ánimo, ansiedad y estrés (PHQ-2 + GAD-2 + PSS-4)",
-      "description": "Apodo + PHQ-2, GAD-2 y PSS-4.",
-      "file": "habits.json"
-    },
-    {
-      "id": "mood",
-      "title": "Afecto (I-PANAS-SF)",
-      "description": "Apodo + afecto positivo y negativo.",
-      "file": "mood.json"
-    },
-    {
-      "id": "sample",
-      "title": "Encuesta de Ejemplo - Todos los Tipos",
-      "description": "Demuestra todos los tipos de preguntas disponibles en el sistema.",
-      "file": "sample.json"
-    },
-    {
-      "id": "umag",
-      "title": "Estudio colaborativo estudiantes UMAG",
-      "description": "Cuestionario misceláneo sobre experiencias estudiantiles - Universidad de Magallanes",
-      "file": "umag.json"
-    },
-    {
-      "id": "mapa_eh",
-      "title": "Percepciones sobre Proyectos de Hidrógeno en San Gregorio",
-      "description": "Estudio académico desarrollado por la Universidad de Magallanes",
-      "file": "mapa_eh.json"
-    },
-    {
-      "id": "music",
-      "title": "Estudio comparativo de usos y preferencias musicales entre generaciones millennials y centennials",
-      "description": "Estudio académico desarrollado por la Universidad de Magallanes",
-      "file": "music.json"
-    },
-    {
-      "id": "stats_attitudes",
-      "title": "Cuestionario sobre actitudes hacia la estadística",
-      "description": "Breve cuestionario sobre tus actitudes hacia la estadística.",
-      "file": "stats_attitudes.json"
+      "id": "sssss_demo",
+      "title": "Encuesta de demostración",
+      "description": "Ejemplo que muestra todos los tipos de ítem disponibles: secciones, escalas Likert, opciones, texto, sliders y más.",
+      "file": "sssss_demo.json"
     }
   ]
 }
