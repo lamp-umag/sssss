@@ -1,4 +1,7 @@
 import { collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { run as runRT }     from './tasks/rt.js';
+import { run as runStroop } from './tasks/stroop.js';
+import { run as runGoNoGo } from './tasks/gonogo.js';
 
 export const APP_CONFIG = {
   enableParadata: true,
@@ -800,6 +803,49 @@ export function createSurveyApp({ db, elements }) {
         goNext();
       };
       controlsContainer.append(back, next);
+      return;
+    }
+
+    // ── Cognitive task types ──────────────────────────
+    if (item.type === 'task_rt' || item.type === 'task_stroop' || item.type === 'task_gonogo') {
+      const TASK_INFO = {
+        task_rt:     { icon: '⚡', title: 'Tiempo de Reacción', desc: '~2 min · Toca el círculo cuando aparezca',    color: '#F59E0B' },
+        task_stroop: { icon: '🎨', title: 'Test de Stroop',     desc: '~3 min · Identifica el color de la tinta',   color: '#6366F1' },
+        task_gonogo: { icon: '🚦', title: 'Go / No-Go',          desc: '~2 min · Toca el círculo verde, no la X roja', color: '#22C55E' },
+      };
+      const info = TASK_INFO[item.type];
+      questionContainer.innerHTML = `
+        <div class="task-launch-wrap">
+          <div class="task-launch-icon" style="background:${info.color}20;color:${info.color}">${info.icon}</div>
+          <div class="task-launch-title">${info.title}</div>
+          <div class="task-launch-desc">${info.desc}</div>
+        </div>`;
+      optionsContainer.innerHTML = '';
+
+      const back = button('← Atrás', 'secondary');
+      back.onclick = goPrev;
+
+      const launch = button(`Iniciar ${info.icon}`, 'primary');
+      launch.onclick = async () => {
+        launch.disabled = true;
+        const overlay = document.createElement('div');
+        overlay.className = 'task-overlay';
+        document.body.appendChild(overlay);
+        try {
+          let result;
+          if (item.type === 'task_rt')     result = await runRT(overlay);
+          if (item.type === 'task_stroop') result = await runStroop(overlay);
+          if (item.type === 'task_gonogo') result = await runGoNoGo(overlay);
+          if (result) answers[item.id] = result;
+        } catch (e) {
+          console.error('[sssss] task error:', e);
+        } finally {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }
+        goNext();
+      };
+
+      controlsContainer.append(back, launch);
       return;
     }
 
