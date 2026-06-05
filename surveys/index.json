@@ -1,6 +1,12 @@
 {
   "surveys": [
     {
+      "id": "clase_bienestar",
+      "title": "Bienestar, medios y vida universitaria",
+      "description": "Cuestionario para uso en clases · LAMP · Universidad de Magallanes",
+      "file": "clase_bienestar.json"
+    },
+    {
       "id": "sssss_demo",
       "title": "Encuesta de demostración",
       "description": "Ejemplo que muestra todos los tipos de ítem disponibles: secciones, escalas Likert, opciones, texto, sliders y más.",

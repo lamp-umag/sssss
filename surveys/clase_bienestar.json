@@ -1,0 +1,731 @@
+{
+  "id": "clase_bienestar",
+  "title": "Bienestar, medios y vida universitaria",
+  "description": "Cuestionario para uso en clases · LAMP · Universidad de Magallanes",
+  "settings": {
+    "randomizeItems": "within_scale"
+  },
+  "optionSets": {
+    "freq_5": [
+      { "code": 1, "label": "Nunca" },
+      { "code": 2, "label": "Raramente" },
+      { "code": 3, "label": "A veces" },
+      { "code": 4, "label": "Frecuentemente" },
+      { "code": 5, "label": "Muy frecuentemente" }
+    ],
+    "freq_bergen": [
+      { "code": 1, "label": "Muy raramente" },
+      { "code": 2, "label": "Raramente" },
+      { "code": 3, "label": "A veces" },
+      { "code": 4, "label": "Frecuentemente" },
+      { "code": 5, "label": "Muy frecuentemente" }
+    ],
+    "dass_4": [
+      { "code": 0, "label": "No me ocurrió" },
+      { "code": 1, "label": "Me ocurrió un poco" },
+      { "code": 2, "label": "Me ocurrió bastante" },
+      { "code": 3, "label": "Me ocurrió mucho" }
+    ],
+    "ucla_4": [
+      { "code": 1, "label": "Nunca" },
+      { "code": 2, "label": "Raramente" },
+      { "code": 3, "label": "A veces" },
+      { "code": 4, "label": "Con frecuencia" }
+    ],
+    "agree_5": [
+      { "code": 1, "label": "Totalmente en desacuerdo" },
+      { "code": 2, "label": "En desacuerdo" },
+      { "code": 3, "label": "Neutro/a" },
+      { "code": 4, "label": "De acuerdo" },
+      { "code": 5, "label": "Totalmente de acuerdo" }
+    ],
+    "asi_6": [
+      { "code": 0, "label": "Totalmente en desacuerdo" },
+      { "code": 1, "label": "En desacuerdo" },
+      { "code": 2, "label": "Algo en desacuerdo" },
+      { "code": 3, "label": "Algo de acuerdo" },
+      { "code": 4, "label": "De acuerdo" },
+      { "code": 5, "label": "Totalmente de acuerdo" }
+    ],
+    "siempre_5": [
+      { "code": 1, "label": "Nunca" },
+      { "code": 2, "label": "Raramente" },
+      { "code": 3, "label": "A veces" },
+      { "code": 4, "label": "Frecuentemente" },
+      { "code": 5, "label": "Siempre" }
+    ],
+    "sat_5": [
+      { "code": 1, "label": "Muy insatisfecho/a" },
+      { "code": 2, "label": "Insatisfecho/a" },
+      { "code": 3, "label": "Neutro/a" },
+      { "code": 4, "label": "Satisfecho/a" },
+      { "code": 5, "label": "Muy satisfecho/a" }
+    ],
+    "music_5": [
+      { "code": 1, "label": "Nunca / Para nada" },
+      { "code": 2, "label": "Raramente / Poco" },
+      { "code": 3, "label": "A veces" },
+      { "code": 4, "label": "Frecuentemente / Bastante" },
+      { "code": 5, "label": "Siempre / Mucho" }
+    ]
+  },
+  "items": [
+
+    {
+      "id": "bienvenida",
+      "type": "info",
+      "prompt": "Bienvenido/a a esta encuesta.\n\nEs parte de una actividad formativa de la asignatura y tomará aproximadamente 20 minutos.\n\nTu participación es voluntaria y completamente anónima. Los datos se usarán con fines académicos —análisis estadístico en clases— y no se compartirán datos individuales.\n\nEncontrarás tres tareas breves a lo largo del cuestionario, intercaladas con preguntas sobre distintos aspectos de tu vida universitaria y bienestar.\n\nLee cada instrucción con atención antes de responder. ¡Gracias!"
+    },
+
+    {
+      "id": "tarea_rt",
+      "type": "task_rt",
+      "prompt": "Tarea 1 de 3 — Tiempo de Reacción"
+    },
+
+    {
+      "id": "sec1_header",
+      "type": "info",
+      "prompt": "SECCIÓN 1 — Datos personales\n\nComencemos con algunas preguntas breves sobre ti."
+    },
+    {
+      "id": "dem_edad",
+      "type": "number",
+      "prompt": "¿Cuántos años tienes?",
+      "placeholder": "ej. 20",
+      "min": 15,
+      "max": 80,
+      "required": false
+    },
+    {
+      "id": "dem_genero",
+      "type": "single_choice",
+      "prompt": "¿Con qué género te identificas?",
+      "options": [
+        "Hombre",
+        "Mujer",
+        "No binario / género no conforme",
+        "Prefiero no indicar",
+        "Otro"
+      ],
+      "required": false
+    },
+    {
+      "id": "dem_area",
+      "type": "single_choice",
+      "prompt": "¿Cuál es tu área de estudios?",
+      "options": [
+        "Salud",
+        "Educación",
+        "Ciencias Sociales",
+        "Ciencias",
+        "Ingeniería / Arquitectura",
+        "Jurídica / Económica",
+        "Otra"
+      ],
+      "required": false
+    },
+    {
+      "id": "dem_anio",
+      "type": "single_choice",
+      "prompt": "¿En qué año de carrera estás?",
+      "options": [
+        "1.°",
+        "2.°",
+        "3.°",
+        "4.°",
+        "5.° o más"
+      ],
+      "required": false
+    },
+
+    {
+      "id": "sec2_header",
+      "type": "info",
+      "prompt": "SECCIÓN 2 — Medios y comportamiento digital\n\nLas siguientes preguntas son sobre tus hábitos con medios de comunicación, redes sociales, inteligencia artificial y música."
+    },
+
+    {
+      "id": "sec2_violencia_inst",
+      "type": "info",
+      "prompt": "¿Con qué frecuencia te expones al siguiente tipo de contenido?\n\n1 = Nunca · 5 = Muy frecuentemente"
+    },
+    {
+      "id": "vm_1",
+      "type": "freq_5",
+      "scale": "vm",
+      "prompt": "Ves películas o series con contenido violento",
+      "required": false
+    },
+    {
+      "id": "vm_2",
+      "type": "freq_5",
+      "scale": "vm",
+      "prompt": "Ves contenido violento en redes sociales",
+      "required": false
+    },
+    {
+      "id": "vm_3",
+      "type": "freq_5",
+      "scale": "vm",
+      "prompt": "Buscas activamente contenido violento en plataformas digitales",
+      "required": false
+    },
+
+    {
+      "id": "sec2_sns_inst",
+      "type": "info",
+      "prompt": "Durante el último año, ¿con qué frecuencia has experimentado lo siguiente en relación al uso de redes sociales?\n\n1 = Muy raramente · 5 = Muy frecuentemente"
+    },
+    {
+      "id": "bergen_1",
+      "type": "freq_bergen",
+      "scale": "bergen",
+      "prompt": "Has pensado en las redes sociales durante mucho tiempo mientras hacías otras cosas",
+      "required": false
+    },
+    {
+      "id": "bergen_2",
+      "type": "freq_bergen",
+      "scale": "bergen",
+      "prompt": "Has usado las redes sociales para olvidarte de problemas personales",
+      "required": false
+    },
+    {
+      "id": "bergen_3",
+      "type": "freq_bergen",
+      "scale": "bergen",
+      "prompt": "Te has puesto nervioso/a o inquieto/a cuando no podías usar las redes sociales",
+      "required": false
+    },
+
+    {
+      "id": "sec2_ai_inst",
+      "type": "info",
+      "prompt": "Las siguientes preguntas son sobre el uso de herramientas de inteligencia artificial (ej. ChatGPT, Copilot, Gemini)."
+    },
+    {
+      "id": "ai_freq",
+      "type": "single_choice",
+      "prompt": "¿Con qué frecuencia usas herramientas de inteligencia artificial?",
+      "options": [
+        "Nunca",
+        "Raramente",
+        "A veces",
+        "Frecuentemente",
+        "Todos los días"
+      ],
+      "required": false
+    },
+    {
+      "id": "ai_academic",
+      "type": "single_choice",
+      "prompt": "Cuando usas IA, ¿con qué frecuencia lo haces con fines académicos (tareas, estudio, investigación)?",
+      "options": [
+        "Nunca",
+        "Raramente",
+        "A veces",
+        "Frecuentemente",
+        "Siempre"
+      ],
+      "required": false
+    },
+
+    {
+      "id": "sec2_music_inst",
+      "type": "info",
+      "prompt": "Sobre tus hábitos y actitud hacia la música:\n\n1 = Nunca / Para nada · 5 = Siempre / Mucho"
+    },
+    {
+      "id": "mus_1",
+      "type": "music_5",
+      "scale": "music_habits",
+      "prompt": "Escuchas música mientras estudias o realizas tareas académicas",
+      "required": false
+    },
+    {
+      "id": "mus_2",
+      "type": "music_5",
+      "scale": "music_habits",
+      "prompt": "Buscas activamente nueva música o artistas por tu cuenta",
+      "required": false
+    },
+    {
+      "id": "mus_3",
+      "type": "music_5",
+      "scale": "music_habits",
+      "prompt": "La música es una parte importante de tu vida cotidiana",
+      "required": false
+    },
+    {
+      "id": "mus_generos",
+      "type": "multi_choice",
+      "prompt": "¿Qué géneros musicales escuchas habitualmente? Marca todos los que apliquen.",
+      "options": [
+        "Pop",
+        "Rock",
+        "Metal / Heavy metal",
+        "Hip-hop / Rap",
+        "Reggaetón / Música urbana",
+        "Electrónica / Dance",
+        "Clásica",
+        "Folclore / Música tradicional",
+        "Otro"
+      ],
+      "required": false
+    },
+
+    {
+      "id": "tarea_stroop",
+      "type": "task_stroop",
+      "prompt": "Tarea 2 de 3 — Test de Stroop"
+    },
+
+    {
+      "id": "sec3_header",
+      "type": "info",
+      "prompt": "SECCIÓN 3 — Hábitos y salud\n\nEsta sección incluye preguntas sobre hábitos cotidianos, sueño y algunas conductas de ocio."
+    },
+
+    {
+      "id": "sec3_gambling_inst",
+      "type": "info",
+      "prompt": "Pensando en los últimos 12 meses, en relación con apuestas o juegos de azar:\n\n1 = Nunca · 5 = Siempre"
+    },
+    {
+      "id": "gam_1",
+      "type": "siempre_5",
+      "scale": "gambling",
+      "prompt": "Has gastado más dinero en apuestas o juegos del que tenías planeado",
+      "required": false
+    },
+    {
+      "id": "gam_2",
+      "type": "siempre_5",
+      "scale": "gambling",
+      "prompt": "Has sentido que necesitabas apostar o jugar más para obtener la misma emoción",
+      "required": false
+    },
+    {
+      "id": "gam_3",
+      "type": "siempre_5",
+      "scale": "gambling",
+      "prompt": "El juego o las apuestas han causado algún problema en tu vida (económico, familiar o académico)",
+      "required": false
+    },
+
+    {
+      "id": "cafeina",
+      "type": "single_choice",
+      "prompt": "¿Cuántas tazas o equivalentes de bebidas con cafeína (café, té, bebidas energéticas) consumes habitualmente por día?",
+      "options": [
+        "Ninguna",
+        "1",
+        "2",
+        "3",
+        "4 o más"
+      ],
+      "required": false
+    },
+
+    {
+      "id": "sec3_sueno_inst",
+      "type": "info",
+      "prompt": "Las siguientes preguntas son sobre tu sueño en el último mes."
+    },
+    {
+      "id": "sueno_calidad",
+      "type": "single_choice",
+      "prompt": "¿Cómo calificarías tu calidad de sueño en general?",
+      "options": [
+        "Muy buena",
+        "Bastante buena",
+        "Bastante mala",
+        "Muy mala"
+      ],
+      "required": false
+    },
+    {
+      "id": "sueno_horas",
+      "type": "single_choice",
+      "prompt": "¿Cuántas horas de sueño efectivo tienes habitualmente por noche?",
+      "options": [
+        "Menos de 5 h",
+        "5–6 h",
+        "7–8 h",
+        "Más de 8 h"
+      ],
+      "required": false
+    },
+    {
+      "id": "sueno_dificultad",
+      "type": "single_choice",
+      "prompt": "¿Con qué frecuencia tienes dificultades para dormir (te despiertas, no puedes conciliar el sueño, etc.)?",
+      "options": [
+        "Ninguna en el último mes",
+        "Menos de 1 vez por semana",
+        "1–2 veces por semana",
+        "3 o más veces por semana"
+      ],
+      "required": false
+    },
+
+    {
+      "id": "sec4_header",
+      "type": "info",
+      "prompt": "SECCIÓN 4 — Bienestar psicológico\n\nEsta sección incluye preguntas sobre cómo te has sentido últimamente. No hay respuestas correctas o incorrectas. Responde con honestidad."
+    },
+
+    {
+      "id": "sec4_dass_inst",
+      "type": "info",
+      "prompt": "Durante la última semana, ¿en qué medida te ocurrió cada una de las siguientes situaciones?\n\n0 = No me ocurrió · 3 = Me ocurrió mucho"
+    },
+    {
+      "id": "dass_d1",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Me sentí sin esperanzas acerca del futuro",
+      "required": false
+    },
+    {
+      "id": "dass_d2",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Me sentí triste y deprimido/a",
+      "required": false
+    },
+    {
+      "id": "dass_d3",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Sentí que la vida no tenía ningún sentido",
+      "required": false
+    },
+    {
+      "id": "dass_a1",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Sentí que me faltaba el aire (sin haber hecho esfuerzo físico)",
+      "required": false
+    },
+    {
+      "id": "dass_a2",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Tuve sensación de temblor (ej. en las manos)",
+      "required": false
+    },
+    {
+      "id": "dass_a3",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Me sentí muy nervioso/a",
+      "required": false
+    },
+    {
+      "id": "dass_e1",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Me resultó difícil relajarme",
+      "required": false
+    },
+    {
+      "id": "dass_e2",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Me sentí muy irritable",
+      "required": false
+    },
+    {
+      "id": "dass_e3",
+      "type": "dass_4",
+      "scale": "dass",
+      "prompt": "Reaccioné exageradamente ante ciertas situaciones",
+      "required": false
+    },
+
+    {
+      "id": "sec4_ucla_inst",
+      "type": "info",
+      "prompt": "¿Con qué frecuencia te sientes de las siguientes maneras?\n\n1 = Nunca · 4 = Con frecuencia"
+    },
+    {
+      "id": "ucla_1",
+      "type": "ucla_4",
+      "scale": "ucla",
+      "prompt": "Te sientes solo/a",
+      "required": false
+    },
+    {
+      "id": "ucla_2",
+      "type": "ucla_4",
+      "scale": "ucla",
+      "prompt": "Sientes que no tienes compañía",
+      "required": false
+    },
+    {
+      "id": "ucla_3",
+      "type": "ucla_4",
+      "scale": "ucla",
+      "prompt": "Te sientes excluido/a o al margen de los demás",
+      "required": false
+    },
+
+    {
+      "id": "sec4_disc_inst",
+      "type": "info",
+      "prompt": "Las siguientes preguntas piden que te ubiques en una escala entre dos extremos opuestos.\n\nIndica en qué punto entre cada par de palabras te describes mejor a ti mismo/a en este momento."
+    },
+    {
+      "id": "disc_1",
+      "type": "slider",
+      "scale": "self_disc",
+      "prompt": "Incompetente ←————————————→ Competente",
+      "min": 1,
+      "max": 7,
+      "step": 1,
+      "required": false
+    },
+    {
+      "id": "disc_2",
+      "type": "slider",
+      "scale": "self_disc",
+      "prompt": "Indisciplinado/a ←————————————→ Disciplinado/a",
+      "min": 1,
+      "max": 7,
+      "step": 1,
+      "required": false
+    },
+
+    {
+      "id": "sec4_autoef_inst",
+      "type": "info",
+      "prompt": "Indica tu grado de acuerdo con las siguientes afirmaciones sobre ti mismo/a.\n\n1 = Totalmente en desacuerdo · 5 = Totalmente de acuerdo"
+    },
+    {
+      "id": "autoef_1",
+      "type": "agree_5",
+      "scale": "autoef",
+      "prompt": "Soy capaz de tomar decisiones importantes de manera autónoma",
+      "required": false
+    },
+    {
+      "id": "autoef_2",
+      "type": "agree_5",
+      "scale": "autoef",
+      "prompt": "Cuando enfrento una decisión difícil, evalúo cuidadosamente las alternativas",
+      "required": false
+    },
+    {
+      "id": "autoef_3",
+      "type": "agree_5",
+      "scale": "autoef",
+      "prompt": "Me recupero con relativa facilidad si una decisión no resultó como esperaba",
+      "required": false
+    },
+
+    {
+      "id": "tarea_gonogo",
+      "type": "task_gonogo",
+      "prompt": "Tarea 3 de 3 — Go / No-Go"
+    },
+
+    {
+      "id": "sec5_header",
+      "type": "info",
+      "prompt": "SECCIÓN 5 — Actitudes y relaciones sociales\n\nEsta sección incluye afirmaciones sobre relaciones interpersonales y actitudes sociales. No hay respuestas correctas o incorrectas."
+    },
+
+    {
+      "id": "sec5_asi_inst",
+      "type": "info",
+      "prompt": "Indica tu grado de acuerdo con cada una de las siguientes afirmaciones.\n\n0 = Totalmente en desacuerdo · 5 = Totalmente de acuerdo"
+    },
+    {
+      "id": "asi_h1",
+      "type": "asi_6",
+      "scale": "asi",
+      "prompt": "Las mujeres que se quejan de acoso sexual generalmente están buscando problemas",
+      "required": false
+    },
+    {
+      "id": "asi_h2",
+      "type": "asi_6",
+      "scale": "asi",
+      "prompt": "Las mujeres exigen demasiada igualdad",
+      "required": false
+    },
+    {
+      "id": "asi_h3",
+      "type": "asi_6",
+      "scale": "asi",
+      "prompt": "Las feministas pretenden que las mujeres tengan más poder que los hombres",
+      "required": false
+    },
+    {
+      "id": "asi_b1",
+      "type": "asi_6",
+      "scale": "asi",
+      "prompt": "Las mujeres deben ser queridas y protegidas por los hombres",
+      "required": false
+    },
+    {
+      "id": "asi_b2",
+      "type": "asi_6",
+      "scale": "asi",
+      "prompt": "Un buen hombre debe proteger a su mujer",
+      "required": false
+    },
+    {
+      "id": "asi_b3",
+      "type": "asi_6",
+      "scale": "asi",
+      "prompt": "Las mujeres tienen un refinamiento y pureza que pocos hombres poseen",
+      "required": false
+    },
+
+    {
+      "id": "sec5_ghost_inst",
+      "type": "info",
+      "prompt": "El ghosting ocurre cuando alguien deja de responder mensajes y desaparece sin dar ninguna explicación. Indica con qué frecuencia te ha ocurrido cada situación.\n\n1 = Nunca · 5 = Siempre"
+    },
+    {
+      "id": "ghost_v1",
+      "type": "siempre_5",
+      "scale": "ghosting_victim",
+      "prompt": "Alguien ha dejado de responderte sin ninguna explicación",
+      "required": false
+    },
+    {
+      "id": "ghost_v2",
+      "type": "siempre_5",
+      "scale": "ghosting_victim",
+      "prompt": "Has sentido confusión o angustia cuando alguien desapareció así",
+      "required": false
+    },
+    {
+      "id": "ghost_v3",
+      "type": "siempre_5",
+      "scale": "ghosting_victim",
+      "prompt": "Has dudado de tu propio valor personal tras recibir ghosting",
+      "required": false
+    },
+    {
+      "id": "ghost_p1",
+      "type": "siempre_5",
+      "scale": "ghosting_perp",
+      "prompt": "Has dejado de responder a alguien sin darle ninguna explicación",
+      "required": false
+    },
+    {
+      "id": "ghost_p2",
+      "type": "siempre_5",
+      "scale": "ghosting_perp",
+      "prompt": "Has evitado enfrentar una situación incómoda ignorando a alguien",
+      "required": false
+    },
+    {
+      "id": "ghost_p3",
+      "type": "siempre_5",
+      "scale": "ghosting_perp",
+      "prompt": "Has usado el silencio como forma de terminar una relación sin dar explicaciones",
+      "required": false
+    },
+    {
+      "id": "ghost_a1",
+      "type": "siempre_5",
+      "scale": "ghosting_actitud",
+      "prompt": "Crees que el ghosting es una forma aceptable de terminar relaciones",
+      "required": false
+    },
+    {
+      "id": "ghost_a2",
+      "type": "siempre_5",
+      "scale": "ghosting_actitud",
+      "prompt": "Has normalizado el ghosting como parte de las relaciones digitales actuales",
+      "required": false
+    },
+    {
+      "id": "ghost_a3",
+      "type": "siempre_5",
+      "scale": "ghosting_actitud",
+      "prompt": "Consideras que ignorar a alguien es preferible a una conversación difícil",
+      "required": false
+    },
+
+    {
+      "id": "sec6_header",
+      "type": "info",
+      "prompt": "SECCIÓN 6 — Vida universitaria\n\nYa casi terminamos. Estas últimas preguntas son sobre tu experiencia en la universidad."
+    },
+
+    {
+      "id": "sec6_sat_inst",
+      "type": "info",
+      "prompt": "¿Cuán satisfecho/a estás con los siguientes aspectos de tu experiencia universitaria?\n\n1 = Muy insatisfecho/a · 5 = Muy satisfecho/a"
+    },
+    {
+      "id": "sat_1",
+      "type": "sat_5",
+      "scale": "sat_univ",
+      "prompt": "Calidad de la enseñanza recibida",
+      "required": false
+    },
+    {
+      "id": "sat_2",
+      "type": "sat_5",
+      "scale": "sat_univ",
+      "prompt": "Apoyo académico disponible (tutorías, orientación, biblioteca)",
+      "required": false
+    },
+    {
+      "id": "sat_3",
+      "type": "sat_5",
+      "scale": "sat_univ",
+      "prompt": "Sentido de pertenencia a la comunidad universitaria",
+      "required": false
+    },
+    {
+      "id": "sat_4",
+      "type": "sat_5",
+      "scale": "sat_univ",
+      "prompt": "Satisfacción general con tu experiencia universitaria hasta ahora",
+      "required": false
+    },
+
+    {
+      "id": "acad_inst",
+      "type": "info",
+      "prompt": "Por último, una pregunta sobre tu rendimiento académico."
+    },
+    {
+      "id": "acad_rango",
+      "type": "single_choice",
+      "prompt": "¿Cuál fue tu promedio de notas en el semestre anterior (escala 1.0–7.0)?",
+      "options": [
+        "1.0–2.9",
+        "3.0–3.9",
+        "4.0–4.9",
+        "5.0–5.9",
+        "6.0–7.0",
+        "No tengo nota de semestre anterior"
+      ],
+      "required": false
+    },
+    {
+      "id": "acad_nota",
+      "type": "text",
+      "prompt": "Si lo recuerdas, escribe tu promedio aproximado:",
+      "placeholder": "ej. 5.3",
+      "required": false
+    },
+
+    {
+      "id": "cierre",
+      "type": "info",
+      "prompt": "¡Muchas gracias por tu participación!\n\nTus respuestas contribuyen al aprendizaje del grupo y al conocimiento sobre el bienestar estudiantil en la región.\n\nSi tienes preguntas o comentarios sobre esta encuesta, puedes escribirnos a lamp@umag.cl"
+    }
+
+  ]
+}
