@@ -87,6 +87,12 @@
       .table-scroll { overflow-x: auto; }
       .var-block { padding: 12px 0; border-top: 1px solid var(--border); }
       .var-prompt { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+      .sc-metric-table { width: 100%; border-collapse: collapse; margin: 8px 0 4px; font-size: 12px; }
+      .sc-metric-table th, .sc-metric-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+      .sc-metric-table th { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+      .sc-metric-table td.text-right, .sc-metric-table th.text-right { text-align: right; font-variant-numeric: tabular-nums; }
+      .sc-metric-hist-label { font-size: 11px; color: var(--muted); margin: 10px 0 2px; }
+      .dl-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 
       /* ---- shared sc-* chart classes ---- */
       .sc-bar-row { display: grid; grid-template-columns: 160px 1fr 96px; align-items: center; gap: 10px; margin: 4px 0; }
@@ -148,6 +154,16 @@
           </div>
         </div>
         <div class="kpis" id="kpis"></div>
+        <div class="dl-row mt-16">
+          <button id="dlCsvBtn" class="btn btn-primary btn-sm">⬇ Descargar CSV completo</button>
+          <button id="dlMetaBtn" class="btn btn-outline btn-sm">⬇ metadata.txt (codebook)</button>
+          <span class="small" id="dlHint">CSV ordenado: meta · tiempos · respuestas · tareas cognitivas · tiempos por ítem. El codebook describe cada columna.</span>
+        </div>
+      </section>
+
+      <section class="card hidden" id="cogCard">
+        <div class="card-header"><h2>Tareas cognitivas</h2><span class="small" id="cogMeta"></span></div>
+        <div id="cogList"></div>
       </section>
 
       <section class="card hidden" id="timeCard">

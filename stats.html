@@ -96,6 +96,13 @@
       .sc-tl-dot { fill: var(--sc-ink); }
       .sc-empty { font-size: 12px; color: var(--muted); padding: 16px 0; }
 
+      .text-right { text-align: right; }
+      .sc-metric-table { width: 100%; border-collapse: collapse; margin: 8px 0 4px; font-size: 12px; }
+      .sc-metric-table th, .sc-metric-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: left; }
+      .sc-metric-table th { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600; }
+      .sc-metric-table td.text-right, .sc-metric-table th.text-right { text-align: right; font-variant-numeric: tabular-nums; }
+      .sc-metric-hist-label { font-size: 11px; color: var(--muted); margin: 10px 0 2px; }
+
       .notice { font-size: 12px; color: var(--muted); padding: 16px; border: 1px dashed var(--border-strong); border-radius: 10px; }
       .spinner { width: 16px; height: 16px; border-radius: 999px; border: 2px solid var(--border-strong); border-top-color: var(--foreground); animation: spin .7s linear infinite; display: inline-block; vertical-align: middle; }
       @keyframes spin { to { transform: rotate(360deg); } }

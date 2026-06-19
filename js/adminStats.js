@@ -11,7 +11,9 @@ import {
   getCreatedAtMs, completenessVsSurvey, answerableItems,
   variableDistribution, summarize, histogram, niceBinCount, quantile,
   fmtDuration, fmtNum, fmtPct, fmtDate,
-  renderBarRows, renderHistogram, renderTimeline, dailyCounts, escapeHtml
+  renderBarRows, renderHistogram, renderTimeline, dailyCounts, escapeHtml,
+  cognitiveItems, renderCognitiveTask, itemKind,
+  COGNITIVE_METRICS, COGNITIVE_LABELS, resolveItemOptions
 } from './statsCore.js';
 
 const ALLOWED_EMAILS = new Set(['hermanelgueta@gmail.com', 'herman.elgueta@umag.cl']);
@@ -28,6 +30,7 @@ const controlsCard = el('controlsCard');
 const timeCard = el('timeCard');
 const itemTimeCard = el('itemTimeCard');
 const varCard = el('varCard');
+const cogCard = el('cogCard');
 const surveySelect = el('surveySelect');
 const includeExcluded = el('includeExcluded');
 const refreshBtn = el('refreshBtn');
@@ -36,6 +39,8 @@ const kpis = el('kpis');
 
 let surveys = [];
 const cacheDef = new Map();
+// last rendered context, used by the download buttons
+let lastDef = null, lastResponses = [], lastMeta = null;
 
 /* ---- auth ---- */
 loginBtn?.addEventListener('click', async () => {
@@ -59,6 +64,7 @@ onAuthStateChanged(auth, async (user) => {
     timeCard.classList.remove('hidden');
     itemTimeCard.classList.remove('hidden');
     varCard.classList.remove('hidden');
+    cogCard.classList.remove('hidden');
     await boot();
   } else {
     if (user) {
@@ -69,7 +75,7 @@ onAuthStateChanged(auth, async (user) => {
       userStatusDot.classList.add('warn');
     }
     authCard.classList.remove('hidden');
-    [controlsCard, timeCard, itemTimeCard, varCard].forEach(c => c.classList.add('hidden'));
+    [controlsCard, timeCard, itemTimeCard, varCard, cogCard].forEach(c => c.classList.add('hidden'));
   }
 });
 
@@ -86,6 +92,8 @@ async function boot() {
   surveySelect.addEventListener('change', render);
   includeExcluded.addEventListener('change', render);
   refreshBtn.addEventListener('click', () => render(true));
+  el('dlCsvBtn').addEventListener('click', downloadNeatCsv);
+  el('dlMetaBtn').addEventListener('click', downloadMetadata);
   if (surveys.length) render();
 }
 
@@ -130,6 +138,9 @@ async function render(force = false) {
     const answerable = answerableItems(def);
     const answerableIds = answerable.map(i => i.id);
 
+    // remember context for the download buttons
+    lastDef = def; lastResponses = responses; lastMeta = meta;
+
     // ----- timing -----
     const times = responses.map(r => Number(r.data?.totalTime)).filter(v => Number.isFinite(v) && v > 0);
     const tSum = summarize(times);
@@ -168,6 +179,24 @@ async function render(force = false) {
 
     // ----- per-item timing -----
     renderItemTiming(el('itemTimeBody'), answerable, responses);
+
+    // ----- cognitive tasks -----
+    const cogs = cognitiveItems(def);
+    const cogList = el('cogList');
+    if (cogs.length) {
+      cogCard.classList.remove('hidden');
+      cogList.innerHTML = '';
+      for (const item of cogs) {
+        const block = document.createElement('div');
+        block.className = 'var-block';
+        cogList.appendChild(block);
+        renderCognitiveTask(block, item, responses);
+      }
+      el('cogMeta').textContent = `${cogs.length} tarea${cogs.length === 1 ? '' : 's'} · ${responses.length} respuestas`;
+    } else {
+      cogList.innerHTML = '<div class="sc-empty">Esta encuesta no incluye tareas cognitivas.</div>';
+      el('cogMeta').textContent = '';
+    }
 
     // ----- variable distributions -----
     renderVariables(el('varList'), def, answerable, responses);
@@ -271,4 +300,186 @@ function renderVariables(container, def, answerable, responses) {
     }
     container.appendChild(block);
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Downloads: neat CSV + metadata codebook                            */
+/* ------------------------------------------------------------------ */
+
+function isoOf(d) {
+  if (d?.createdAt?.toDate) return d.createdAt.toDate().toISOString();
+  return d?.browserData?.timestamp || '';
+}
+
+function flatAnswer(v) {
+  if (v == null) return '';
+  if (Array.isArray(v)) return v.join('; ');
+  if (typeof v === 'object') return JSON.stringify(v); // shouldn't happen for answerable items
+  return v;
+}
+
+function csvCell(v) {
+  if (v == null) return '';
+  const s = String(v);
+  return /[",\n\r]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+function rowsToCsv(rows) {
+  return '﻿' + rows.map(r => r.map(csvCell).join(',')).join('\r\n');
+}
+
+function downloadBlob(filename, text, mime) {
+  const blob = new Blob([text], { type: `${mime};charset=utf-8;` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function buildNeatCsvRows(def, responses, surveyId) {
+  const answerable = answerableItems(def);
+  const cogs = cognitiveItems(def);
+  const answerableIds = answerable.map(i => i.id);
+
+  const header = [
+    'responseId', 'surveyId', 'createdAt', 'isExcluded', 'excludeReason', 'excludeNote',
+    'totalTime_s', 'completeness_pct', 'navBackCount', 'answerChangeCount',
+    ...answerable.map(it => it.id),
+    ...cogs.flatMap(it => (COGNITIVE_METRICS[it.type] || []).map(m => `${it.id}__${m.key}`)),
+    ...answerable.map(it => `${it.id}__time_s`)
+  ];
+
+  const rows = [header];
+  // newest first, like the admin exports
+  const ordered = responses.slice().sort((a, b) => getCreatedAtMs(b.data) - getCreatedAtMs(a.data));
+
+  for (const r of ordered) {
+    const d = r.data || {};
+    const ans = d.answers || {};
+    const itimes = d.itemTimes || {};
+    const row = [];
+
+    row.push(r.id, surveyId, isoOf(d), d.excludedFromExport ? '1' : '0', d.excludeReason || '', d.excludeNote || '');
+    const tt = Number(d.totalTime);
+    row.push(Number.isFinite(tt) ? (tt / 1000).toFixed(1) : '');
+    row.push(Math.round(completenessVsSurvey(ans, answerableIds) * 100));
+    row.push(d.navBackCount ?? '', d.answerChangeCount ?? '');
+
+    for (const it of answerable) row.push(flatAnswer(ans[it.id]));
+
+    for (const it of cogs) {
+      const a = ans[it.id];
+      const sum = a && a.summary ? a.summary : {};
+      for (const m of (COGNITIVE_METRICS[it.type] || [])) {
+        const v = Number(sum[m.key]);
+        row.push(Number.isFinite(v) ? v : '');
+      }
+    }
+
+    for (const it of answerable) {
+      const v = Number(itimes[it.id]);
+      row.push(Number.isFinite(v) ? (v / 1000).toFixed(1) : '');
+    }
+
+    rows.push(row);
+  }
+  return rows;
+}
+
+function buildMetadataText(def, responses, surveyId) {
+  const L = [];
+  const answerable = answerableItems(def);
+  const cogs = cognitiveItems(def);
+
+  L.push('CODEBOOK / DICCIONARIO DE VARIABLES');
+  L.push('='.repeat(60));
+  L.push(`Encuesta:     ${def.title || surveyId}`);
+  L.push(`survey_id:    ${surveyId}`);
+  if (def.description) L.push(`Descripción:  ${def.description}`);
+  L.push(`Exportado:    ${new Date().toISOString()}`);
+  L.push(`Respuestas:   ${responses.length}`);
+  L.push(`Variables:    ${answerable.length} ítems de respuesta · ${cogs.length} tareas cognitivas`);
+  L.push('');
+  L.push('COLUMNAS DE METADATOS Y PARADATA');
+  L.push('-'.repeat(60));
+  const metaCols = [
+    ['responseId', 'identificador único de la respuesta'],
+    ['surveyId', 'identificador de la encuesta'],
+    ['createdAt', 'fecha y hora de envío (ISO 8601)'],
+    ['isExcluded', '1 = excluida en revisión de casos, 0 = incluida'],
+    ['excludeReason', 'motivo de exclusión (si aplica)'],
+    ['excludeNote', 'nota libre de exclusión'],
+    ['totalTime_s', 'tiempo total de respuesta (segundos)'],
+    ['completeness_pct', 'porcentaje de ítems de respuesta completados'],
+    ['navBackCount', 'número de veces que retrocedió'],
+    ['answerChangeCount', 'número de veces que cambió una respuesta'],
+    ['<id>__time_s', 'tiempo dedicado al ítem <id> (segundos)']
+  ];
+  for (const [c, d] of metaCols) L.push(`  ${c.padEnd(20)} ${d}`);
+  L.push('');
+  L.push('ÍTEMS DE RESPUESTA (en orden de aplicación)');
+  L.push('-'.repeat(60));
+
+  const items = Array.isArray(def.items) ? def.items : [];
+  let idx = 0;
+  for (const item of items) {
+    const kind = itemKind(def, item);
+    if (kind === 'info') {
+      const p = typeof item.prompt === 'string' ? item.prompt.split('\n')[0] : '';
+      if (/^SECCIÓN/i.test(p)) { L.push(''); L.push(`== ${p} ==`); }
+      continue;
+    }
+    if (kind === 'task') continue; // cognitive tasks documented separately below
+
+    idx += 1;
+    const prompt = typeof item.prompt === 'string' ? item.prompt.replace(/\s*\n\s*/g, ' ').trim() : '';
+    L.push('');
+    L.push(`[${idx}] ${item.id}  (${item.type})`);
+    if (prompt) L.push(`     Pregunta: ${prompt}`);
+    if (kind === 'numeric') {
+      const rng = [];
+      if (item.min != null) rng.push(`min ${item.min}`);
+      if (item.max != null) rng.push(`max ${item.max}`);
+      L.push(`     Tipo: numérico${rng.length ? ' · ' + rng.join(', ') : ''}`);
+    } else if (kind === 'categorical' || kind === 'multi') {
+      const opts = resolveItemOptions(def, item);
+      L.push(`     Tipo: ${kind === 'multi' ? 'selección múltiple (valores separados por "; ")' : 'opción única'}`);
+      L.push('     Códigos:');
+      for (const o of opts) L.push(`        ${String(o.code).padEnd(6)} = ${o.label}`);
+    } else {
+      L.push('     Tipo: texto libre');
+    }
+  }
+
+  if (cogs.length) {
+    L.push('');
+    L.push('TAREAS COGNITIVAS (columnas <id>__<métrica>)');
+    L.push('-'.repeat(60));
+    for (const item of cogs) {
+      L.push('');
+      L.push(`${item.id}  —  ${COGNITIVE_LABELS[item.type] || item.type}`);
+      for (const m of (COGNITIVE_METRICS[item.type] || [])) {
+        L.push(`     ${`${item.id}__${m.key}`.padEnd(34)} ${m.desc}`);
+      }
+    }
+  }
+
+  L.push('');
+  L.push('='.repeat(60));
+  L.push('Generado por sssss · admin-stats.html');
+  return L.join('\n');
+}
+
+function downloadNeatCsv() {
+  if (!lastDef || !lastResponses.length) { alert('No hay datos cargados para exportar.'); return; }
+  const rows = buildNeatCsvRows(lastDef, lastResponses, lastMeta.id);
+  const scope = includeExcluded.checked ? 'con_excluidas' : 'sin_excluidas';
+  downloadBlob(`${lastMeta.id}_completo_${scope}.csv`, rowsToCsv(rows), 'text/csv');
+}
+
+function downloadMetadata() {
+  if (!lastDef) { alert('Selecciona una encuesta primero.'); return; }
+  const text = buildMetadataText(lastDef, lastResponses, lastMeta.id);
+  downloadBlob(`${lastMeta.id}_metadata.txt`, text, 'text/plain');
 }

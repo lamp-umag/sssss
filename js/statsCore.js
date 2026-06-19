@@ -402,6 +402,132 @@ export function renderTimeline(container, points) {
     <div class="sc-hist-axis"><span>${fmtDate(minX)}</span><span>${fmtDate(maxX)}</span></div>`;
 }
 
+/* ------------------------------------------------------------------ */
+/* Cognitive tasks (Stroop / RT / Go-No-Go)                            */
+/* ------------------------------------------------------------------ */
+
+export const COGNITIVE_TASK_TYPES = ['task_rt', 'task_stroop', 'task_gonogo'];
+
+export const COGNITIVE_LABELS = {
+  task_rt: 'Tiempo de Reacción',
+  task_stroop: 'Test de Stroop',
+  task_gonogo: 'Go / No-Go'
+};
+
+// Summary metrics each task stores under answers[id].summary, with display
+// metadata + codebook descriptions. Order = how they appear in tables/CSV.
+export const COGNITIVE_METRICS = {
+  task_rt: [
+    { key: 'mean_rt_ms', label: 'TR medio', unit: 'ms', digits: 0, desc: 'tiempo de reacción medio (ms)' },
+    { key: 'sd_rt_ms', label: 'DE del TR', unit: 'ms', digits: 0, desc: 'desviación estándar del TR (ms)' },
+    { key: 'min_rt_ms', label: 'TR mínimo', unit: 'ms', digits: 0, desc: 'tiempo de reacción más rápido (ms)' },
+    { key: 'max_rt_ms', label: 'TR máximo', unit: 'ms', digits: 0, desc: 'tiempo de reacción más lento (ms)' },
+    { key: 'n_trials', label: 'Nº ensayos', unit: '', digits: 0, desc: 'número de ensayos válidos' }
+  ],
+  task_stroop: [
+    { key: 'stroop_effect_ms', label: 'Efecto Stroop', unit: 'ms', digits: 0, desc: 'efecto Stroop = TR incongruente − congruente (ms)' },
+    { key: 'mean_rt_congruent', label: 'TR congruente', unit: 'ms', digits: 0, desc: 'TR medio en ensayos congruentes (ms)' },
+    { key: 'mean_rt_incongruent', label: 'TR incongruente', unit: 'ms', digits: 0, desc: 'TR medio en ensayos incongruentes (ms)' },
+    { key: 'accuracy_congruent', label: 'Precisión congruente', unit: '%', digits: 0, desc: 'precisión en ensayos congruentes (%)' },
+    { key: 'accuracy_incongruent', label: 'Precisión incongruente', unit: '%', digits: 0, desc: 'precisión en ensayos incongruentes (%)' },
+    { key: 'n_trials', label: 'Nº ensayos', unit: '', digits: 0, desc: 'número de ensayos de prueba' }
+  ],
+  task_gonogo: [
+    { key: 'false_alarm_rate', label: 'Tasa falsas alarmas', unit: '%', digits: 0, desc: 'tasa de falsas alarmas — respondió ante No-Go (%)' },
+    { key: 'hit_rate', label: 'Tasa de aciertos', unit: '%', digits: 0, desc: 'tasa de aciertos — respondió ante Go (%)' },
+    { key: 'mean_rt_hits', label: 'TR aciertos', unit: 'ms', digits: 0, desc: 'TR medio en aciertos (ms)' },
+    { key: 'hits', label: 'Aciertos', unit: '', digits: 0, desc: 'número de aciertos (hits)' },
+    { key: 'false_alarms', label: 'Falsas alarmas', unit: '', digits: 0, desc: 'número de falsas alarmas' },
+    { key: 'n_trials', label: 'Nº ensayos', unit: '', digits: 0, desc: 'número de ensayos de prueba' }
+  ]
+};
+
+// Which metric to plot as the headline distribution per task.
+export const COGNITIVE_PRIMARY = {
+  task_rt: 'mean_rt_ms',
+  task_stroop: 'stroop_effect_ms',
+  task_gonogo: 'false_alarm_rate'
+};
+
+export function isCognitiveTask(item) {
+  return !!item && COGNITIVE_TASK_TYPES.includes(item.type);
+}
+
+export function cognitiveItems(survey) {
+  const items = Array.isArray(survey?.items) ? survey.items : [];
+  return items.filter(isCognitiveTask);
+}
+
+// Per-metric value arrays + summaries across all responses for one task item.
+export function cognitiveMetricValues(item, responses) {
+  const specs = COGNITIVE_METRICS[item.type] || [];
+  return specs.map(spec => {
+    const values = responses.map(r => {
+      const a = (r.data?.answers || {})[item.id];
+      const v = a && a.summary ? a.summary[spec.key] : undefined;
+      return Number(v);
+    }).filter(Number.isFinite);
+    return { ...spec, values, summary: summarize(values) };
+  });
+}
+
+export function cognitiveCompletedCount(item, responses) {
+  return responses.filter(r => {
+    const a = (r.data?.answers || {})[item.id];
+    return a && a.summary;
+  }).length;
+}
+
+// Renders one cognitive task: a metric table + a histogram of the primary metric.
+// Theme-agnostic; relies on .sc-metric-table / .sc-* classes defined per page.
+export function renderCognitiveTask(container, item, responses) {
+  const metrics = cognitiveMetricValues(item, responses);
+  const title = COGNITIVE_LABELS[item.type] || item.id;
+  const nDone = cognitiveCompletedCount(item, responses);
+
+  const fmtVal = (v, m) => {
+    if (!Number.isFinite(v)) return '—';
+    const u = m.unit ? ` ${m.unit}` : '';
+    return `${fmtNum(v, m.digits ?? 0)}${u}`;
+  };
+
+  const body = metrics.map(m => {
+    const s = m.summary;
+    return `<tr>
+      <td>${escapeHtml(m.label)}</td>
+      <td class="text-right">${s.n || 0}</td>
+      <td class="text-right">${fmtVal(s.mean, m)}</td>
+      <td class="text-right">${fmtVal(s.median, m)}</td>
+      <td class="text-right">${Number.isFinite(s.sd) ? fmtNum(s.sd, m.digits ?? 0) : '—'}</td>
+      <td class="text-right">${fmtVal(s.min, m)} – ${fmtVal(s.max, m)}</td>
+    </tr>`;
+  }).join('');
+
+  const primary = metrics.find(m => m.key === COGNITIVE_PRIMARY[item.type]);
+
+  container.innerHTML = `
+    <div class="var-prompt">${escapeHtml(title)} <code>${escapeHtml(item.id)}</code></div>
+    <div class="var-numeric-line">${nDone}/${responses.length} completaron la tarea</div>
+    <table class="sc-metric-table">
+      <thead><tr>
+        <th>Métrica</th><th class="text-right">n</th><th class="text-right">Media</th>
+        <th class="text-right">Mediana</th><th class="text-right">DE</th><th class="text-right">Rango</th>
+      </tr></thead>
+      <tbody>${body}</tbody>
+    </table>
+    ${primary ? `<div class="sc-metric-hist-label">Distribución · ${escapeHtml(primary.label)}</div><div class="sc-metric-hist"></div>` : ''}`;
+
+  if (primary) {
+    const host = container.querySelector('.sc-metric-hist');
+    if (primary.summary.n) {
+      renderHistogram(host, histogram(primary.values, niceBinCount(primary.values.length)),
+        { fmt: (v) => fmtNum(v, primary.digits ?? 0) });
+    } else {
+      host.innerHTML = '<div class="sc-empty">Sin datos suficientes.</div>';
+    }
+  }
+}
+
 // Bucket response createdAt into per-day counts.
 export function dailyCounts(responses) {
   const byDay = new Map();

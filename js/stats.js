@@ -6,7 +6,8 @@ import {
   getCreatedAtMs, completenessVsSurvey, answerableItems,
   variableDistribution, summarize, histogram, niceBinCount,
   fmtDuration, fmtNum, fmtPct, fmtDate,
-  renderBarRows, renderHistogram, renderTimeline, dailyCounts, escapeHtml
+  renderBarRows, renderHistogram, renderTimeline, dailyCounts, escapeHtml,
+  cognitiveItems, renderCognitiveTask
 } from './statsCore.js';
 
 const kpis = document.getElementById('kpis');
@@ -155,6 +156,12 @@ async function renderSurvey(meta) {
   // responses over time
   parts.push(`<div class="subhead">Respuestas por día</div><div id="svTimeline"></div>`);
 
+  // cognitive tasks
+  const cogs = cognitiveItems(def);
+  if (cogs.length) {
+    parts.push(`<div class="subhead">Tareas cognitivas</div><div id="cogList"></div>`);
+  }
+
   // variable distributions
   parts.push(`<div class="subhead">Distribución de variables</div><div id="varList"></div>`);
 
@@ -166,6 +173,17 @@ async function renderSurvey(meta) {
       { fmt: (sec) => fmtDuration(sec * 1000) });
   }
   renderTimeline(document.getElementById('svTimeline'), dailyCounts(responses));
+
+  if (cogs.length) {
+    const cogList = document.getElementById('cogList');
+    cogList.innerHTML = '';
+    for (const item of cogs) {
+      const block = document.createElement('div');
+      block.className = 'var-block';
+      cogList.appendChild(block);
+      renderCognitiveTask(block, item, responses);
+    }
+  }
 
   // variables
   const varList = document.getElementById('varList');
