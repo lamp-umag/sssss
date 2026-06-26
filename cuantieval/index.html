@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Cuantieval - Evaluación de Materiales</title>
+  <meta name="description" content="Evaluación de tripticos e infografias" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="gate" class="screen">
+    <main class="gate-container">
+      <div class="gate-content">
+        <h1 class="gate-title">Evaluación de Materiales</h1>
+        <p class="gate-subtitle">Ingresa tu RUT para comenzar</p>
+
+        <div class="gate-form">
+          <input
+            id="rutInput"
+            type="text"
+            placeholder="12.345.678-5"
+            autocomplete="off"
+            inputmode="numeric"
+          />
+          <button id="gateBtnEnter" class="btn btn-primary">Continuar</button>
+          <p id="rutError" class="error-msg"></p>
+        </div>
+
+        <div class="privacy-notice">
+          <p class="privacy-text">Tu RUT se usa solo para registrar quien completó la evaluación (control de participación y análisis de confiabilidad). Tus puntuaciones son confidenciales y no se mostrarán a tus compañeros.</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="app" class="screen hidden">
+    <main class="app-container">
+      <!-- Rating card -->
+      <div id="cardView" class="card-view">
+        <div class="card-header">
+          <div class="progress-meta">
+            <span id="progressText" class="progress-text">Material 1 de 12</span>
+          </div>
+          <div class="progress-bar">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
+        <div class="card-content">
+          <!-- Item images -->
+          <div id="imageContainer" class="image-container"></div>
+
+          <!-- Action buttons -->
+          <div class="card-actions">
+            <button id="btnZoom" class="btn btn-secondary">Ver completo</button>
+            <button id="btnDownload" class="btn btn-secondary">Descargar</button>
+          </div>
+
+          <!-- Questions -->
+          <div class="questions-section">
+            <div id="questionsContainer" class="questions-container"></div>
+          </div>
+
+          <!-- Navigation -->
+          <div class="card-nav">
+            <button id="btnPrev" class="btn btn-nav">← Anterior</button>
+            <button id="btnNext" class="btn btn-nav">Siguiente →</button>
+          </div>
+
+          <!-- Jump to question -->
+          <div class="jump-section">
+            <p class="jump-label">O salta a un material:</p>
+            <div id="jumpButtons" class="jump-buttons"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Completion screen -->
+      <div id="completionScreen" class="completion-screen hidden">
+        <div class="completion-content">
+          <h2 class="completion-title">Listo, gracias</h2>
+          <p class="completion-text">Completaste la evaluación de los 12 materiales.</p>
+          <div class="completion-actions">
+            <button id="btnReview" class="btn btn-primary">Revisar mis respuestas</button>
+            <button id="btnClose" class="btn btn-secondary">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Zoom viewer modal -->
+  <div id="zoomModal" class="zoom-modal hidden">
+    <div class="zoom-header">
+      <button id="btnCloseZoom" class="btn-close">✕</button>
+      <button id="btnDownloadZoom" class="btn btn-secondary">Descargar</button>
+    </div>
+    <div id="zoomContainer" class="zoom-container"></div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
