@@ -26,25 +26,36 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    
+
     // ════ Existing rules (DO NOT MODIFY) ════
     // (keep your existing survey, responses, etc. rules here)
 
-    // ════ NEW: Cuantieval ratings ════
+    // ════ NEW: Cuantieval ratings (PRIVATE — contains RUT) ════
     match /cuantieval_ratings/{rut} {
-      // Allow read/write to own document (identified by RUT)
-      allow read, write: if request.auth == null;
-      // Anyone (unauthenticated) can read/write
-      // The RUT in the document ID acts as the soft-identifier
+      // "get" lets a rater fetch their OWN doc directly by RUT (they already
+      // know their own document ID), to resume progress.
+      allow get: if request.auth == null;
+      allow write: if request.auth == null;
+      // "list" is explicitly denied so nobody can run a collection query
+      // and harvest every RUT + score in one request. Without this line,
+      // anyone opening devtools could dump the whole ratings collection.
+      allow list: if false;
+    }
+
+    // ════ NEW: Cuantieval public results (no RUT field at all) ════
+    match /cuantieval_public/{code} {
+      // Readable/listable by anyone — this is what resultados.html queries.
+      // Docs here are keyed by an anonymous code and never contain a rut field.
+      allow read: if request.auth == null;
+      allow write: if request.auth == null;
     }
   }
 }
 ```
 
-**Note:** Cuantieval does NOT use Firebase Auth. Access is identified by the RUT (Chilean ID) entered at the gate. The rules above allow any client to read/write any RUT's data, which is acceptable since:
-- The RUT is publicly visible in the form
-- The app only shows the rater their own progress
-- Instructor can see aggregated completion via Firestore Console or a backend query
+**Note:** Cuantieval does NOT use Firebase Auth. Access is identified by the RUT (Chilean ID) entered at the gate. This is a two-collection privacy split:
+- `cuantieval_ratings` is the admin-facing collection (has `rut`, used to resume progress and cross-reference identity). `allow list: if false` blocks bulk enumeration — a rater can only fetch a document if they already know its exact ID (their own RUT), they cannot list all documents in the collection.
+- `cuantieval_public` is the anonymized mirror written automatically alongside every save (see `app.js` → `rutToCode()` / `saveRaterProgress()`). It has the same scores but a `code` instead of a `rut`, and is the only collection the public results page (`resultados.html`) ever reads. Even a technical user poking at Firestore from the browser console cannot recover a RUT from this collection, because the field simply isn't there.
 
 ### Step 3: Deploy Rules
 Click **Publish** in the Firebase Console.
@@ -102,6 +113,22 @@ Fields:
 - `pdf`: Path to PDF for download, or `null` if unavailable
 - `status`: `"ok"` or `"missing"`
 
+## Public Results Page
+
+```
+https://lamp-umag.github.io/sssss/cuantieval/resultados.html
+```
+
+No login required — anyone with the link can open it. It reads only from `cuantieval_public` (never `cuantieval_ratings`), so RUTs are never exposed. It shows:
+- Summary cards: number of evaluators, how many completed, overall average score.
+- A per-material table (n responses + average for P1–P5 + overall average).
+- A per-code table (progress / completion status), identified only by the anonymous code.
+- A "Descargar CSV" button that exports one row per (code, item) pair — `code,item_id,item_label,p1,p2,p3,p4,p5,missing` — suitable for reliability analysis (e.g. Cronbach's alpha, ICC) in R/SPSS/Excel.
+
+Each rater sees their own code on the completion screen after finishing, so they can verify their own submission landed without revealing it to anyone else.
+
+This page requires the `cuantieval_public` Firestore rule above (`allow read: if request.auth == null`) to work. If it loads but the tables stay empty / "Cargando…" never resolves, check the rules and the browser console for permission errors.
+
 ## Monitoring Rater Progress
 
 ### View in Firestore Console
@@ -138,9 +165,10 @@ collection("cuantieval_ratings") → count all documents
 ## Privacy & Security Notes
 
 - **No passwords.** The RUT (entered openly by the student) is the only identifier.
-- **Soft-anonymous.** Instructor can map RUT → student, but the UI never shows one rater another's identity or scores.
-- **Autosave.** Each rating tap is debounced and written to Firestore immediately, so no progress is lost.
-- **Completion tracking.** Instructor can query who rated and how many items they completed. Individual scores are visible only via the Firestore Console for now (backend integration optional).
+- **Soft-anonymous (admin side).** Instructor can map RUT → student via the Firestore Console, but the UI never shows one rater another's identity or scores.
+- **Anonymous (public side).** `resultados.html` and the CSV export never touch `cuantieval_ratings` — they only read `cuantieval_public`, which has no `rut` field. `allow list: if false` on `cuantieval_ratings` also blocks anyone from bulk-reading the private collection directly from the browser console.
+- **Autosave.** Each rating tap is debounced and written to Firestore immediately (to both collections), so no progress is lost.
+- **Completion tracking.** Instructor can query who rated and how many items they completed in `cuantieval_ratings` (has RUT). Anyone can see the same completion stats anonymized by code in `resultados.html`.
 
 ## Customization
 
@@ -196,14 +224,17 @@ async function getCompletionStats() {
 ```
 cuantieval/
   index.html          Main app page (RUT gate + rating interface)
-  app.js              App logic (Firebase I/O, RUT validation, seeded shuffle)
-  styles.css          Mobile-first styles
+  app.js              App logic (Firebase I/O, RUT validation, seeded shuffle, anon code)
+  styles.css          Mobile-first styles (shared with resultados.html)
+  resultados.html     Public results page (no login)
+  resultados.js        Results page logic (reads cuantieval_public, builds CSV)
+  resultados.css       Results page layout
   items.json          Manifest of 12 items (auto-generated by convert.sh)
   convert.sh          PDF→PNG converter + manifest generator
   SETUP.md            This file
   imgs/
-    *.png             Rasterized material images (PNG)
-    *.pdf             Original PDFs for download (kept for reference)
+    *.png             Rasterized material images (PNG, some items have multiple pages)
+    *.pdf             Original PDFs ("Ver completo" opens these directly when available)
     placeholder.png   Fallback image for missing materials
 ```
 

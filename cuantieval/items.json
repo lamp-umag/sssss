@@ -1,14 +1,14 @@
 [
-  { "id": "16pf", "label": "16PF", "files": ["imgs/b 16pf-1.png"], "pdf": "imgs/b 16pf.pdf", "status": "ok" },
-  { "id": "audit", "label": "AUDIT", "files": [], "pdf": "imgs/b audit.pdf", "status": "ok" },
-  { "id": "htp", "label": "HTP", "files": [], "pdf": "imgs/b htp.pdf", "status": "ok" },
-  { "id": "mbi", "label": "MBI (Burnout)", "files": [], "pdf": "imgs/b mbi.pdf", "status": "ok" },
+  { "id": "16pf", "label": "16PF", "files": ["imgs/b 16pf.png"], "pdf": "imgs/b 16pf.pdf", "status": "ok" },
+  { "id": "audit", "label": "AUDIT", "files": ["imgs/b audit.png"], "pdf": "imgs/b audit.pdf", "status": "ok" },
+  { "id": "htp", "label": "HTP", "files": ["imgs/b htp-0.png", "imgs/b htp-1.png"], "pdf": "imgs/b htp.pdf", "status": "ok" },
+  { "id": "mbi", "label": "MBI (Burnout)", "files": ["imgs/b mbi.png"], "pdf": "imgs/b mbi.pdf", "status": "ok" },
   { "id": "mini", "label": "MINI", "files": ["imgs/b mini.png"], "pdf": null, "status": "ok" },
-  { "id": "moca", "label": "MoCA", "files": [], "pdf": "imgs/b moca.pdf", "status": "ok" },
-  { "id": "pclr", "label": "PCL-R", "files": [], "pdf": "imgs/b pclr.pdf", "status": "ok" },
+  { "id": "moca", "label": "MoCA", "files": ["imgs/b moca.png"], "pdf": "imgs/b moca.pdf", "status": "ok" },
+  { "id": "pclr", "label": "PCL-R", "files": ["imgs/b pclr.png"], "pdf": "imgs/b pclr.pdf", "status": "ok" },
   { "id": "pclyv", "label": "PCL:YV", "files": ["imgs/b pclyv.png"], "pdf": null, "status": "ok" },
-  { "id": "ro", "label": "Rorschach", "files": [], "pdf": "imgs/b ro.pdf", "status": "ok" },
-  { "id": "tat", "label": "TAT", "files": [], "pdf": "imgs/b tat.pdf", "status": "ok" },
-  { "id": "wiscv", "label": "WISC-V", "files": [], "pdf": "imgs/b wiscv.pdf", "status": "ok" },
-  { "id": "grupo12", "label": "Grupo 12", "files": [], "pdf": null, "status": "missing" }
+  { "id": "ro", "label": "Rorschach", "files": ["imgs/b ro-0.png", "imgs/b ro-1.png", "imgs/b ro-2.png", "imgs/b ro-3.png", "imgs/b ro-4.png", "imgs/b ro-5.png", "imgs/b ro-6.png", "imgs/b ro-7.png", "imgs/b ro-8.png", "imgs/b ro-9.png", "imgs/b ro-10.png", "imgs/b ro-11.png", "imgs/b ro-12.png", "imgs/b ro-13.png"], "pdf": "imgs/b ro.pdf", "status": "ok" },
+  { "id": "tat", "label": "TAT", "files": ["imgs/b tat.png"], "pdf": "imgs/b tat.pdf", "status": "ok" },
+  { "id": "wiscv", "label": "WISC-V", "files": ["imgs/b wiscv.png"], "pdf": "imgs/b wiscv.pdf", "status": "ok" },
+  { "id": "stroop", "label": "Stroop", "files": ["imgs/b stroop.png"], "pdf": null, "status": "ok" }
 ]

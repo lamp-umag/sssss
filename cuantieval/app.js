@@ -45,6 +45,22 @@ function normalizeRUT(rut) {
   return `${parseInt(match[1], 10)}.${match[2]}.${match[3]}-${match[4].toUpperCase()}`;
 }
 
+// ────── Anonymous code (for public results, never reversible from the UI) ──────
+function rutToCode(rut) {
+  const salted = "cuantieval-2025::" + rut;
+  let h1 = 5381;
+  let h2 = 52711;
+  for (let i = 0; i < salted.length; i++) {
+    const c = salted.charCodeAt(i);
+    h1 = (h1 * 33) ^ c;
+    h2 = (h2 * 31) ^ c;
+  }
+  h1 = h1 >>> 0;
+  h2 = h2 >>> 0;
+  const n = (h1 * 65536 + (h2 & 0xffff)) % 2147483647;
+  return "R-" + n.toString(36).toUpperCase().padStart(6, "0");
+}
+
 // ────── Seeded PRNG ──────
 function simpleHash(str) {
   let hash = 5381;
@@ -69,6 +85,7 @@ function seededShuffle(items, seed) {
 
 // ────── State ──────
 let currentRUT = null;
+let currentCode = null;
 let itemsManifest = [];
 let raterOrder = [];
 let raterResponses = {};
@@ -177,6 +194,7 @@ async function saveRaterProgress() {
     const docRef = doc(db, "cuantieval_ratings", currentRUT);
     await setDoc(docRef, {
       rut: currentRUT,
+      code: currentCode,
       startedAt: serverTimestamp(),
       lastUpdatedAt: serverTimestamp(),
       order: raterOrder,
@@ -185,6 +203,20 @@ async function saveRaterProgress() {
       completed: allDone,
       completedAt: allDone && !isCompleted ? serverTimestamp() : null
     }, { merge: true });
+
+    // Public mirror: same scores, NO rut field, keyed by anonymous code.
+    // This is what the public results page (resultados.html) reads from.
+    if (currentCode) {
+      const publicRef = doc(db, "cuantieval_public", currentCode);
+      await setDoc(publicRef, {
+        code: currentCode,
+        lastUpdatedAt: serverTimestamp(),
+        responses: raterResponses,
+        completedCount,
+        completed: allDone,
+        completedAt: allDone && !isCompleted ? serverTimestamp() : null
+      }, { merge: true });
+    }
 
     isCompleted = allDone;
   } catch (e) {
@@ -220,6 +252,7 @@ gateBtnEnter.addEventListener("click", async () => {
 
   rutError.textContent = "";
   currentRUT = normalized;
+  currentCode = rutToCode(normalized);
 
   await loadItems();
 
@@ -242,6 +275,7 @@ gateBtnEnter.addEventListener("click", async () => {
   appScreen.classList.remove("hidden");
 
   renderCard(0);
+  updateCompletionCheck();
 });
 
 rutInput.addEventListener("keypress", (e) => {
@@ -277,13 +311,34 @@ function renderCard(index) {
     label.textContent = item.label;
     imageContainer.appendChild(label);
 
-    item.files.forEach((file) => {
+    if (item.files.length > 1) {
+      const carousel = document.createElement("div");
+      carousel.className = "image-carousel";
+
+      item.files.forEach((file) => {
+        const page = document.createElement("div");
+        page.className = "carousel-page";
+        const img = document.createElement("img");
+        img.src = file;
+        img.alt = item.label;
+        img.loading = "lazy";
+        img.addEventListener("click", () => openFullView(item));
+        page.appendChild(img);
+        carousel.appendChild(page);
+      });
+      imageContainer.appendChild(carousel);
+
+      const hint = document.createElement("p");
+      hint.className = "carousel-hint";
+      hint.textContent = `Desliza para ver las ${item.files.length} páginas →`;
+      imageContainer.appendChild(hint);
+    } else {
       const img = document.createElement("img");
-      img.src = file;
+      img.src = item.files[0];
       img.alt = item.label;
-      img.addEventListener("click", openZoom);
+      img.addEventListener("click", () => openFullView(item));
       imageContainer.appendChild(img);
-    });
+    }
   } else {
     const placeholder = document.createElement("div");
     placeholder.style.cssText = "display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;";
@@ -374,10 +429,12 @@ function updateCompletionCheck() {
     return r.p1 !== undefined && r.p2 !== undefined && r.p3 !== undefined && r.p4 !== undefined && r.p5 !== undefined;
   }).length;
 
-  if (completedCount === itemsManifest.length && !isCompleted) {
+  if (completedCount === itemsManifest.length) {
     isCompleted = true;
     cardView.classList.add("hidden");
     completionScreen.classList.remove("hidden");
+    const codeEl = document.getElementById("completionCode");
+    if (codeEl) codeEl.textContent = currentCode || "—";
   }
 }
 
@@ -401,26 +458,99 @@ btnClose.addEventListener("click", () => {
   location.reload();
 });
 
-// ────── Zoom Viewer ──────
-function openZoom(e) {
-  const img = e.target;
+// ────── Full View: PDF if available, else in-app zoom ──────
+function openFullView(item) {
+  if (!item) return;
+  if (item.pdf) {
+    window.open(item.pdf, "_blank", "noopener");
+  } else if (item.files && item.files.length > 0) {
+    openZoom(item.files[0], item.label);
+  }
+}
+
+// ────── Zoom Viewer (pinch-to-zoom + pan + double-tap) ──────
+let zoomScale = 1;
+let zoomX = 0;
+let zoomY = 0;
+let zoomStartDist = 0;
+let zoomStartScale = 1;
+let zoomDragging = false;
+let zoomLastX = 0;
+let zoomLastY = 0;
+let zoomLastTap = 0;
+
+function applyZoomTransform() {
+  const img = zoomContainer.querySelector("img");
+  if (img) img.style.transform = `translate(${zoomX}px, ${zoomY}px) scale(${zoomScale})`;
+}
+
+function resetZoomTransform() {
+  zoomScale = 1;
+  zoomX = 0;
+  zoomY = 0;
+  applyZoomTransform();
+}
+
+function touchDist(touches) {
+  return Math.hypot(touches[0].clientX - touches[1].clientX, touches[0].clientY - touches[1].clientY);
+}
+
+zoomContainer.addEventListener("touchstart", (e) => {
+  if (e.touches.length === 2) {
+    zoomStartDist = touchDist(e.touches);
+    zoomStartScale = zoomScale;
+  } else if (e.touches.length === 1) {
+    zoomDragging = true;
+    zoomLastX = e.touches[0].clientX;
+    zoomLastY = e.touches[0].clientY;
+  }
+}, { passive: true });
+
+zoomContainer.addEventListener("touchmove", (e) => {
+  if (e.touches.length === 2) {
+    e.preventDefault();
+    const d = touchDist(e.touches);
+    zoomScale = Math.min(Math.max(zoomStartScale * (d / zoomStartDist), 1), 4);
+    applyZoomTransform();
+  } else if (e.touches.length === 1 && zoomDragging && zoomScale > 1) {
+    e.preventDefault();
+    zoomX += e.touches[0].clientX - zoomLastX;
+    zoomY += e.touches[0].clientY - zoomLastY;
+    zoomLastX = e.touches[0].clientX;
+    zoomLastY = e.touches[0].clientY;
+    applyZoomTransform();
+  }
+}, { passive: false });
+
+zoomContainer.addEventListener("touchend", () => {
+  zoomDragging = false;
+  const now = Date.now();
+  if (now - zoomLastTap < 300) {
+    zoomScale = zoomScale > 1 ? 1 : 2.5;
+    zoomX = 0;
+    zoomY = 0;
+    applyZoomTransform();
+  }
+  zoomLastTap = now;
+});
+
+zoomContainer.addEventListener("wheel", (e) => {
+  e.preventDefault();
+  zoomScale = Math.min(Math.max(zoomScale - e.deltaY * 0.002, 1), 4);
+  applyZoomTransform();
+}, { passive: false });
+
+function openZoom(src, alt) {
   zoomContainer.innerHTML = "";
 
   const zImg = document.createElement("img");
-  zImg.src = img.src;
-  zImg.alt = img.alt;
-  zImg.style.cssText = "width:auto;height:auto;max-width:100%;max-height:100%;";
+  zImg.src = src;
+  zImg.alt = alt;
+  zImg.style.cssText = "width:auto;height:auto;max-width:100%;max-height:100%;touch-action:none;transition:transform 0.08s ease-out;";
   zoomContainer.appendChild(zImg);
+  resetZoomTransform();
 
-  const itemId = raterOrder[currentItemIndex];
-  const item = getItemById(itemId);
-  if (item?.pdf) {
-    btnDownloadZoom.style.display = "block";
-  } else if (item?.files?.length > 0) {
-    btnDownloadZoom.style.display = "block";
-  } else {
-    btnDownloadZoom.style.display = "none";
-  }
+  btnDownloadZoom.style.display = "block";
 
   zoomModal.classList.remove("hidden");
   document.body.style.overflow = "hidden";
@@ -436,10 +566,9 @@ btnDownloadZoom.addEventListener("click", () => {
 });
 
 btnZoom.addEventListener("click", () => {
-  const img = imageContainer.querySelector("img[alt]");
-  if (img) {
-    openZoom({ target: img });
-  }
+  const itemId = raterOrder[currentItemIndex];
+  const item = getItemById(itemId);
+  openFullView(item);
 });
 
 btnDownload.addEventListener("click", () => {

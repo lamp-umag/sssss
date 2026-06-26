@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resultados - Cuantieval</title>
+  <meta name="description" content="Resultados públicos y anónimos de la evaluación de materiales" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="resultados.css" />
+</head>
+<body>
+  <main class="results-page">
+    <header class="results-header">
+      <h1>Resultados - Cuantieval</h1>
+      <p class="results-subtitle">Vista pública y anónima. Cada evaluador aparece solo con un código (no con su RUT ni su nombre).</p>
+    </header>
+
+    <section class="results-summary">
+      <div class="summary-card">
+        <span class="summary-value" id="sumRaters">—</span>
+        <span class="summary-label">Evaluadores</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-value" id="sumCompleted">—</span>
+        <span class="summary-label">Completaron</span>
+      </div>
+      <div class="summary-card">
+        <span class="summary-value" id="sumAvg">—</span>
+        <span class="summary-label">Promedio general (0-3)</span>
+      </div>
+    </section>
+
+    <section class="results-actions">
+      <button id="btnDownloadCsv" class="btn btn-primary">Descargar CSV</button>
+      <button id="btnRefresh" class="btn btn-secondary">Actualizar</button>
+    </section>
+
+    <section class="results-table-section">
+      <h2>Por material</h2>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Material</th>
+              <th>n</th>
+              <th>P1</th>
+              <th>P2</th>
+              <th>P3</th>
+              <th>P4</th>
+              <th>P5</th>
+              <th>Prom.</th>
+            </tr>
+          </thead>
+          <tbody id="byItemBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="results-table-section">
+      <h2>Evaluadores (por código)</h2>
+      <div class="table-wrap">
+        <table class="results-table">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Progreso</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="byCodeBody"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <p id="resultsStatus" class="results-status">Cargando…</p>
+  </main>
+
+  <script type="module" src="resultados.js"></script>
+</body>
+</html>

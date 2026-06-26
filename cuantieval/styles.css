@@ -218,6 +218,58 @@ input::placeholder {
   transform: scale(0.98);
 }
 
+.image-carousel {
+  display: flex;
+  width: 100%;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 10px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  padding-bottom: 4px;
+}
+
+.carousel-page {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-page img {
+  width: 100%;
+  max-height: 55vh;
+  object-fit: contain;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.carousel-hint {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+}
+
+.carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border);
+}
+
+.carousel-dot.active {
+  background: var(--primary);
+}
+
 .item-label {
   font-size: 16px;
   font-weight: 700;
@@ -440,6 +492,23 @@ input::placeholder {
   color: var(--muted);
   margin: 0;
   line-height: 1.6;
+}
+
+.completion-code {
+  font-size: 16px;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.completion-code-hint {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.completion-code-hint a {
+  color: var(--primary);
 }
 
 .completion-actions {
