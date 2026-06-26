@@ -464,4 +464,14 @@ function downloadItem() {
 }
 
 // ────── Init ──────
-loadItems();
+async function init() {
+  try {
+    await loadItems();
+    console.log('Items loaded:', itemsManifest.length);
+  } catch (e) {
+    console.error('Init error:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+init();
