@@ -322,7 +322,7 @@ function renderCard(index) {
         img.src = file;
         img.alt = item.label;
         img.loading = "lazy";
-        img.addEventListener("click", () => openFullView(item));
+        img.addEventListener("click", () => openZoom(file, item.label));
         page.appendChild(img);
         carousel.appendChild(page);
       });
@@ -336,7 +336,7 @@ function renderCard(index) {
       const img = document.createElement("img");
       img.src = item.files[0];
       img.alt = item.label;
-      img.addEventListener("click", () => openFullView(item));
+      img.addEventListener("click", () => openZoom(item.files[0], item.label));
       imageContainer.appendChild(img);
     }
   } else {

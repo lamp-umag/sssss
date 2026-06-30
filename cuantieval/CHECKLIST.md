@@ -62,7 +62,7 @@ cuantieval/
 ├── resultados.html     # Public, no-login results page
 ├── resultados.js        # Results logic: aggregates + CSV export
 ├── resultados.css       # Results page layout
-├── items.json          # Manifest of 12 items
+├── items.json          # Manifest of items
 ├── convert.sh          # PDF→PNG + manifest generator
 ├── SETUP.md            # Complete setup guide
 ├── CHECKLIST.md        # This file
@@ -84,14 +84,14 @@ Ready to use immediately after Firestore rules are deployed.
 
 Open `https://lamp-umag.github.io/sssss/cuantieval/` in a phone browser (or desktop in mobile view):
 
-1. **RUT Gate**: Enter any valid Chilean RUT (e.g., `12.345.678-5`). If rejected, try `18.889.945-8` or generate one at [generador-rut.com](https://www.generador-rut.com/)
+1. **RUT Gate**: Enter any valid Chilean RUT (e.g., `12.345.678-5`). If rejected, generate one at [generador-rut.com](https://www.generador-rut.com/)
 2. **Card View**: 
-   - See 12 items (placeholders for now)
+   - See all items
    - Click rating buttons (they highlight when selected)
    - Use ← Anterior / Siguiente → to navigate
-   - Click numbered buttons (1-12) to jump to any item
+   - Click numbered buttons to jump to any item
    - Each tap writes to Firestore (if rules are set up)
-3. **Completion**: After rating all 12 items, completion screen appears
+3. **Completion**: After rating all items, completion screen appears
 4. **Privacy**: RUT shown only to owner; no peer data shared
 
 ## 📊 Monitoring Completion
@@ -101,7 +101,7 @@ Once Firestore rules are live, queries work:
 **Firestore Console:**
 - Go to Firestore → Collections → `cuantieval_ratings`
 - Each document = one rater (ID = their RUT)
-- Fields: `completed` (bool), `completedCount` (0–12), `completedAt` (timestamp)
+- Fields: `completed` (bool), `completedCount` (0–N), `completedAt` (timestamp)
 
 **Quick Query (Firestore Console):**
 ```

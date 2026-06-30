@@ -10,5 +10,6 @@
   { "id": "ro", "label": "Rorschach", "files": ["imgs/b ro-0.png", "imgs/b ro-1.png", "imgs/b ro-2.png", "imgs/b ro-3.png", "imgs/b ro-4.png", "imgs/b ro-5.png", "imgs/b ro-6.png", "imgs/b ro-7.png", "imgs/b ro-8.png", "imgs/b ro-9.png", "imgs/b ro-10.png", "imgs/b ro-11.png", "imgs/b ro-12.png", "imgs/b ro-13.png"], "pdf": "imgs/b ro.pdf", "status": "ok" },
   { "id": "tat", "label": "TAT", "files": ["imgs/b tat.png"], "pdf": "imgs/b tat.pdf", "status": "ok" },
   { "id": "wiscv", "label": "WISC-V", "files": ["imgs/b wiscv.png"], "pdf": "imgs/b wiscv.pdf", "status": "ok" },
-  { "id": "stroop", "label": "Stroop", "files": ["imgs/b stroop.png"], "pdf": null, "status": "ok" }
+  { "id": "stroop", "label": "Stroop", "files": ["imgs/b stroop.png"], "pdf": null, "status": "ok" },
+  { "id": "ztest", "label": "Z-Test", "files": ["imgs/b ztest.png"], "pdf": "imgs/b ztest.pdf", "status": "ok" }
 ]
