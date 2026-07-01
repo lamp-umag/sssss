@@ -1,3 +1,40 @@
+.admin-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 10px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.admin-email {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.admin-msg {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-ghost:hover {
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
 .results-page {
   max-width: 900px;
   margin: 0 auto;

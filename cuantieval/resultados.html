@@ -12,6 +12,18 @@
   <link rel="stylesheet" href="resultados.css" />
 </head>
 <body>
+  <div id="adminBar" class="admin-bar">
+    <div id="adminSignedOut">
+      <button id="btnAdminLogin" class="btn btn-ghost">Acceso administrador</button>
+    </div>
+    <div id="adminSignedIn" class="hidden">
+      <span id="adminEmail" class="admin-email"></span>
+      <button id="btnAdminCsv" class="btn btn-primary">Descargar CSV con RUTs</button>
+      <button id="btnAdminLogout" class="btn btn-ghost">Salir</button>
+    </div>
+    <p id="adminMsg" class="admin-msg hidden"></p>
+  </div>
+
   <main class="results-page">
     <header class="results-header">
       <h1>Resultados - Cuantieval</h1>

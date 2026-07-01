@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCq05NElKm-01Xyraj6qdF31IgOLf8gQbA",
@@ -10,8 +11,11 @@ const firebaseConfig = {
   appId: "1:765571239773:web:39ea76d035d314cdd4a2b4"
 };
 
+const ADMIN_EMAIL = "hermanelgueta@gmail.com";
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
 const QUESTION_IDS = ["p1", "p2", "p3", "p4", "p5"];
 
@@ -186,5 +190,85 @@ async function refresh() {
     status.textContent = "Error cargando resultados. Verifica las reglas de Firestore.";
   }
 }
+
+// ────── Admin: Google Sign-In ──────
+
+const elSignedOut = document.getElementById("adminSignedOut");
+const elSignedIn  = document.getElementById("adminSignedIn");
+const elAdminEmail = document.getElementById("adminEmail");
+const elAdminMsg  = document.getElementById("adminMsg");
+
+onAuthStateChanged(auth, (user) => {
+  if (user && user.email === ADMIN_EMAIL) {
+    elSignedOut.classList.add("hidden");
+    elAdminMsg.classList.add("hidden");
+    elSignedIn.classList.remove("hidden");
+    elAdminEmail.textContent = user.email;
+  } else if (user) {
+    elSignedOut.classList.add("hidden");
+    elSignedIn.classList.add("hidden");
+    elAdminMsg.textContent = "Este correo no tiene acceso de administrador.";
+    elAdminMsg.classList.remove("hidden");
+    signOut(auth);
+  } else {
+    elSignedIn.classList.add("hidden");
+    elAdminMsg.classList.add("hidden");
+    elSignedOut.classList.remove("hidden");
+  }
+});
+
+document.getElementById("btnAdminLogin").addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, new GoogleAuthProvider());
+  } catch (e) {
+    console.error("Login error:", e);
+  }
+});
+
+document.getElementById("btnAdminLogout").addEventListener("click", () => signOut(auth));
+
+document.getElementById("btnAdminCsv").addEventListener("click", async () => {
+  const btn = document.getElementById("btnAdminCsv");
+  btn.textContent = "Descargando…";
+  btn.disabled = true;
+  try {
+    const snap = await getDocs(collection(db, "cuantieval_ratings"));
+    const headers = ["rut", "code", "materiales_evaluados", "total_materiales", "completo", "fecha_completado"];
+    const escape = (v) => {
+      if (v === undefined || v === null) return "";
+      const s = String(v);
+      return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+    };
+    const lines = [headers.join(",")];
+    snap.docs.forEach((d) => {
+      const data = d.data();
+      const completedAt = data.completedAt ? new Date(data.completedAt.toMillis()).toLocaleString("es-CL") : "";
+      lines.push([
+        data.rut || d.id,
+        data.code || "",
+        data.completedCount ?? 0,
+        itemsManifest.length,
+        data.completed ? "sí" : "no",
+        completedAt
+      ].map(escape).join(","));
+    });
+    const csv = lines.join("\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "cuantieval_ruts_admin.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    console.error("Error descargando CSV admin:", e);
+    alert("Error al descargar. Verifica que las reglas de Firestore permitan el acceso de administrador.");
+  } finally {
+    btn.textContent = "Descargar CSV con RUTs";
+    btn.disabled = false;
+  }
+});
 
 refresh();
