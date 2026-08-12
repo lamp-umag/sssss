@@ -1,0 +1,145 @@
+rules_version = '2';
+
+// Reglas de todo el proyecto sssss-e8013. Se reusa el proyecto existente,
+// así que este archivo incluye TAL CUAL las reglas de las apps que ya viven
+// aquí (transcritas desde README.md y cuantieval/SETUP.md, que es donde
+// vivían documentadas — nunca existió un firestore.rules en el repo, se
+// pegaban a mano en la consola) más las reglas nuevas de portafolio/.
+//
+// IMPORTANTE al publicar: este archivo se escribió a partir de la
+// documentación del repo, no leyendo las reglas reales desde la consola.
+// Antes de pegar y publicar, compáralo con lo que hay hoy en
+// Firestore → Rules, por si algo se desvió de lo documentado.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ════════════════════════════════════════════════════════════
+    // EXISTENTE — encuestas anónimas (index.html / admin.html raíz)
+    // No modificar: ver README.md del repo.
+    // ════════════════════════════════════════════════════════════
+    match /responses/{surveyId}/entries/{entryId} {
+      allow create: if true;
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // EXISTENTE — cuantieval/
+    // No modificar: ver cuantieval/SETUP.md.
+    // ════════════════════════════════════════════════════════════
+    match /cuantieval_ratings/{rut} {
+      allow get: if request.auth == null;
+      allow write: if request.auth == null;
+      allow list: if false;
+    }
+    match /cuantieval_public/{code} {
+      allow read: if request.auth == null;
+      allow write: if request.auth == null;
+    }
+
+    // ════════════════════════════════════════════════════════════
+    // NUEVO — Portafolio, Análisis de Datos (portafolio/)
+    // ════════════════════════════════════════════════════════════
+
+    function esAdmin() {
+      return request.auth != null &&
+        request.auth.token.email == 'hermanelgueta@gmail.com';
+    }
+
+    // Cualquier cuenta @umag.cl. El admin usando la vista de estudiante para
+    // probar pasa por esUsuarioValido() vía esAdmin(), no por esta función.
+    function esInstitucional() {
+      return request.auth != null &&
+        request.auth.token.email != null &&
+        request.auth.token.email.matches('.*@umag[.]cl$');
+    }
+
+    function esUsuarioValido() {
+      return esInstitucional() || esAdmin();
+    }
+
+    // perfiles/{uid}: solo el dueño lee/escribe el suyo. Admin lee todo
+    // (para contar "estudiantes con perfil creado" en el visor).
+    match /perfiles/{uid} {
+      allow read, write: if esUsuarioValido() && request.auth.uid == uid;
+      allow read: if esAdmin();
+    }
+
+    // semanas/{numero}: cualquier usuario válido lee solo las visibles.
+    // El admin lee y escribe todas (visibles u ocultas).
+    match /semanas/{numero} {
+      allow read: if esAdmin() ||
+        (esUsuarioValido() && resource.data.visible == true);
+      allow write: if esAdmin();
+    }
+
+    match /entregas/{id} {
+      // Cada quien lee solo su propia entrega. Admin lee todas.
+      allow read: if esAdmin() ||
+        (esUsuarioValido() && resource.data.uid == request.auth.uid);
+
+      allow create: if esAdmin() || (
+        esUsuarioValido() &&
+        request.resource.data.uid == request.auth.uid &&
+        id == request.auth.uid + '_' + request.resource.data.numeroSemana &&
+        semanaActivaYVisible(request.resource.data.numeroSemana) &&
+        tamanoValido(request.resource.data)
+      );
+
+      allow update: if esAdmin() || (
+        esUsuarioValido() &&
+        // El uid y la semana de una entrega no cambian una vez creada, y
+        // solo su propio dueño puede tocarla.
+        resource.data.uid == request.auth.uid &&
+        request.resource.data.uid == resource.data.uid &&
+        request.resource.data.numeroSemana == resource.data.numeroSemana &&
+        semanaActivaYVisible(resource.data.numeroSemana) &&
+        tamanoValido(request.resource.data) &&
+        // La fecha de entrega, una vez fijada, no se puede volver a mover
+        // (el botón "Entregar" la fija una sola vez).
+        (!('fechaEntrega' in resource.data) || resource.data.fechaEntrega == null ||
+          request.resource.data.fechaEntrega == resource.data.fechaEntrega)
+      );
+
+      allow delete: if esAdmin();
+
+      function semanaActivaYVisible(numero) {
+        let semana = get(/databases/$(database)/documents/semanas/$(numero)).data;
+        return semana.estado == 'activa' && semana.visible == true;
+      }
+
+      // Tope de campos de respuesta por entrega. El tope de 50.000
+      // caracteres por campo de texto se aplica en la interfaz (contador +
+      // maxCaracteres de cada campo): el lenguaje de reglas de Firestore no
+      // tiene forma de iterar sobre las claves dinámicas de "respuestas"
+      // para revisar el largo de cada valor, así que no es exigible acá.
+      // El límite duro de 1 MiB por documento de Firestore sigue actuando
+      // de respaldo ante un abuso extremo.
+      function tamanoValido(datos) {
+        return !('respuestas' in datos) || datos.respuestas.size() <= 20;
+      }
+    }
+
+    match /entregas/{entregaId}/feedback/{feedbackId} {
+      allow read: if esAdmin() || (
+        esUsuarioValido() &&
+        get(/databases/$(database)/documents/entregas/$(entregaId)).data.uid == request.auth.uid
+      );
+
+      allow create, delete: if esAdmin();
+
+      // El docente escribe el contenido. La única excepción: el dueño de la
+      // entrega puede marcar su propia retroalimentación como vista (solo
+      // ese campo, solo de false a true) — es lo que permite el "marca como
+      // vista al abrirla" de la vista de estudiante sin abrirle la escritura
+      // del texto o el emoji a nadie más que el admin.
+      allow update: if esAdmin() || (
+        esUsuarioValido() &&
+        get(/databases/$(database)/documents/entregas/$(entregaId)).data.uid == request.auth.uid &&
+        request.resource.data.diff(resource.data).affectedKeys().hasOnly(['vistoPorEstudiante']) &&
+        request.resource.data.vistoPorEstudiante == true
+      );
+    }
+  }
+}

@@ -1,0 +1,32 @@
+rules_version = '2';
+
+// Solo se usa si activas la opción de subida directa de archivos (ver
+// README.md → "Activar Cloud Storage más adelante"). Mientras esa bandera
+// no esté encendida en ninguna semana, esta regla no se ejerce nunca porque
+// la interfaz nunca sube nada. Requiere plan Blaze en el proyecto.
+//
+// Ruta esperada: entregas/{uid}/{numeroSemana}/{archivo}
+// Mismo dueño que la entrega, mismo control de semana activa/visible que
+// firestore.rules, y tope de 5 MB por archivo (el tope de 3 archivos por
+// entrega se controla en la interfaz y en el arreglo "adjuntos" del
+// documento de Firestore, que sí puede contarse ahí).
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /entregas/{uid}/{numeroSemana}/{archivo} {
+      allow read: if request.auth != null && (
+        request.auth.uid == uid ||
+        request.auth.token.email == 'hermanelgueta@gmail.com'
+      );
+
+      allow write: if request.auth != null &&
+        request.auth.uid == uid &&
+        (request.auth.token.email.matches('.*@umag[.]cl$') ||
+          request.auth.token.email == 'hermanelgueta@gmail.com') &&
+        request.resource.size <= 5 * 1024 * 1024 &&
+        request.resource.contentType.matches('image/.*|application/pdf') &&
+        firestore.get(/databases/(default)/documents/semanas/$(numeroSemana)).data.estado == 'activa' &&
+        firestore.get(/databases/(default)/documents/semanas/$(numeroSemana)).data.visible == true;
+    }
+  }
+}

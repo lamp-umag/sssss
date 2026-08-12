@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Portafolio — Administración</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<div class="contenedor">
+
+  <header class="encabezado">
+    <h1>Portafolio — administración</h1>
+    <div class="usuario oculto" id="cajaUsuario">
+      <div id="correoAdmin"></div>
+      <button class="btn-texto" id="btnSalir">salir</button>
+    </div>
+  </header>
+
+  <section id="pantallaLogin">
+    <p class="muted">Acceso restringido al correo del docente.</p>
+    <button class="btn" id="btnLogin">Entrar con Google</button>
+    <p id="errorLogin" class="aviso oculto"></p>
+  </section>
+
+  <section id="app" class="oculto">
+
+    <div class="fila" style="margin-bottom:1rem;">
+      <button class="btn-secundario btn-chico" id="tabSemanasBtn">Semanas</button>
+      <button class="btn-secundario btn-chico" id="tabRespuestasBtn">Respuestas</button>
+    </div>
+
+    <!-- ═══ Semanas ═══ -->
+    <section id="tabSemanas">
+      <h2>Editor de semanas</h2>
+      <div id="listaSemanasAdmin"></div>
+    </section>
+
+    <!-- ═══ Respuestas ═══ -->
+    <section id="tabRespuestas" class="oculto">
+      <h2>Respuestas</h2>
+
+      <div class="fila" style="margin-bottom:0.75rem;">
+        <button class="btn-secundario btn-chico" id="subtabPorSemanaBtn">Por semana</button>
+        <button class="btn-secundario btn-chico" id="subtabPorEstudianteBtn">Por estudiante</button>
+      </div>
+
+      <div class="fila" style="margin-bottom:0.75rem;">
+        <input type="text" id="buscador" placeholder="Buscar por nombre o correo" style="max-width:260px;">
+        <select id="filtroEstado">
+          <option value="">Todos los estados</option>
+          <option value="sin_empezar">Sin empezar</option>
+          <option value="borrador">Borrador</option>
+          <option value="entregada">Entregada</option>
+          <option value="con_feedback">Con retroalimentación</option>
+        </select>
+      </div>
+
+      <!-- Por semana -->
+      <div id="subtabPorSemana">
+        <div class="fila">
+          <label style="margin:0;">Semana
+            <select id="selectSemana"></select>
+          </label>
+          <span class="muted pequeno" id="contadorSemana"></span>
+        </div>
+        <div class="fila" style="margin:0.5rem 0 1rem 0;">
+          <button class="btn-secundario btn-chico" id="btnCsvSemana">Exportar esta semana (CSV)</button>
+          <button class="btn-secundario btn-chico" id="btnCsvSemestre">Exportar semestre completo (CSV)</button>
+        </div>
+        <hr class="regla">
+        <div id="listaPorSemana"></div>
+      </div>
+
+      <!-- Por estudiante -->
+      <div id="subtabPorEstudiante" class="oculto">
+        <label style="margin:0;">Estudiante
+          <select id="selectEstudiante"></select>
+        </label>
+        <hr class="regla">
+        <div id="listaPorEstudiante"></div>
+      </div>
+
+    </section>
+  </section>
+
+</div>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>

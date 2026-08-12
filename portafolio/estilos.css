@@ -1,0 +1,199 @@
+/* Portafolio — Análisis de Datos. Sobrio, blanco y negro, sin acentos.
+   Los emojis de retroalimentación son el único elemento con color. */
+
+:root {
+  --fg: #111111;
+  --bg: #ffffff;
+  --muted: #666666;
+  --line: #cccccc;
+  --line-strong: #111111;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 17px;
+  line-height: 1.5;
+  padding: 1rem;
+}
+
+.contenedor {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+a { color: var(--fg); }
+
+h1, h2, h3 { margin: 0 0 0.25rem 0; font-weight: 600; line-height: 1.25; }
+h1 { font-size: 1.25rem; }
+h2 { font-size: 1.1rem; }
+h3 { font-size: 1rem; }
+
+p { margin: 0.5rem 0; }
+
+.muted { color: var(--muted); }
+.pequeno { font-size: 0.85rem; }
+
+.regla {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin: 1.25rem 0;
+}
+
+header.encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--line-strong);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+header.encabezado .usuario {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+button, .btn {
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--fg);
+  color: var(--bg);
+  border: 1px solid var(--fg);
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+}
+
+.btn:disabled { opacity: 0.4; cursor: default; }
+
+.btn-secundario {
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid var(--fg);
+}
+
+.btn-chico {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+}
+
+.btn-texto {
+  background: none;
+  border: none;
+  color: var(--fg);
+  text-decoration: underline;
+  padding: 0.2rem 0;
+  font-size: 0.85rem;
+}
+
+input[type="text"], input[type="url"], input[type="email"], textarea, select {
+  font: inherit;
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+input:focus, textarea:focus, select:focus, button:focus {
+  outline: 2px solid var(--fg);
+  outline-offset: 1px;
+}
+
+textarea { resize: vertical; min-height: 6rem; }
+
+label { display: block; font-weight: 600; margin-bottom: 0.3rem; }
+
+.campo { margin-bottom: 1.25rem; }
+.campo .ayuda { color: var(--muted); font-size: 0.85rem; margin: 0.2rem 0 0.4rem 0; }
+.contador { text-align: right; font-size: 0.8rem; color: var(--muted); }
+.contador.sobre-limite { color: var(--fg); font-weight: 700; }
+
+.fila { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+
+.semaforo { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.semaforo button {
+  flex: 1 1 auto;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--fg);
+  background: var(--bg);
+  color: var(--fg);
+}
+.semaforo button.activo { background: var(--fg); color: var(--bg); }
+
+.lista-semanas .item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line);
+  background: none;
+  border-left: none; border-right: none; border-top: none;
+}
+.lista-semanas .item:hover { background: #fafafa; }
+.lista-semanas .item[disabled] { cursor: default; }
+.lista-semanas .item .estado { font-size: 0.85rem; color: var(--muted); }
+
+.indicador-guardado {
+  font-size: 0.8rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.aviso {
+  border: 1px solid var(--fg);
+  padding: 0.75rem;
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+
+.emoji-fila { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.emoji-fila button {
+  font-size: 1.3rem;
+  line-height: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+.emoji-fila button.activo { border-color: var(--fg); background: #f2f2f2; }
+
+.retroalimentacion {
+  padding: 0.75rem;
+  border: 1px solid var(--fg);
+  margin-top: 0.75rem;
+}
+
+.centro { text-align: center; }
+.oculto { display: none !important; }
+
+table.export {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+table.export caption { text-align: left; font-weight: 600; margin-bottom: 0.4rem; }
+
+.campo-historico {
+  border-left: 2px solid var(--line);
+  padding-left: 0.6rem;
+}
+
+@media (max-width: 480px) {
+  body { font-size: 16px; padding: 0.75rem; }
+}

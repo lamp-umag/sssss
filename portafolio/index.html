@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Portafolio — Análisis de Datos</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<div class="contenedor">
+
+  <header class="encabezado">
+    <h1>Portafolio semanal</h1>
+    <div class="usuario oculto" id="cajaUsuario">
+      <div id="nombreUsuario"></div>
+      <button class="btn-texto" id="btnEditarNombre">editar nombre</button>
+      ·
+      <button class="btn-texto" id="btnSalir">salir</button>
+    </div>
+  </header>
+
+  <!-- Pantalla de login -->
+  <section id="pantallaLogin">
+    <p>Registro semanal de portafolio — Análisis de Datos, Psicología, Universidad de Magallanes.</p>
+    <p class="muted">Entra con tu cuenta institucional (@umag.cl).</p>
+    <button class="btn" id="btnLogin">Entrar con Google</button>
+    <p id="errorLogin" class="aviso oculto"></p>
+  </section>
+
+  <!-- Primer ingreso: pedir nombre -->
+  <section id="pantallaNombre" class="oculto">
+    <h2>Antes de empezar</h2>
+    <p class="muted">¿Cómo quieres que aparezca tu nombre en tus registros?</p>
+    <div class="campo">
+      <label for="inputNombreInicial">Nombre completo</label>
+      <input type="text" id="inputNombreInicial" autocomplete="name">
+    </div>
+    <button class="btn" id="btnGuardarNombreInicial">Continuar</button>
+  </section>
+
+  <!-- Aviso de modo prueba para el admin -->
+  <p id="avisoPrueba" class="aviso oculto">Estás usando la vista de estudiante en modo prueba. Tus entregas quedan marcadas como prueba y no cuentan como respuestas reales.</p>
+
+  <!-- Índice de semanas -->
+  <section id="pantallaIndice" class="oculto">
+    <h2>Semanas</h2>
+    <div class="lista-semanas" id="listaSemanas"></div>
+    <p class="muted pequeno oculto" id="sinSemanas">Todavía no hay semanas visibles.</p>
+  </section>
+
+  <!-- Detalle de una semana -->
+  <section id="pantallaSemana" class="oculto">
+    <button class="btn-texto" id="btnVolverIndice">← volver a semanas</button>
+    <h2 id="tituloSemana"></h2>
+    <p class="muted" id="fechaSemana"></p>
+    <p id="requisitoSemana"></p>
+    <hr class="regla">
+
+    <div id="retroalimentacionSemana"></div>
+
+    <p class="aviso oculto" id="avisoCerrada">Esta semana está cerrada. Puedes ver lo que registraste, pero ya no se puede editar.</p>
+
+    <form id="formularioSemana"></form>
+
+    <div class="indicador-guardado" id="indicadorGuardado"></div>
+
+    <div class="fila" style="margin-top:1rem;">
+      <button type="button" class="btn" id="btnEntregar">Entregar</button>
+      <span class="muted pequeno" id="estadoEntrega"></span>
+    </div>
+    <p class="aviso oculto" id="avisoFaltantes"></p>
+  </section>
+
+</div>
+
+<script type="module" src="estudiante.js"></script>
+</body>
+</html>
