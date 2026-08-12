@@ -1,0 +1,6 @@
+{
+  "firestore": {
+    "rules": "portafolio/firestore.rules",
+    "indexes": "portafolio/firestore.indexes.json"
+  }
+}

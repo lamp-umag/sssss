@@ -2,3 +2,4 @@
 node_modules/
 portafolio/serviceAccountKey.json
 *.serviceAccountKey.json
+pglite-debug.log

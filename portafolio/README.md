@@ -25,6 +25,18 @@ de la raíz del repo — nadie leyó las reglas reales desde la consola para
 escribir esto. Antes de publicar, compáralas con lo que hay hoy en Firestore
 → Rules, por si algo se desvió de lo documentado.
 
+## Estado actual (12/08/2026)
+
+Las reglas (`firestore.rules`) y el índice compuesto
+(`firestore.indexes.json`) ya están publicados en `sssss-e8013` — se hizo
+por CLI durante la puesta en marcha, tras confirmar que el login no andaba
+porque las reglas nunca se habían publicado. Si cambias `firestore.rules`
+o `firestore.indexes.json` más adelante, vuelve a correr el comando de la
+Opción A del paso 2 para republicar.
+
+Falta correr `seed.js` (paso 3) — sin eso no hay semanas y la app muestra
+"Todavía no hay semanas visibles".
+
 ## 1. Verificar el proveedor de Google en Firebase Auth
 
 Ya debería estar habilitado (lo usan `admin.html` de la raíz y
@@ -41,7 +53,27 @@ esa restricción se aplica en la app (`estudiante.js`, cierra sesión si el
 correo no termina en `@umag.cl` y no es el correo administrador) y, de forma
 real e inevitable, en `firestore.rules`.
 
-## 2. Publicar las reglas de Firestore
+## 2. Publicar las reglas de Firestore (y el índice que piden las semanas)
+
+Hay dos formas. Usa la que prefieras — el repo ya trae `firebase.json` y
+`.firebaserc` (apuntando a `sssss-e8013`) para la primera opción:
+
+**Opción A — con la CLI de Firebase** (más rápido, evita copiar y pegar mal):
+
+```bash
+npm install -g firebase-tools   # si no la tienes
+firebase login                  # con la cuenta hermanelgueta@gmail.com
+firebase deploy --only firestore:rules,firestore:indexes
+```
+
+Esto publica `portafolio/firestore.rules` y crea el índice compuesto que
+necesita la consulta de "semanas visibles" del estudiante
+(`portafolio/firestore.indexes.json`). El índice tarda uno o dos minutos en
+terminar de construirse — mientras tanto vas a ver en la consola del
+navegador un error de "index is currently building", es normal, espera y
+recarga.
+
+**Opción B — a mano en la consola** (como se ha hecho siempre en este repo):
 
 1. Abre **Firestore Database → Rules** en la consola.
 2. Compara el contenido actual con `portafolio/firestore.rules` de este
@@ -49,6 +81,10 @@ real e inevitable, en `firestore.rules`.
    con lo que ya hay (encuestas y cuantieval); si hay diferencias, ajusta el
    archivo antes de publicar para no romper esas apps.
 3. Pega el contenido completo de `portafolio/firestore.rules` y **Publish**.
+4. Ve al enlace que aparece en la consola del navegador cuando la app pida
+   el índice (mensaje "The query requires an index. You can create it
+   here: …") y créalo desde ahí — es el mismo índice que trae
+   `portafolio/firestore.indexes.json`.
 
 Si vas a permitir adjuntos directos en alguna semana más adelante, revisa
 también la sección "Activar Cloud Storage" más abajo antes de publicar
@@ -114,17 +150,21 @@ estudiantes solo pueden dejar un enlace (Drive u otro) en el campo
 
 ```
 portafolio/
-  index.html            vista estudiante
-  admin.html              vista administrador
-  firebase-config.js      config del proyecto compartido + ADMIN_EMAIL
-  estudiante.js            lógica de la vista estudiante
-  admin.js                 lógica de la vista administrador
-  estilos.css              hoja de estilos compartida
-  seed.js                  siembra las 15 semanas (node, firebase-admin)
-  firestore.rules          reglas de todo el proyecto (existentes + nuevas)
-  storage.rules             reglas de Storage, solo si activas adjuntos
-  README.md                 este archivo
-  PRUEBAS-REGLAS.md         checklist manual para probar las reglas
+  index.html               vista estudiante
+  admin.html                vista administrador
+  firebase-config.js         config del proyecto compartido + ADMIN_EMAIL
+  estudiante.js               lógica de la vista estudiante
+  admin.js                    lógica de la vista administrador
+  estilos.css                 hoja de estilos compartida
+  seed.js                     siembra las 15 semanas (node, firebase-admin)
+  firestore.rules             reglas de todo el proyecto (existentes + nuevas)
+  firestore.indexes.json      índice compuesto que pide la consulta de semanas visibles
+  storage.rules                reglas de Storage, solo si activas adjuntos
+  README.md                    este archivo
+  PRUEBAS-REGLAS.md            checklist manual para probar las reglas
+
+firebase.json                 config de la CLI (rules + indexes), en la raíz del repo
+.firebaserc                   alias del proyecto (sssss-e8013), en la raíz del repo
 ```
 
 ## Qué quedó fuera o a medias

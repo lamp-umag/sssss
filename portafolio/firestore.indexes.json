@@ -1,0 +1,13 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "semanas",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "visible", "order": "ASCENDING" },
+        { "fieldPath": "numero", "order": "ASCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
