@@ -54,3 +54,7 @@ Para producción: restringe `read` a usuarios autenticados y sirve `admin.html` 
 
 - Habilita Pages desde la rama `main` (carpeta root).
 - `.nojekyll` incluido para servir `surveys/*.json` sin transformación.
+
+## rps/
+
+Experimento piedra-papel-tijera 2x2 (oponente real x creencia). Ver `rps/README.md`.

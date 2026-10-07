@@ -39,6 +39,29 @@ service cloud.firestore {
     }
 
     // ════════════════════════════════════════════════════════════
+    // NUEVO — rps/ (experimento piedra-papel-tijera)
+    // Solo-agregar: cualquiera puede CREAR (sin login), nadie edita ni borra.
+    // Lectura pública para resultados.html (mismo nivel de apertura que
+    // las encuestas de la raíz). Ver rps/README.md.
+    // ════════════════════════════════════════════════════════════
+    match /rps_sesiones/{sid} {
+      allow create: if request.resource.data.sid == sid &&
+        request.resource.data.usuario is string &&
+        request.resource.data.usuario.size() >= 1 &&
+        request.resource.data.usuario.size() <= 24;
+      allow read: if true;
+      allow update, delete: if false;
+    }
+    match /rps_eventos/{eid} {
+      allow create: if request.resource.data.sid is string &&
+        request.resource.data.seq is int &&
+        eid == request.resource.data.sid + '_' + string(request.resource.data.seq) &&
+        request.resource.data.tipo in ['ensayo_inicio', 'ronda', 'chequeo', 'fin'];
+      allow read: if true;
+      allow update, delete: if false;
+    }
+
+    // ════════════════════════════════════════════════════════════
     // NUEVO — Portafolio, Análisis de Datos (portafolio/)
     // ════════════════════════════════════════════════════════════
 

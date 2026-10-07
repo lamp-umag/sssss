@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <title>RPS · Resultados</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+10&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <style>
+    html, body { position: static; overflow: auto; height: auto; }
+    main { max-width: 900px; margin: 0 auto; padding: 18px 16px 80px; }
+    h1 { font-size: 2.4rem; margin: 0 0 .2rem; } h1 span { color: var(--bot); }
+    h2 { font-size: 1.4rem; margin: 2rem 0 .4rem; color: var(--bot); border-bottom: 3px solid #222; padding-bottom: .15rem; }
+    .nota { color: var(--dim); font-size: .85rem; line-height: 1.2; margin: .3rem 0 .6rem; text-transform: none; }
+    table { border-collapse: collapse; width: 100%; font-size: .95rem; margin: .4rem 0; }
+    th, td { padding: .25rem .5rem; text-align: right; border-bottom: 1px solid #222; white-space: nowrap; }
+    th:first-child, td:first-child { text-align: left; } th { color: var(--dim); font-weight: normal; }
+    .tabla { overflow-x: auto; }
+    .sig { color: var(--ok); } .ns { color: var(--dim); }
+    .fila { display: flex; flex-wrap: wrap; gap: 10px; margin: .6rem 0; align-items: center; }
+    .btn { font-size: 1.1rem; padding: .3rem 1rem; }
+    label { font-size: .95rem; display: flex; gap: .4rem; align-items: center; cursor: pointer; }
+    input[type=checkbox] { width: 1rem; height: 1rem; accent-color: var(--bot); }
+    .kpis { display: flex; gap: 1.6rem; flex-wrap: wrap; margin: .6rem 0; }
+    .kpi b { display: block; font-size: 2rem; color: var(--fg); } .kpi { color: var(--dim); font-size: .85rem; }
+    #estado { color: var(--dim); font-size: .9rem; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>RPS <span>RESULTADOS</span></h1>
+  <div id="estado">Cargando…</div>
+  <div id="contenido" hidden>
+    <div class="fila">
+      <label><input type="checkbox" id="soloCompletas" checked> solo sesiones completas</label>
+      <label><input type="checkbox" id="soloPrimera" checked> solo 1ª sesión de cada usuario</label>
+      <button class="btn" id="recargar">RECARGAR</button>
+    </div>
+    <div class="kpis" id="kpis"></div>
+
+    <h2>Descargas</h2>
+    <div class="nota">Los CSV respetan los filtros de arriba, salvo "rondas (todo)", que incluye todo lo jugado. Separador coma, UTF-8 con BOM (abre bien en Excel).</div>
+    <div class="fila" id="descargas"></div>
+
+    <h2>1 · Primer ensayo — 2×2 entre sujetos</h2>
+    <div class="nota">Cada persona aporta solo su primer ensayo → una celda del diseño (oponente real × lo que se le dijo). VD: victorias por ensayo. ANOVA factorial Tipo III (sirve con n desiguales). Con 20 rondas y azar puro, el esperado es ≈ 6,7 victorias (1/3).</div>
+    <div class="tabla" id="entre"></div>
+
+    <h2>2 · Los 4 ensayos — 2×2 intra sujetos</h2>
+    <div class="nota">Solo participantes con los 4 ensayos. Cada efecto se prueba con el contraste correspondiente (F(1, n−1) = t²). El orden de las condiciones es aleatorio por participante; revisa abajo si hay efecto de posición.</div>
+    <div class="tabla" id="intra"></div>
+    <div class="tabla" id="posicion"></div>
+
+    <h2>3 · Práctica — 2 condiciones (sin informar)</h2>
+    <div class="nota">El oponente de la práctica se sortea (azar vs IA) y no se le dice nada al participante. VD: victorias en la práctica. t de Welch.</div>
+    <div class="tabla" id="practica"></div>
+
+    <h2>4 · Chequeo de manipulación</h2>
+    <div class="nota">Percepción de inteligencia del oponente (1–7) al terminar cada ensayo, por celda (todos los ensayos, medias por celda).</div>
+    <div class="tabla" id="chequeo"></div>
+  </div>
+</main>
+<script type="module" src="resultados.js"></script>
+</body>
+</html>
